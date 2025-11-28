@@ -1,18 +1,37 @@
 #include "vectorpane.h"
+#include "decimallineedit.h"
 #include "ui_vectorpane.h"
-#include <vector>
+#include "util.h"
+#include <QtWidgets/qlabel.h>
+#include <QPlainTextEdit>
 
-VectorPane::VectorPane(QWidget *parent, std::vector<int> vec)
+auto parser = [](QStringView s) -> std::optional<double> {
+    bool ok = false;
+    double v = s.toDouble(&ok);
+    return ok ? std::optional<double>(v) : std::nullopt;
+};
+
+VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable)
     : QWidget(parent)
     , ui(new Ui::VectorPane)
 {
+    this->editable = editable;
+    this->value = vec;
+
     ui->setupUi(this);
-    for (int i : vec){
-        QLabel *label = new QLabel(this);
-        label->setText(QString::fromStdString(std::to_string(i)));
-        ui->numLayout->addWidget(label);
+    for (int i = 0; i < vec.dim(); i++){
+        if (editable){
+            DecimalLineEdit *edit = new DecimalLineEdit(
+                parser, [this, i](double val) { this->value[i] = val; },vec[i]
+            );
+            ui->numLayout->layout()->addWidget(edit);
+        }else{
+            QLabel *label = new QLabel(format(vec[i]), this);
+            label->setAlignment(Qt::AlignCenter);
+            label->setFont(getLargeFont());
+            ui->numLayout->layout()->addWidget(label);
+        }
     }
-    ui->numLayout->addSpacerItem(new QSpacerItem(0, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
 }
 
 VectorPane::~VectorPane()
