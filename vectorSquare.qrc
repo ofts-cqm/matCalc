@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/assets">
+        <file>vecBracket.png</file>
+    </qresource>
+</RCC>
