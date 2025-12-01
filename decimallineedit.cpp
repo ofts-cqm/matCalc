@@ -16,6 +16,11 @@ DecimalLineEdit::DecimalLineEdit(
     connect(this, &QLineEdit::textEdited,
             this, &DecimalLineEdit::onTextEdited);
     this->setFont(getLargeFont());
+    this->setMaximumWidth(80);
+}
+
+void DecimalLineEdit::setValue(double val){
+    this->setText(format(val));
 }
 
 void DecimalLineEdit::focusInEvent(QFocusEvent* event)

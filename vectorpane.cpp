@@ -5,33 +5,46 @@
 #include <QtWidgets/qlabel.h>
 #include <QPlainTextEdit>
 
-auto parser = [](QStringView s) -> std::optional<double> {
-    bool ok = false;
-    double v = s.toDouble(&ok);
-    return ok ? std::optional<double>(v) : std::nullopt;
-};
-
 VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable)
     : QWidget(parent)
     , ui(new Ui::VectorPane)
+    , AbstractNumberPane(vec)
 {
+    ui->setupUi(this);
+
     this->editable = editable;
     this->value = vec;
+    if (editable) ui->numLayout->layout()->setSpacing(5);
 
-    ui->setupUi(this);
-    for (int i = 0; i < vec.dim(); i++){
+    reconstructPage();
+}
+
+void VectorPane::display(Vector vector){
+    AbstractNumberPane::display(vector);
+    reconstructPage();
+}
+
+void VectorPane::reconstructPage(){
+    clearLayout(ui->numLayout->layout());
+
+    for (int i = 0; i < this->value.dim(); i++){
+        QWidget *widget;
+
         if (editable){
-            DecimalLineEdit *edit = new DecimalLineEdit(
-                parser, [this, i](double val) { this->value[i] = val; },vec[i]
-            );
-            ui->numLayout->layout()->addWidget(edit);
+            widget = new DecimalLineEdit(
+                numberParser, [this, i](double val) { this->value[i] = val; },
+                this->value[i]);
         }else{
-            QLabel *label = new QLabel(format(vec[i]), this);
+            QLabel *label = new QLabel(format(this->value[i]), this);
             label->setAlignment(Qt::AlignCenter);
             label->setFont(getLargeFont());
-            ui->numLayout->layout()->addWidget(label);
+            widget = label;
         }
+
+        ui->numLayout->layout()->addWidget(widget);
     }
+
+    this->setMinimumHeight(value.dim() * 45 + 15);
 }
 
 VectorPane::~VectorPane()

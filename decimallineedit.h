@@ -18,6 +18,8 @@ public:
                     double initial,
                     QWidget* parent = nullptr);
 
+    void setValue(double val);
+
 protected:
     void focusInEvent(QFocusEvent* event) override;
 

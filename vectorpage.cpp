@@ -1,4 +1,6 @@
 #include "vectorpage.h"
+#include "genericpane.h"
+#include "numberpane.h"
 #include "vectorpane.h"
 #include "util.h"
 #include <QtWidgets/qboxlayout.h>
@@ -6,6 +8,7 @@
 
 VectorPage::VectorPage(QWidget *parent) : QWidget(parent) {
     QVBoxLayout *content = new QVBoxLayout(parent);
+    content->addItem(new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Expanding));
 
     // control
     QHBoxLayout *header = new QHBoxLayout();
@@ -28,11 +31,14 @@ VectorPage::VectorPage(QWidget *parent) : QWidget(parent) {
     QHBoxLayout *vectors = new QHBoxLayout();
     vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
     vectors->addWidget(new VectorPane(parent, Vector({1, 2, 3})));
-    vectors->addWidget(new VectorPane(parent, Vector({4, 5, 6})));
-    vectors->addWidget(new VectorPane(parent, Vector({7, 8, 9}), false));
+    vectors->addWidget(new NumberPane(parent, 114514));
+    //vectors->addWidget(new VectorPane(parent, Vector({4, 5, 6})));
+    //vectors->addWidget(new VectorPane(parent, Vector({7, 8, 9}), false));
+    vectors->addWidget(new GenericPane(this, VECTOR, false, new VectorPane(this, Vector({7, 8, 9}))));
     vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
     content->addLayout(vectors);
 
+    content->addItem(new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Expanding));
     this->setLayout(content);
 }
 
