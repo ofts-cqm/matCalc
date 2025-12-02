@@ -20,7 +20,8 @@ VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable)
 }
 
 void VectorPane::display(Vector vector){
-    AbstractNumberPane::display(vector);
+    this->value = vector;
+    this->genericValue = vector;
     reconstructPage();
 }
 

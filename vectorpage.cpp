@@ -34,7 +34,7 @@ VectorPage::VectorPage(QWidget *parent) : QWidget(parent) {
     vectors->addWidget(new NumberPane(parent, 114514));
     //vectors->addWidget(new VectorPane(parent, Vector({4, 5, 6})));
     //vectors->addWidget(new VectorPane(parent, Vector({7, 8, 9}), false));
-    vectors->addWidget(new GenericPane(this, VECTOR, false, new VectorPane(this, Vector({7, 8, 9}))));
+    vectors->addWidget(new GenericPane(this, new VectorPane(this, Vector({7, 8, 9})), false));
     vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
     content->addLayout(vectors);
 

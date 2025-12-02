@@ -7,16 +7,23 @@
 #include <QStackedWidget>
 #include <QWidget>
 
-class GenericPane : public QStackedWidget, public AbstractNumberPane<GenericNumber>
+class GenericPane : public QStackedWidget, public AbstractNumberPane
 {
     Q_OBJECT
 
 public:
-    GenericPane(QWidget *parent, NumberType initialDisplay, bool editable = true, QWidget *initialPage = nullptr);
+    GenericPane(QWidget *parent, NumberType initialDisplay, bool editable = true);
+    GenericPane(QWidget *parent, QWidget *initialPage, bool editable = true);
 
     void display(GenericNumber number);
 
+    void switchTo(NumberType type);
+
     void reconstructPage();
+
+    const GenericNumber& getValue();
+
+    const NumberType getType() const;
 
 private:
     NumberType currentType;

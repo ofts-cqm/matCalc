@@ -9,7 +9,7 @@ namespace Ui {
 class VectorPane;
 }
 
-class VectorPane : public QWidget, public AbstractNumberPane<Vector>
+class VectorPane : public QWidget, public AbstractNumberPane
 {
     Q_OBJECT
 
@@ -21,10 +21,10 @@ public:
 
     void reconstructPage();
 
-
 private:
     Ui::VectorPane *ui;
     bool editable;
+    Vector value;
 };
 
 #endif // VECTORPANE_H

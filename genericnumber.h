@@ -13,7 +13,8 @@ union NumberHolder {
 enum NumberType{
     NUMBER,
     VECTOR,
-    UNKNOWN
+    UNKNOWN,
+    EMPTY
 };
 
 class GenericNumber
@@ -23,10 +24,11 @@ public:
     GenericNumber(const double &);
     GenericNumber(const Vector &);
 
-    NumberType getType();
-    const double &getDouble();
-    const Vector &getVector();
+    NumberType getType() const;
+    const double &getDouble() const;
+    const Vector &getVector() const;
 
+    static const GenericNumber unknown;
 
 private:
     NumberType type;

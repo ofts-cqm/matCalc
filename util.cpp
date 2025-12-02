@@ -40,6 +40,8 @@ std::optional<double> numberParser(QStringView s){
     return ok ? std::optional<double>(v) : std::nullopt;
 };
 
+EmptyPane::EmptyPane(QWidget *parent): QWidget(parent){}
+
 QWidget *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable){
     switch (type){
     case NUMBER:
@@ -47,6 +49,7 @@ QWidget *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable){
     case VECTOR:
         return new VectorPane(parent, {}, editable);
     case UNKNOWN:
-        return nullptr;
+    case EMPTY:
+        return new EmptyPane(parent);
     }
 }

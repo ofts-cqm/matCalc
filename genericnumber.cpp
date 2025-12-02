@@ -15,16 +15,18 @@ GenericNumber::GenericNumber(const Vector &vec){
     this->num.vec = &vec;
 }
 
-NumberType GenericNumber::getType(){
+const GenericNumber GenericNumber::unknown = GenericNumber();
+
+NumberType GenericNumber::getType() const {
     return this->type;
 }
 
-const double &GenericNumber::getDouble(){
+const double &GenericNumber::getDouble() const {
     assert(this->type == NUMBER);
     return *num.num;
 }
 
-const Vector &GenericNumber::getVector(){
+const Vector &GenericNumber::getVector() const {
     assert(this->type == VECTOR);
     return *num.vec;
 }

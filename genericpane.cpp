@@ -1,45 +1,47 @@
 #include "genericpane.h"
 #include "util.h"
-#include "numberpane.h"
-#include "vectorpane.h"
 
-GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editable, QWidget *initialPage):
-    QStackedWidget(parent),
-    AbstractNumberPane<GenericNumber>(GenericNumber())
-{
-    if (initialPage == nullptr) initialPage = getNewPageOfThisType(initialDisplay, this, editable);
-    if (initialPage != nullptr) {
-        addWidget(initialPage);
-        typeIndex[initialDisplay] = 0;
-    }
+GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editable)
+    : GenericPane::GenericPane(parent, getNewPageOfThisType(initialDisplay, this, editable), editable){
 
-    this->editable = editable;
-    currentType = initialDisplay;
 }
 
-void GenericPane::display(GenericNumber number){
-    if (number.getType() != currentType){
-        currentType = number.getType();
+GenericPane::GenericPane(QWidget *parent, QWidget *initialPage, bool editable):
+    QStackedWidget(parent),
+    AbstractNumberPane(GenericNumber())
+{
+    AbstractNumberPane *initialPane = (AbstractNumberPane *)initialPage;
+    addWidget((QWidget *)initialPage);
+    typeIndex[initialPane->getType()] = 0;
+    this->editable = editable;
+    currentType = initialPane->getType();
+}
+
+void GenericPane::switchTo(NumberType type){
+    if (type != currentType){
+        currentType = type;
         if (typeIndex.find(currentType) == typeIndex.end()){
             typeIndex[currentType] = count();
-            addWidget(getNewPageOfThisType(currentType, this, editable));
+            addWidget((QWidget *)getNewPageOfThisType(currentType, this, editable));
         }
 
         setCurrentIndex(typeIndex[currentType]);
     }
+}
 
-    switch (currentType){
-    case NUMBER:
-        ((NumberPane *)currentWidget())->display(number.getDouble());
-        break;
-    case VECTOR:
-        ((VectorPane *)currentWidget())->display(number.getVector());
-        break;
-    case UNKNOWN:
-        break;
-    }
+void GenericPane::display(GenericNumber number){
+    switchTo(number.getType());
+    ((AbstractNumberPane *)currentWidget())->display(number);
 }
 
 void GenericPane::reconstructPage(){
     ((AbstractNumberPane *)currentWidget())->reconstructPage();
+}
+
+const GenericNumber& GenericPane::getValue(){
+    return ((AbstractNumberPane *)currentWidget())->getValue();
+}
+
+const NumberType GenericPane::getType() const{
+    return currentType;
 }

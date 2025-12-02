@@ -1,20 +1,29 @@
 #ifndef ABSTRACTNUMBERPANE_H
 #define ABSTRACTNUMBERPANE_H
 
-template <typename T>
+
+#include "genericnumber.h"
+#include <QtWidgets/qwidget.h>
 class AbstractNumberPane
 {
 public:
-    AbstractNumberPane(T value){ this->value = value;}
+    AbstractNumberPane(){}
+
+    AbstractNumberPane(GenericNumber value){
+        this->genericValue = value;
+    }
 
     virtual void reconstructPage(){}
 
-    virtual void display(T num){ this->value = num; }
+    virtual void display(GenericNumber num){}
 
-    virtual const T& getValue(){ return this->value; }
+    virtual const GenericNumber& getValue(){ return genericValue; }
+
+    virtual const NumberType getType() const {return genericValue.getType();
+}
 
 protected:
-    T value;
+    GenericNumber genericValue = GenericNumber::unknown;
 };
 
 #endif // ABSTRACTNUMBERPANE_H
