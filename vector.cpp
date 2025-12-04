@@ -6,7 +6,9 @@ Vector::Vector(): std::vector<double>() {}
 
 Vector::Vector(std::vector<double> source): std::vector<double>(source) {}
 
-Vector::Vector(int size): std::vector<double>(size) {}
+Vector::Vector(int size): std::vector<double>() {
+    this->resize(3, 0);
+}
 
 void Vector::setSize(int size){
     this->resize(size, 0);

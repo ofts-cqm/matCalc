@@ -17,3 +17,30 @@ AbstractPage::AbstractPage(Evaluator evaluator, Calculation defaultCalculation, 
     main->addLayout(content);
 }
 
+GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){
+    switch (position){
+    case 1:
+        operandA = operand;
+        break;
+    case 2:
+        operandB = operand;
+        break;
+    default:
+        resultPane = operand;
+    }
+
+    return operand;
+}
+
+void AbstractPage::switchTo(Calculation nextCalculation){
+    currentCalculation = nextCalculation;
+    this->sign->display(currentCalculation.sign);
+    this->operandA->switchTo(currentCalculation.operandA);
+    this->operandB->switchTo(currentCalculation.operandB);
+    evaluate();
+}
+
+void AbstractPage::evaluate(){
+    GenericNumber number = evaluator(currentCalculation, operandA->getValue(), operandB->getValue());
+    resultPane->display(number);
+}

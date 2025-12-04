@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QLayout *layout = new QHBoxLayout(ui->page_vector);
+    QLayout *layout = new QHBoxLayout();
     layout->addWidget(new VectorPage(ui->page_vector));
     ui->page_vector->setLayout(layout);
 }

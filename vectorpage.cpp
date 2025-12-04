@@ -9,12 +9,13 @@
 
 VectorPage::VectorPage(QWidget *parent) : QWidget(parent) {
     QVBoxLayout *content = new QVBoxLayout(parent);
-    content->addItem(new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Expanding));
+    content->addItem(getVerticalSpacer());
 
     // control
     QHBoxLayout *header = new QHBoxLayout();
-    header->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
     content->addLayout(header);
+    header->addItem(getHorizontalSpacer());
+
 
     QLabel *dimlabel = new QLabel("Dimension: ");
     dimlabel->setFont(getLargeFont());
@@ -23,24 +24,21 @@ VectorPage::VectorPage(QWidget *parent) : QWidget(parent) {
     dimension = new QSpinBox(parent);
     dimension->setRange(2, 16);
     dimension->setValue(3);
-    //dimension->setGeometry(0, 0, 40, 20);
     dimension->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     header->addWidget(dimension);
-    header->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
+    header->addItem(getHorizontalSpacer());
 
     // vector
     QHBoxLayout *vectors = new QHBoxLayout();
-    vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
+    vectors->addItem(getHorizontalSpacer());
     vectors->addWidget(new VectorPane(parent, Vector({1, 2, 3})));
     vectors->addWidget(new NumberPane(parent, 114514));
     vectors->addWidget(new SignPane(PLUS, this));
-    //vectors->addWidget(new VectorPane(parent, Vector({4, 5, 6})));
-    //vectors->addWidget(new VectorPane(parent, Vector({7, 8, 9}), false));
-    vectors->addWidget(new GenericPane(this, VECTOR, new VectorPane(this, Vector({7, 8, 9})), false));
-    vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
+    vectors->addWidget(new GenericPane(this, VECTOR, false));
+    vectors->addItem(getHorizontalSpacer());
     content->addLayout(vectors);
 
-    content->addItem(new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Expanding));
+    content->addItem(getVerticalSpacer());
     this->setLayout(content);
 }
 

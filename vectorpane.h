@@ -14,7 +14,7 @@ class VectorPane : public QWidget, public AbstractNumberPane
     Q_OBJECT
 
 public:
-    explicit VectorPane(QWidget *parent = nullptr, Vector vec = {}, bool editable = true);
+    explicit VectorPane(QWidget *parent = nullptr, Vector vec = Vector(3), bool editable = true);
     ~VectorPane();
 
     void display(Vector vector);

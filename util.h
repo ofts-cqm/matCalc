@@ -15,6 +15,9 @@ void clearLayout(QLayout *layout, bool deleteWidgets = true);
 
 std::optional<double> numberParser(QStringView s);
 
+QSpacerItem *getHorizontalSpacer();
+QSpacerItem *getVerticalSpacer();
+
 class EmptyPane : public QWidget, public AbstractNumberPane{
 public:
     EmptyPane(QWidget *parent);

@@ -3,9 +3,9 @@
 
 #include <QObject>
 #include <QWidget>
-#include "abstractnumberpane.h"
 #include "genericnumber.h"
 #include "calculator_basic.h"
+#include "genericpane.h"
 #include "signpane.h"
 #include <functional>
 
@@ -18,7 +18,7 @@ class AbstractPage: public QWidget
 public:
     AbstractPage(Evaluator evaluator, Calculation defaultCalculation, QWidget *parent = nullptr);
 
-    AbstractNumberPane registerOperand(AbstractNumberPane operand, int position);
+    GenericPane *registerOperand(GenericPane *operand, int position);
 
     virtual void switchTo(Calculation nextCalculation);
 
@@ -28,7 +28,7 @@ private:
     Evaluator evaluator;
     SignPane *sign;
     Calculation currentCalculation;
-    AbstractNumberPane *operandA, *operandB, *resultPane;
+    GenericPane *operandA, *operandB, *resultPane;
     QLayout *content, *control;
 };
 

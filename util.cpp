@@ -40,6 +40,14 @@ std::optional<double> numberParser(QStringView s){
     return ok ? std::optional<double>(v) : std::nullopt;
 };
 
+QSpacerItem *getHorizontalSpacer(){
+    return new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed);
+}
+
+QSpacerItem *getVerticalSpacer(){
+    return new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::Expanding);
+}
+
 EmptyPane::EmptyPane(QWidget *parent): QWidget(parent){}
 
 QWidget *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable){
@@ -47,7 +55,7 @@ QWidget *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable){
     case NUMBER:
         return new NumberPane(parent, 0, editable);
     case VECTOR:
-        return new VectorPane(parent, {}, editable);
+        return new VectorPane(parent, Vector(3), editable);
     case UNKNOWN:
     case EMPTY:
         return new EmptyPane(parent);

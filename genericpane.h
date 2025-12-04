@@ -1,13 +1,13 @@
 #ifndef GENERICPANE_H
 #define GENERICPANE_H
 
-#include "abstractnumberpane.h"
 #include "genericnumber.h"
 #include <QObject>
 #include <QStackedWidget>
 #include <QWidget>
+#include <QtWidgets/qpushbutton.h>
 
-class GenericPane : public QStackedWidget, public AbstractNumberPane
+class GenericPane : public QWidget
 {
     Q_OBJECT
 
@@ -26,8 +26,10 @@ public:
     const NumberType getType() const;
 
 private:
+    QStackedWidget *content;
     NumberType currentType;
     bool editable;
+    QPushButton *copy, *paste;
     std::unordered_map<NumberType, int> typeIndex;
 };
 

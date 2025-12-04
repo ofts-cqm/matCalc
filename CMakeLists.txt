@@ -43,6 +43,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         signpane.h signpane.cpp
         abstractpage.h abstractpage.cpp
         calculator_basic.h
+        genericpane.ui
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MatCalc APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
