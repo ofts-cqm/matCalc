@@ -22,8 +22,6 @@ private:
     QLabel *label;
 
     QSpacerItem *topSpacer;
-
-    static const QString signs[16];
 };
 
 #endif // SIGNPANE_H

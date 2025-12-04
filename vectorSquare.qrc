@@ -2,5 +2,6 @@
     <qresource prefix="/assets">
         <file>vecBracket.png</file>
         <file>bracket.png</file>
+        <file>ModuloBorder.png</file>
     </qresource>
 </RCC>

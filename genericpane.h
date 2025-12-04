@@ -7,6 +7,13 @@
 #include <QWidget>
 #include <QtWidgets/qpushbutton.h>
 
+enum PaneBorderType{
+    NO_BORDER,
+    VECTOR_BORDER,
+    FUNCTION_BORDER,
+    MODULO_BORDER
+};
+
 class GenericPane : public QWidget
 {
     Q_OBJECT
@@ -18,6 +25,8 @@ public:
     void display(GenericNumber number);
 
     void switchTo(NumberType type);
+
+    void applyBorder(PaneBorderType type);
 
     void reconstructPage();
 

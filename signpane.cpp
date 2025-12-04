@@ -16,29 +16,10 @@ SignPane::SignPane(Sign sign, QWidget *parent): QWidget(parent) {
 }
 
 void SignPane::display(Sign sign){
-    label->setText(signs[sign]);
+    label->setText(signs[sign].literal);
     if (sign == INVT || sign == TRANS){
         topSpacer->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
     }else{
         topSpacer->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     }
 }
-
-const QString SignPane::signs[16] = {
-    " + ",
-    " - ",
-    "",
-    " . ",
-    " x ",
-    "Proj",
-    "Perp",
-    "",
-    "RREF",
-    "-1",
-    "T",
-    "Null",
-    "Col",
-    "Rank",
-    "Base",
-    "Solve"
-};
