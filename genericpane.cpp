@@ -2,19 +2,18 @@
 #include "util.h"
 
 GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editable)
-    : GenericPane::GenericPane(parent, getNewPageOfThisType(initialDisplay, this, editable), editable){
+    : GenericPane::GenericPane(parent, initialDisplay, getNewPageOfThisType(initialDisplay, this, editable), editable){
 
 }
 
-GenericPane::GenericPane(QWidget *parent, QWidget *initialPage, bool editable):
+GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, QWidget *initialPage, bool editable):
     QStackedWidget(parent),
     AbstractNumberPane(GenericNumber())
 {
-    AbstractNumberPane *initialPane = (AbstractNumberPane *)initialPage;
     addWidget((QWidget *)initialPage);
-    typeIndex[initialPane->getType()] = 0;
+    typeIndex[initialDisplay] = 0;
     this->editable = editable;
-    currentType = initialPane->getType();
+    currentType = initialDisplay;
 }
 
 void GenericPane::switchTo(NumberType type){

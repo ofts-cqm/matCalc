@@ -13,7 +13,7 @@ class GenericPane : public QStackedWidget, public AbstractNumberPane
 
 public:
     GenericPane(QWidget *parent, NumberType initialDisplay, bool editable = true);
-    GenericPane(QWidget *parent, QWidget *initialPage, bool editable = true);
+    GenericPane(QWidget *parent, NumberType initialDisplay, QWidget *initialPage, bool editable = true);
 
     void display(GenericNumber number);
 

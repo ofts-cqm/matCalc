@@ -1,6 +1,7 @@
 #include "vectorpage.h"
 #include "genericpane.h"
 #include "numberpane.h"
+#include "signpane.h"
 #include "vectorpane.h"
 #include "util.h"
 #include <QtWidgets/qboxlayout.h>
@@ -32,9 +33,10 @@ VectorPage::VectorPage(QWidget *parent) : QWidget(parent) {
     vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
     vectors->addWidget(new VectorPane(parent, Vector({1, 2, 3})));
     vectors->addWidget(new NumberPane(parent, 114514));
+    vectors->addWidget(new SignPane(PLUS, this));
     //vectors->addWidget(new VectorPane(parent, Vector({4, 5, 6})));
     //vectors->addWidget(new VectorPane(parent, Vector({7, 8, 9}), false));
-    vectors->addWidget(new GenericPane(this, new VectorPane(this, Vector({7, 8, 9})), false));
+    vectors->addWidget(new GenericPane(this, VECTOR, new VectorPane(this, Vector({7, 8, 9})), false));
     vectors->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed));
     content->addLayout(vectors);
 
