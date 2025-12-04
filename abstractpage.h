@@ -6,6 +6,7 @@
 #include "abstractnumberpane.h"
 #include "genericnumber.h"
 #include "calculator_basic.h"
+#include "signpane.h"
 #include <functional>
 
 using Evaluator = std::function<GenericNumber(Calculation, GenericNumber, GenericNumber)>;
@@ -25,8 +26,10 @@ public:
 
 private:
     Evaluator evaluator;
+    SignPane *sign;
     Calculation currentCalculation;
     AbstractNumberPane *operandA, *operandB, *resultPane;
+    QLayout *content, *control;
 };
 
 #endif // ABSTRACTPAGE_H
