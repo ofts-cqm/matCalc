@@ -18,11 +18,11 @@ std::optional<double> numberParser(QStringView s);
 QSpacerItem *getHorizontalSpacer();
 QSpacerItem *getVerticalSpacer();
 
-class EmptyPane : public QWidget, public AbstractNumberPane{
+class EmptyPane : public AbstractNumberPane{
 public:
     EmptyPane(QWidget *parent);
 };
 
-QWidget *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable = true);
+AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable = true);
 
 #endif // _UTIL_H

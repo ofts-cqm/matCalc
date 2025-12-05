@@ -9,7 +9,7 @@ namespace Ui {
 class VectorPane;
 }
 
-class VectorPane : public QWidget, public AbstractNumberPane
+class VectorPane : public AbstractNumberPane
 {
     Q_OBJECT
 

@@ -1,20 +1,20 @@
 #include "abstractpage.h"
+#include "util.h"
 #include <QtWidgets/qboxlayout.h>
 
 AbstractPage::AbstractPage(Evaluator evaluator, Calculation defaultCalculation, QWidget *parent)
     : QWidget(parent){
     this->evaluator = evaluator;
-    this->currentCalculation = defaultCalculation;
     this->sign = new SignPane(defaultCalculation.sign, this);
 
     QVBoxLayout *main = new QVBoxLayout(this);
     this->setLayout(main);
 
-    this->control = new QHBoxLayout(this);
-    main->addLayout(control);
-
-    this->content = new QHBoxLayout(this);
-    main->addLayout(content);
+    main->addItem(getVerticalSpacer());
+    main->addLayout(control = new QHBoxLayout());
+    main->addLayout(content = new QHBoxLayout());
+    main->addItem(getVerticalSpacer());
+    this->currentCalculation = defaultCalculation;
 }
 
 GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){
@@ -35,12 +35,21 @@ GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){
 void AbstractPage::switchTo(Calculation nextCalculation){
     currentCalculation = nextCalculation;
     this->sign->display(currentCalculation.sign);
-    this->operandA->switchTo(currentCalculation.operandA);
-    this->operandB->switchTo(currentCalculation.operandB);
+    if (this->operandA != nullptr) {
+        this->operandA->switchTo(currentCalculation.operandA);
+        this->operandA->applyBorder(signs[nextCalculation.sign]);
+    }
+    if (this->operandB != nullptr) {
+        this->operandB->switchTo(currentCalculation.operandB);
+        this->operandB->applyBorder(signs[nextCalculation.sign]);
+    }
     evaluate();
 }
 
 void AbstractPage::evaluate(){
-    GenericNumber number = evaluator(currentCalculation, operandA->getValue(), operandB->getValue());
-    resultPane->display(number);
+    /*GenericNumber *number = evaluator(
+        currentCalculation,
+        operandA == nullptr ? &GenericNumber::unknown : &operandA->getValue(),
+        operandB == nullptr ? &GenericNumber::unknown : &operandB->getValue());
+    resultPane->display(*number);*/
 }

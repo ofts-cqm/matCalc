@@ -1,10 +1,11 @@
 #ifndef VECTORPAGE_H
 #define VECTORPAGE_H
 
+#include "abstractpage.h"
 #include <QWidget>
 #include <QtWidgets/qspinbox.h>
 
-class VectorPage : public QWidget
+class VectorPage : public AbstractPage
 {
     Q_OBJECT
 

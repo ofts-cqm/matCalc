@@ -4,12 +4,14 @@
 
 #include "genericnumber.h"
 #include <QtWidgets/qwidget.h>
-class AbstractNumberPane
+class AbstractNumberPane : public QWidget
 {
-public:
-    AbstractNumberPane(){}
+Q_OBJECT
 
-    AbstractNumberPane(GenericNumber value){
+public:
+    AbstractNumberPane(QWidget *parent) : QWidget(parent){}
+
+    AbstractNumberPane(GenericNumber value, QWidget *parent) : QWidget(parent){
         this->genericValue = value;
     }
 

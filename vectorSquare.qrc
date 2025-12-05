@@ -3,5 +3,6 @@
         <file>vecBracket.png</file>
         <file>bracket.png</file>
         <file>ModuloBorder.png</file>
+        <file>FuncBracket.png</file>
     </qresource>
 </RCC>

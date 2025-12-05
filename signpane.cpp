@@ -11,6 +11,7 @@ SignPane::SignPane(Sign sign, QWidget *parent): QWidget(parent) {
     label = new QLabel(this);
     label->setFont(getLargeFont());
     mainLayout->addWidget(label);
+    mainLayout->addSpacerItem(new QSpacerItem(0, 30, QSizePolicy::Fixed, QSizePolicy::Fixed));
     mainLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     display(sign);
 }

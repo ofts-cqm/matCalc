@@ -2,14 +2,16 @@
 #include "util.h"
 
 GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editable)
-    : GenericPane::GenericPane(parent, initialDisplay, getNewPageOfThisType(initialDisplay, parent, editable), editable){
+    : GenericPane::GenericPane(parent, getNewPageOfThisType(initialDisplay, parent, editable), editable){
 
 }
 
-GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, QWidget *initialPage, bool editable):
+GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool editable):
     QWidget(parent)
 {
+    this->setMinimumWidth(120);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addItem(getVerticalSpacer());
     setLayout(mainLayout);
 
     QHBoxLayout *contentWrapper = new QHBoxLayout();
@@ -18,21 +20,24 @@ GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, QWidget *in
     contentWrapper->addItem(getHorizontalSpacer());
     contentWrapper->addWidget(content = new QStackedWidget(this));
     contentWrapper->addItem(getHorizontalSpacer());
+    mainLayout->addItem(getVerticalSpacer());
 
     QHBoxLayout *buttons = new QHBoxLayout();
     mainLayout->addItem(buttons);
 
     copy = new QPushButton("Copy", this);
+    copy->setMaximumWidth(60);
     buttons->addWidget(copy);
 
     paste = new QPushButton("Paste", this);
+    paste->setMaximumWidth(60);
     buttons->addWidget(paste);
 
 
     content->addWidget((QWidget *)initialPage);
-    typeIndex[initialDisplay] = 0;
+    typeIndex[initialPage->getType()] = 0;
     this->editable = editable;
-    currentType = initialDisplay;
+    currentType = initialPage->getType();
 }
 
 void GenericPane::switchTo(NumberType type){
@@ -45,6 +50,19 @@ void GenericPane::switchTo(NumberType type){
 
         content->setCurrentIndex(typeIndex[currentType]);
     }
+}
+
+void GenericPane::applyBorder(SignDefinition type){
+    if (currentType == EMPTY || currentType == UNKNOWN) return;
+
+    QString border = "";
+    if (type.isAbs){
+        border = modulusStyle;
+    } else if (type.isFunction){
+        border = functionStyle;
+    }
+
+    this->setStyleSheet(border);
 }
 
 void GenericPane::display(GenericNumber number){
@@ -63,3 +81,7 @@ const GenericNumber& GenericPane::getValue(){
 const NumberType GenericPane::getType() const{
     return currentType;
 }
+
+const QString GenericPane::functionStyle = ".QStackedWidget {border-image: url(:/assets/FuncBracket.png) 0 64 0 64 stretch; border-width: 5px;}";
+const QString GenericPane::modulusStyle = ".QStackedWidget {border-image: url(:/assets/ModuloBorder.png) 0 4 0 4 stretch; border-width: 5px;}";
+

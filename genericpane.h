@@ -1,18 +1,13 @@
 #ifndef GENERICPANE_H
 #define GENERICPANE_H
 
+#include "abstractnumberpane.h"
+#include "calculator_basic.h"
 #include "genericnumber.h"
 #include <QObject>
 #include <QStackedWidget>
 #include <QWidget>
 #include <QtWidgets/qpushbutton.h>
-
-enum PaneBorderType{
-    NO_BORDER,
-    VECTOR_BORDER,
-    FUNCTION_BORDER,
-    MODULO_BORDER
-};
 
 class GenericPane : public QWidget
 {
@@ -20,13 +15,13 @@ class GenericPane : public QWidget
 
 public:
     GenericPane(QWidget *parent, NumberType initialDisplay, bool editable = true);
-    GenericPane(QWidget *parent, NumberType initialDisplay, QWidget *initialPage, bool editable = true);
+    GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool editable = true);
 
     void display(GenericNumber number);
 
     void switchTo(NumberType type);
 
-    void applyBorder(PaneBorderType type);
+    void applyBorder(SignDefinition type);
 
     void reconstructPage();
 
@@ -40,6 +35,8 @@ private:
     bool editable;
     QPushButton *copy, *paste;
     std::unordered_map<NumberType, int> typeIndex;
+
+    const static QString functionStyle, modulusStyle;
 };
 
 #endif // GENERICPANE_H

@@ -19,7 +19,8 @@ enum Sign{
     COL_SPACE,
     RANK,
     BASE,
-    SOLVE
+    SOLVE,
+    DET
 };
 
 struct SignDefinition{
@@ -38,23 +39,24 @@ struct SignDefinition{
     bool isExponent;
 };
 
-const SignDefinition signs[16] = {
+const SignDefinition signs[17] = {
     { PLUS, " + " },
     { MINUS, " - "},
     { MUL, "" },
     { DOT, " . "},
     { CROSS, " X "},
-    { PROJ, "Proj", true },
-    { PERP, "Perp", true },
+    { PROJ, "Proj", false },
+    { PERP, "Perp", false },
     { LENGTH, "", false, false, true },
     { RREF, "RREF", true },
     { INVT, "-1", false, true },
     { TRANS, "T", false, true },
-    { NULL_SPACE, "Null", false, true },
-    { COL_SPACE, "Col", false, true },
-    { RANK, "Rank", false, true },
-    { BASE, "Base", false, true },
-    { SOLVE, "Solve"}
+    { NULL_SPACE, "Null", true },
+    { COL_SPACE, "Col", true },
+    { RANK, "Rank", true },
+    { BASE, "Base", true },
+    { SOLVE, "Solve", true},
+    { DET, "Det", true}
 };
 
 struct Calculation{

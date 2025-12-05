@@ -5,10 +5,9 @@
 #include <QtWidgets/qlabel.h>
 #include <QPlainTextEdit>
 
-VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable)
-    : QWidget(parent)
-    , ui(new Ui::VectorPane)
-    , AbstractNumberPane(vec)
+VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
+    ui(new Ui::VectorPane)
+    , AbstractNumberPane(vec, parent)
 {
     ui->setupUi(this);
 

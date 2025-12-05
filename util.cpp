@@ -48,9 +48,9 @@ QSpacerItem *getVerticalSpacer(){
     return new QSpacerItem(0, 0, QSizePolicy::Fixed, QSizePolicy::Expanding);
 }
 
-EmptyPane::EmptyPane(QWidget *parent): QWidget(parent){}
+EmptyPane::EmptyPane(QWidget *parent): AbstractNumberPane(parent){}
 
-QWidget *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable){
+AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable){
     switch (type){
     case NUMBER:
         return new NumberPane(parent, 0, editable);

@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QWidget>
 
-class NumberPane: public DecimalLineEdit, public AbstractNumberPane
+class NumberPane: public AbstractNumberPane
 {
     Q_OBJECT
 public:
@@ -19,6 +19,7 @@ public:
 private:
     bool editable;
     double value;
+    DecimalLineEdit *content;
 };
 
 #endif // NUMBERPANE_H
