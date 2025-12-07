@@ -11,7 +11,12 @@ AbstractPage::AbstractPage(Evaluator evaluator, Calculation defaultCalculation, 
     this->setLayout(main);
 
     main->addItem(getVerticalSpacer());
-    main->addLayout(control = new QHBoxLayout());
+    QHBoxLayout *controlLayout = new QHBoxLayout();
+    controlLayout->addSpacerItem(getHorizontalSpacer());
+    controlLayout->addWidget(control = new ControlPane(this));
+    controlLayout->addSpacerItem(getHorizontalSpacer());
+    main->addLayout(controlLayout);
+
     main->addLayout(content = new QHBoxLayout());
     main->addItem(getVerticalSpacer());
     this->currentCalculation = defaultCalculation;

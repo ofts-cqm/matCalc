@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "abstractnumberpane.h"
+#include "sizerbar.h"
 #include "vector.h"
 
 namespace Ui {
@@ -20,6 +21,8 @@ public:
     void display(Vector vector);
 
     void reconstructPage();
+
+    VectorPane *setSizer(ResizeBar *bar);
 
 private:
     Ui::VectorPane *ui;

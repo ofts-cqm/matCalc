@@ -13,7 +13,7 @@ VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
 
     this->editable = editable;
     this->value = vec;
-    if (editable) ui->numLayout->layout()->setSpacing(5);
+    //if (editable) ui->numLayout->layout()->setSpacing(5);
 
     reconstructPage();
 }
@@ -26,6 +26,8 @@ void VectorPane::display(Vector vector){
 
 void VectorPane::reconstructPage(){
     clearLayout(ui->numLayout->layout());
+    ui->numLayout->layout()->setSpacing(0);
+    ui->numLayout->update();
 
     for (int i = 0; i < this->value.dim(); i++){
         QWidget *widget;
@@ -44,7 +46,13 @@ void VectorPane::reconstructPage(){
         ui->numLayout->layout()->addWidget(widget);
     }
 
-    this->setMinimumHeight(value.dim() * 45 + 15);
+    this->setMinimumHeight(value.dim() * 30 + 20);
+    this->setMaximumHeight(value.dim() * 40 + 20);
+}
+
+VectorPane *VectorPane::setSizer(ResizeBar *bar){
+    bar->addTarget([this](int dim){ value.setSize(dim); reconstructPage(); });
+    return this;
 }
 
 VectorPane::~VectorPane()

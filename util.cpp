@@ -1,6 +1,7 @@
 #include "util.h"
 #include "numberpane.h"
 #include "vectorpane.h"
+#include <QWidget>
 
 QString format(double val){
     char buffer[64];
@@ -21,7 +22,7 @@ QString format(double val){
 
 QFont getLargeFont(){
     QFont font = QFont();
-    font.setPointSize(20);
+    font.setPointSize(16);
     return font;
 }
 
@@ -29,6 +30,12 @@ void clearLayout(QLayout* layout, bool deleteWidgets) {
     while (QLayoutItem* item = layout->takeAt(0)) {
         if (QLayout* childLayout = item->layout()) {
             clearLayout(childLayout, deleteWidgets);
+        }
+
+        QWidget *w = item->widget();
+        if (deleteWidgets && w){
+            w->setParent(nullptr);
+            delete w;
         }
         delete item;
     }

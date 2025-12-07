@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QWidget>
+#include "controlpane.h"
 #include "genericnumber.h"
 #include "calculator_basic.h"
 #include "genericpane.h"
@@ -29,7 +30,8 @@ protected:
     SignPane *sign;
     Calculation currentCalculation;
     GenericPane *operandA, *operandB, *resultPane;
-    QLayout *content, *control;
+    QLayout *content;
+    ControlPane *control;
 };
 
 #endif // ABSTRACTPAGE_H
