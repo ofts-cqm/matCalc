@@ -5,13 +5,13 @@
 #include <QtWidgets/qboxlayout.h>
 #include <QtWidgets/qlabel.h>
 
-GenericNumber *evaFunc(Calculation calc, GenericNumber *a, GenericNumber *b){
-    return new GenericNumber(Vector(3));
+GenericNumber *evaFunc(Calculation calc, const GenericNumber *a, const GenericNumber *b){
+    return new GenericNumber(new Vector(a->getVector()));
 }
 
 VectorPage::VectorPage(QWidget *parent)
     : AbstractPage(
-          [](Calculation calc, GenericNumber *a, GenericNumber *b){return evaFunc(calc, a, b);},
+          evaFunc,
           {NumberType::VECTOR, NumberType::NUMBER, NumberType::VECTOR, Sign::NULL_SPACE},
           parent)
 {

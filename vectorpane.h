@@ -18,9 +18,11 @@ public:
     explicit VectorPane(QWidget *parent = nullptr, Vector vec = Vector(3), bool editable = true);
     ~VectorPane();
 
-    void display(Vector vector);
+    virtual void display(GenericNumber vector);
 
-    void reconstructPage();
+    virtual void reconstructPage();
+
+    virtual const GenericNumber *getValue();
 
     VectorPane *setSizer(ResizeBar *bar);
 

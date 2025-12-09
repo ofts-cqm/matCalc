@@ -10,7 +10,7 @@
 #include "signpane.h"
 #include <functional>
 
-using Evaluator = std::function<GenericNumber *(Calculation, GenericNumber *, GenericNumber *)>;
+using Evaluator = std::function<GenericNumber *(Calculation, const GenericNumber *, const GenericNumber *)>;
 
 class AbstractPage: public QWidget
 {
@@ -25,6 +25,8 @@ public:
 
     void evaluate();
 
+    static AbstractPage *getCurrent();
+
 protected:
     Evaluator evaluator;
     SignPane *sign;
@@ -32,6 +34,7 @@ protected:
     GenericPane *operandA, *operandB, *resultPane;
     QLayout *content;
     ControlPane *control;
+    static AbstractPage *currentPage;
 };
 
 #endif // ABSTRACTPAGE_H

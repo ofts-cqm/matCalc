@@ -7,7 +7,7 @@
 
 VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
     ui(new Ui::VectorPane)
-    , AbstractNumberPane(vec, parent)
+    , AbstractNumberPane(&vec, parent)
 {
     ui->setupUi(this);
 
@@ -18,9 +18,8 @@ VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
     reconstructPage();
 }
 
-void VectorPane::display(Vector vector){
-    this->value = vector;
-    this->genericValue = vector;
+void VectorPane::display(GenericNumber vector){
+    this->value = vector.getVector();
     reconstructPage();
 }
 
@@ -53,6 +52,11 @@ void VectorPane::reconstructPage(){
 VectorPane *VectorPane::setSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.setSize(dim); reconstructPage(); });
     return this;
+}
+
+const GenericNumber *VectorPane::getValue(){
+    genericValue = GenericNumber(&value);
+    return &genericValue;
 }
 
 VectorPane::~VectorPane()

@@ -10,9 +10,9 @@ GenericNumber::GenericNumber(const double &num) {
     this->num.num = &num;
 }
 
-GenericNumber::GenericNumber(const Vector &vec){
+GenericNumber::GenericNumber(const Vector *vec){
     this->type = VECTOR;
-    this->num.vec = &vec;
+    this->num.vec = vec;
 }
 
 const GenericNumber GenericNumber::unknown = GenericNumber();

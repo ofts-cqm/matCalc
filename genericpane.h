@@ -25,7 +25,7 @@ public:
 
     void reconstructPage();
 
-    const GenericNumber& getValue();
+    const GenericNumber *getValue();
 
     const NumberType getType() const;
 

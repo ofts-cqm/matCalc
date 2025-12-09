@@ -67,15 +67,16 @@ void GenericPane::applyBorder(SignDefinition type){
 
 void GenericPane::display(GenericNumber number){
     switchTo(number.getType());
-    ((AbstractNumberPane *)content->currentWidget())->display(number);
+    static_cast<AbstractNumberPane *>(content->currentWidget())->display(number);
 }
 
 void GenericPane::reconstructPage(){
-    ((AbstractNumberPane *)content->currentWidget())->reconstructPage();
+    static_cast<AbstractNumberPane *>(content->currentWidget())->reconstructPage();
 }
 
-const GenericNumber& GenericPane::getValue(){
-    return ((AbstractNumberPane *)content->currentWidget())->getValue();
+const GenericNumber *GenericPane::getValue(){
+    auto val = static_cast<AbstractNumberPane *>(content->currentWidget())->getValue();
+    return val;
 }
 
 const NumberType GenericPane::getType() const{

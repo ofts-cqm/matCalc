@@ -2,9 +2,8 @@
 #include "util.h"
 
 ControlPane::ControlPane(QWidget *parent)
-    : QStackedWidget(parent)
-{
-    this->setMaximumHeight(100);
+    : QStackedWidget(parent){
+    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 
 ControlPane *ControlPane::addPage(){
@@ -12,10 +11,10 @@ ControlPane *ControlPane::addPage(){
     currentPageLayout = new QVBoxLayout(newPage);
     currentPageLayout->addSpacerItem(getVerticalSpacer());
     newPage->setLayout(currentPageLayout);
+    newPage->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     this->addWidget(newPage);
     this->setCurrentWidget(newPage);
-
     return this;
 }
 

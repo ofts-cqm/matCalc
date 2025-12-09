@@ -25,7 +25,7 @@ ResizeBar::ResizeBar(QString name, DimSrc source, QWidget *parent)
     slider->setTracking(false);
     slider->setMinimumWidth(200);
     content->addWidget(slider);
-
+    this->setMaximumHeight(50);
     connect(slider, &QSlider::sliderReleased, this, &ResizeBar::onSliderReleased);
 }
 

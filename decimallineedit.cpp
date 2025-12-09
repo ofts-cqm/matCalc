@@ -1,6 +1,7 @@
 #include "decimallineedit.h"
 
 #include <QFocusEvent>
+#include "abstractpage.h"
 #include <QPalette>
 #include "util.h"
 
@@ -15,6 +16,8 @@ DecimalLineEdit::DecimalLineEdit(
 {
     connect(this, &QLineEdit::textEdited,
             this, &DecimalLineEdit::onTextEdited);
+    connect(this, &QLineEdit::editingFinished,
+            this, &DecimalLineEdit::onEditingFinished);
     this->setFont(getLargeFont());
     this->setMaximumWidth(80);
 }
@@ -27,6 +30,10 @@ void DecimalLineEdit::focusInEvent(QFocusEvent* event)
 {
     QLineEdit::focusInEvent(event);
     selectAll();
+}
+
+void DecimalLineEdit::onEditingFinished(){
+    if(AbstractPage::getCurrent()) AbstractPage::getCurrent()->evaluate();
 }
 
 void DecimalLineEdit::onTextEdited(const QString& text)

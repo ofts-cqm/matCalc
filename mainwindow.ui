@@ -10,11 +10,11 @@
     <height>480</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>480</width>
-    <height>270</height>
-   </size>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="maximumSize">
    <size>
@@ -96,7 +96,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>100</width>
+            <width>94</width>
             <height>335</height>
            </rect>
           </property>
@@ -121,7 +121,7 @@
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
            <horstretch>1</horstretch>
            <verstretch>1</verstretch>
           </sizepolicy>

@@ -8,10 +8,12 @@ AbstractPage::AbstractPage(Evaluator evaluator, Calculation defaultCalculation, 
     this->sign = new SignPane(defaultCalculation.sign, this);
 
     QVBoxLayout *main = new QVBoxLayout(this);
+    main->setSpacing(0);
     this->setLayout(main);
 
     main->addItem(getVerticalSpacer());
     QHBoxLayout *controlLayout = new QHBoxLayout();
+    controlLayout->setSpacing(0);
     controlLayout->addSpacerItem(getHorizontalSpacer());
     controlLayout->addWidget(control = new ControlPane(this));
     controlLayout->addSpacerItem(getHorizontalSpacer());
@@ -48,13 +50,23 @@ void AbstractPage::switchTo(Calculation nextCalculation){
         this->operandB->switchTo(currentCalculation.operandB);
         this->operandB->applyBorder(signs[nextCalculation.sign]);
     }
+    currentPage = this;
     evaluate();
 }
 
 void AbstractPage::evaluate(){
-    /*GenericNumber *number = evaluator(
+
+    auto vala = operandA->getValue();
+    auto valb = operandB->getValue();
+    GenericNumber *number = evaluator(
         currentCalculation,
-        operandA == nullptr ? &GenericNumber::unknown : &operandA->getValue(),
-        operandB == nullptr ? &GenericNumber::unknown : &operandB->getValue());
-    resultPane->display(*number);*/
+        operandA == nullptr ? &GenericNumber::unknown : vala,
+        operandB == nullptr ? &GenericNumber::unknown : valb);
+    resultPane->display(*number);
 }
+
+AbstractPage *AbstractPage::getCurrent(){
+    return currentPage;
+}
+
+AbstractPage *AbstractPage::currentPage = nullptr;

@@ -12,6 +12,8 @@ public:
 
     Vector(std::vector<double> source);
 
+    Vector(Vector const& source);
+
     void setSize(int size);
 
     double &operator[](int index);

@@ -4,10 +4,18 @@
 
 Vector::Vector(): std::vector<double>() {}
 
-Vector::Vector(std::vector<double> source): std::vector<double>(source) {}
+//Vector::Vector(std::vector<double> source): std::vector<double>(source) {}
+
+Vector::Vector(std::vector<double> source) : Vector(source.size()){
+    std::vector<double>::operator=(source);
+}
 
 Vector::Vector(int size): std::vector<double>() {
     this->resize(3, 0);
+}
+
+Vector::Vector(Vector const& source): Vector((std::vector<double>)source){
+
 }
 
 void Vector::setSize(int size){

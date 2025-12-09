@@ -11,21 +11,20 @@ Q_OBJECT
 public:
     AbstractNumberPane(QWidget *parent) : QWidget(parent){}
 
-    AbstractNumberPane(GenericNumber value, QWidget *parent) : QWidget(parent){
-        this->genericValue = value;
-    }
+    AbstractNumberPane(GenericNumber value, QWidget *parent) : QWidget(parent){}
 
     virtual void reconstructPage(){}
 
     virtual void display(GenericNumber num){}
 
-    virtual const GenericNumber& getValue(){ return genericValue; }
+    virtual const GenericNumber *getValue() {return &genericValue; }
 
-    virtual const NumberType getType() const {return genericValue.getType();
-}
+    virtual const NumberType getType() const {
+        return genericValue.getType();
+    }
 
 protected:
-    GenericNumber genericValue = GenericNumber::unknown;
+    GenericNumber genericValue;
 };
 
 #endif // ABSTRACTNUMBERPANE_H

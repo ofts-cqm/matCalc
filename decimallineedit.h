@@ -25,6 +25,7 @@ protected:
 
 private slots:
     void onTextEdited(const QString& text);
+    void onEditingFinished();
 
 private:
     const Parser parserFunc;
