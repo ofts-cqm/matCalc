@@ -14,7 +14,9 @@ public:
 
     virtual void reconstructPage();
 
-    virtual void display(double num);
+    virtual void display(GenericNumber num);
+
+    virtual const GenericNumber *getValue();
 
 private:
     bool editable;

@@ -11,8 +11,6 @@ Q_OBJECT
 public:
     AbstractNumberPane(QWidget *parent) : QWidget(parent){}
 
-    AbstractNumberPane(GenericNumber value, QWidget *parent) : QWidget(parent){}
-
     virtual void reconstructPage(){}
 
     virtual void display(GenericNumber num){}

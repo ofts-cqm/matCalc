@@ -2,7 +2,7 @@
 #include "util.h"
 
 NumberPane::NumberPane(QWidget *parent, double value, bool editable)
-    : AbstractNumberPane(value, parent)
+    : AbstractNumberPane(parent)
 {
     this->value = value;
     this->setMinimumWidth(40);
@@ -23,8 +23,12 @@ void NumberPane::reconstructPage(){
     this->content->setValue(this->value);
 }
 
-void NumberPane::display(double num){
-    this->value = num;
-    this->genericValue = num;
-    this->content->setValue(num);
+const GenericNumber *NumberPane::getValue(){
+    this->genericValue = &value;
+    return &genericValue;
+}
+
+void NumberPane::display(GenericNumber num){
+    this->value = num.getDouble();
+    this->content->setValue(num.getDouble());
 }

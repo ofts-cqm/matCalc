@@ -64,6 +64,7 @@ struct Calculation{
     NumberType operandB;
     NumberType result;
     Sign sign;
+    QString name;
 };
 
 #endif // CALCULATOR_BASIC_H

@@ -17,11 +17,13 @@ enum NumberType{
     EMPTY
 };
 
+#define NUMBER_TYPE_COUNT 4
+
 class GenericNumber
 {
 public:
     GenericNumber();
-    GenericNumber(const double &);
+    GenericNumber(const double *);
     GenericNumber(const Vector *);
 
     NumberType getType() const;

@@ -9,9 +9,9 @@ SignPane::SignPane(Sign sign, QWidget *parent): QWidget(parent) {
     topSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     mainLayout->addItem(topSpacer);
     label = new QLabel(this);
-    label->setFont(getLargeFont());
+    label->setFont(getXLFont());
     mainLayout->addWidget(label);
-    mainLayout->addSpacerItem(new QSpacerItem(0, 30, QSizePolicy::Fixed, QSizePolicy::Fixed));
+    mainLayout->addSpacerItem(new QSpacerItem(0, 42, QSizePolicy::Fixed, QSizePolicy::Fixed));
     mainLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     display(sign);
 }

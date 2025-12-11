@@ -10,6 +10,7 @@
 QString format(double val);
 
 QFont getLargeFont();
+QFont getXLFont();
 
 void clearLayout(QLayout *layout, bool deleteWidgets = true);
 

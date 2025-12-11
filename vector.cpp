@@ -11,7 +11,7 @@ Vector::Vector(std::vector<double> source) : Vector(source.size()){
 }
 
 Vector::Vector(int size): std::vector<double>() {
-    this->resize(3, 0);
+    this->resize(size, 0);
 }
 
 Vector::Vector(Vector const& source): Vector((std::vector<double>)source){

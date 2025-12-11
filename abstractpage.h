@@ -10,18 +10,18 @@
 #include "signpane.h"
 #include <functional>
 
-using Evaluator = std::function<GenericNumber *(Calculation, const GenericNumber *, const GenericNumber *)>;
+using Evaluator = std::function<GenericNumber *(const Calculation *, const GenericNumber *, const GenericNumber *)>;
 
 class AbstractPage: public QWidget
 {
     Q_OBJECT
 
 public:
-    AbstractPage(Evaluator evaluator, Calculation defaultCalculation, QWidget *parent = nullptr);
+    AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, QWidget *parent = nullptr);
 
     GenericPane *registerOperand(GenericPane *operand, int position);
 
-    virtual void switchTo(Calculation nextCalculation);
+    virtual void switchTo(const Calculation *nextCalculation);
 
     void evaluate();
 
@@ -30,7 +30,7 @@ public:
 protected:
     Evaluator evaluator;
     SignPane *sign;
-    Calculation currentCalculation;
+    const Calculation *currentCalculation;
     GenericPane *operandA, *operandB, *resultPane;
     QLayout *content;
     ControlPane *control;

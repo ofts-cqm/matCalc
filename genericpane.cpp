@@ -7,7 +7,8 @@ GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editab
 }
 
 GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool editable):
-    QWidget(parent)
+    QWidget(parent),
+    typeIndex()
 {
     this->setMinimumWidth(120);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -33,6 +34,10 @@ GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool 
     paste->setMaximumWidth(60);
     buttons->addWidget(paste);
 
+    for (int i = 0; i < NUMBER_TYPE_COUNT; i++){
+        typeIndex[i] = -1;
+    }
+
 
     content->addWidget((QWidget *)initialPage);
     typeIndex[initialPage->getType()] = 0;
@@ -43,7 +48,7 @@ GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool 
 void GenericPane::switchTo(NumberType type){
     if (type != currentType){
         currentType = type;
-        if (typeIndex.find(currentType) == typeIndex.end()){
+        if (typeIndex[currentType] == -1){
             typeIndex[currentType] = content->count();
             content->addWidget((QWidget *)getNewPageOfThisType(currentType, this, editable));
         }

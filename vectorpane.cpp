@@ -7,12 +7,13 @@
 
 VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
     ui(new Ui::VectorPane)
-    , AbstractNumberPane(&vec, parent)
+    , AbstractNumberPane(parent)
 {
     ui->setupUi(this);
 
     this->editable = editable;
     this->value = vec;
+    this->genericValue = GenericNumber(&value);
     //if (editable) ui->numLayout->layout()->setSpacing(5);
 
     reconstructPage();
@@ -26,7 +27,8 @@ void VectorPane::display(GenericNumber vector){
 void VectorPane::reconstructPage(){
     clearLayout(ui->numLayout->layout());
     ui->numLayout->layout()->setSpacing(0);
-    ui->numLayout->update();
+    ui->numLayout->layout()->setContentsMargins(12, 0, 12, 0);
+    ui->numLayout->layout()->addItem(getVerticalSpacer());
 
     for (int i = 0; i < this->value.dim(); i++){
         QWidget *widget;
@@ -37,6 +39,9 @@ void VectorPane::reconstructPage(){
                 this->value[i]);
         }else{
             QLabel *label = new QLabel(format(this->value[i]), this);
+            label->setMinimumHeight(22);
+            label->setMinimumWidth(0);
+            label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
             label->setAlignment(Qt::AlignCenter);
             label->setFont(getLargeFont());
             widget = label;
@@ -44,10 +49,13 @@ void VectorPane::reconstructPage(){
 
         ui->numLayout->layout()->addWidget(widget);
     }
+    ui->numLayout->layout()->addItem(getVerticalSpacer());
 
-    this->setMinimumHeight(value.dim() * 30 + 20);
-    this->setMaximumHeight(value.dim() * 40 + 20);
+    this->setMinimumHeight(value.dim() * 22 + 20);
+    this->setMaximumHeight(value.dim() * 22 + 20);
 }
+
+const Vector *VectorPane::getPrivateValue()  {return &value; }
 
 VectorPane *VectorPane::setSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.setSize(dim); reconstructPage(); });

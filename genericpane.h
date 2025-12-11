@@ -30,12 +30,17 @@ public:
     const NumberType getType() const;
 
 private:
+    struct Hasher{
+        std::size_t operator()(const NumberType &type) const {
+            return static_cast<std::size_t>(type);
+        }
+    };
+
     QStackedWidget *content;
     NumberType currentType;
     bool editable;
     QPushButton *copy, *paste;
-    std::unordered_map<NumberType, int> typeIndex;
-
+    int typeIndex[NUMBER_TYPE_COUNT];
     const static QString functionStyle, modulusStyle;
 };
 

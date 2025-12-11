@@ -26,6 +26,12 @@ QFont getLargeFont(){
     return font;
 }
 
+QFont getXLFont(){
+    QFont font = QFont();
+    font.setPointSize(24);
+    return font;
+}
+
 void clearLayout(QLayout* layout, bool deleteWidgets) {
     while (QLayoutItem* item = layout->takeAt(0)) {
         if (QLayout* childLayout = item->layout()) {

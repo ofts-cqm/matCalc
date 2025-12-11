@@ -24,6 +24,8 @@ public:
 
     virtual const GenericNumber *getValue();
 
+    const Vector *getPrivateValue();
+
     VectorPane *setSizer(ResizeBar *bar);
 
 private:

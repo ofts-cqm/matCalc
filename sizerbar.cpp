@@ -1,4 +1,5 @@
 #include "sizerbar.h"
+#include "abstractpage.h"
 #include "util.h"
 #include <QHBoxLayout>
 #include <QLabel>
@@ -45,4 +46,6 @@ void ResizeBar::onSliderReleased(){
     for (DimTar &target : targets){
         target(newVal);
     }
+
+    AbstractPage::getCurrent()->evaluate();
 }
