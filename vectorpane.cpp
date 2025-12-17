@@ -16,11 +16,18 @@ VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
     this->genericValue = GenericNumber(&value);
     //if (editable) ui->numLayout->layout()->setSpacing(5);
 
-    reconstructPage();
+    VectorPane::reconstructPage();
 }
 
 void VectorPane::display(GenericNumber vector){
     this->value = vector.getVector();
+    reconstructPage();
+}
+
+void VectorPane::paste(GenericNumber vector){
+    int oldSize = this->value.dim();
+    this->value = vector.getVector();
+    this->value.setSize(oldSize);
     reconstructPage();
 }
 
@@ -60,6 +67,11 @@ const Vector *VectorPane::getPrivateValue()  {return &value; }
 VectorPane *VectorPane::setSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.setSize(dim); reconstructPage(); });
     return this;
+}
+
+void VectorPane::resizeVector(int size){
+    value.setSize(size);
+    reconstructPage();
 }
 
 const GenericNumber *VectorPane::getValue(){

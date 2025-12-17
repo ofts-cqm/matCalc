@@ -20,7 +20,8 @@ enum Sign{
     RANK,
     BASE,
     SOLVE,
-    DET
+    DET,
+    EQU
 };
 
 struct SignDefinition{
@@ -39,7 +40,7 @@ struct SignDefinition{
     bool isExponent;
 };
 
-const SignDefinition signs[17] = {
+const SignDefinition signs[] = {
     { PLUS, " + " },
     { MINUS, " - "},
     { MUL, "" },
@@ -56,7 +57,8 @@ const SignDefinition signs[17] = {
     { RANK, "Rank", true },
     { BASE, "Base", true },
     { SOLVE, "Solve", true},
-    { DET, "Det", true}
+    { DET, "Det", true},
+    { EQU, "=", false}
 };
 
 struct Calculation{

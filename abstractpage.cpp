@@ -6,6 +6,7 @@ AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalcul
     : QWidget(parent){
     this->evaluator = evaluator;
     this->sign = new SignPane(defaultCalculation->sign, this);
+    this->equal = new SignPane(EQU, this);
 
     QVBoxLayout *main = new QVBoxLayout(this);
     main->setSpacing(0);

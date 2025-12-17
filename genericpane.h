@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QStackedWidget>
 #include <QWidget>
+#include <QtWidgets/qboxlayout.h>
 #include <QtWidgets/qpushbutton.h>
 
 class GenericPane : public QWidget
@@ -42,6 +43,12 @@ private:
     QPushButton *copy, *paste;
     int typeIndex[NUMBER_TYPE_COUNT];
     const static QString functionStyle, modulusStyle;
+    QHBoxLayout *buttons;
+    QVBoxLayout *mainLayout;
+
+private slots:
+    void onCopy();
+    void onPaste();
 };
 
 #endif // GENERICPANE_H

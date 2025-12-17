@@ -16,9 +16,14 @@ public:
 
     const static Calculation calculationDefinition[];
 
+    virtual void switchTo(const Calculation *nextCalculation);
+
+    VectorPage *fillIndexPage(QWidget *parent);
+
 private:
     QSpinBox *dimension;
-    VectorPane *primaryPane;  
+    VectorPane *primaryPane;
+    ResizeBar *resizeBar;
 };
 
 #endif // VECTORPAGE_H

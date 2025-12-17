@@ -20,6 +20,8 @@ public:
 
     virtual void display(GenericNumber vector);
 
+    virtual void paste(GenericNumber num);
+
     virtual void reconstructPage();
 
     virtual const GenericNumber *getValue();
@@ -27,6 +29,8 @@ public:
     const Vector *getPrivateValue();
 
     VectorPane *setSizer(ResizeBar *bar);
+
+    void resizeVector(int size);
 
 private:
     Ui::VectorPane *ui;

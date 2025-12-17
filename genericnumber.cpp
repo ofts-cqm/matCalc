@@ -30,3 +30,22 @@ const Vector &GenericNumber::getVector() const {
     assert(this->type == VECTOR);
     return *num.vec;
 }
+
+GenericNumber GenericNumber::deepclone() const{
+    GenericNumber number;
+    number.type = this->type;
+
+    switch (this->type){
+
+    case NUMBER:
+        number.num.num = new double {this->getDouble()};
+        break;
+    case VECTOR:
+        number.num.vec = new Vector(this->getVector());
+    case UNKNOWN:
+    case EMPTY:
+        break;
+    }
+
+    return number;
+}

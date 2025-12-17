@@ -48,6 +48,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         genericpane.ui
         sizerbar.h sizerbar.cpp
         controlpane.h controlpane.cpp
+        calculationselectionlabel.h calculationselectionlabel.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

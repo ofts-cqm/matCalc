@@ -36,6 +36,8 @@ public:
         return *this;
     }
 
+    GenericNumber deepclone() const;
+
     static const GenericNumber unknown;
 
 private:

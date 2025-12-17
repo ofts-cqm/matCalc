@@ -29,7 +29,7 @@ public:
 
 protected:
     Evaluator evaluator;
-    SignPane *sign;
+    SignPane *sign, *equal;
     const Calculation *currentCalculation;
     GenericPane *operandA, *operandB, *resultPane;
     QLayout *content;

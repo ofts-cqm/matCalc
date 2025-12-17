@@ -1,4 +1,5 @@
 #include "vectorpage.h"
+#include "calculationselectionlabel.h"
 #include "genericpane.h"
 #include "util.h"
 #include "vectorpane.h"
@@ -45,21 +46,31 @@ VectorPage::VectorPage(QWidget *parent)
     : AbstractPage(evaFunc, &calculationDefinition[0], parent)
 {
     // control
-    ResizeBar *resizeBar = new ResizeBar("Dimension", [this](){return primaryPane == nullptr ? 3 : primaryPane->getPrivateValue()->dim();}, control);
+    resizeBar = new ResizeBar("Dimension", [this](){return primaryPane == nullptr ? 3 : primaryPane->getPrivateValue()->dim();}, control);
     control->addPage()->addResizer(resizeBar);
+
     // vector
     content->addItem(getHorizontalSpacer());
     content->addWidget(registerOperand(new GenericPane(this, (primaryPane = new VectorPane())->setSizer(resizeBar), true), 1));
-    content->addWidget(registerOperand(new GenericPane(this, (new VectorPane(nullptr))->setSizer(resizeBar), true), 2));
     content->addWidget(sign);
+    content->addWidget(registerOperand(new GenericPane(this, (new VectorPane(nullptr))->setSizer(resizeBar), true), 2));
+    content->addWidget(equal);
     content->addWidget(registerOperand(new GenericPane(this, (new VectorPane(nullptr, Vector(3), false))->setSizer(resizeBar), false), 3));
     content->addItem(getHorizontalSpacer());
 
-    switchTo(&calculationDefinition[0]);
+    AbstractPage::switchTo(&calculationDefinition[0]);
 }
 
-VectorPage::~VectorPage(){
-    delete dimension;
+void VectorPage::switchTo(const Calculation *nextCalculation){
+    if (currentCalculation->sign == CROSS) resizeBar->setVisible(true);
+
+    if (nextCalculation->sign == CROSS){
+        primaryPane->resizeVector(3);
+        resizeBar->reload();
+        resizeBar->setVisible(false);
+    }
+
+    AbstractPage::switchTo(nextCalculation);
 }
 
 const Calculation VectorPage::calculationDefinition[] = {
@@ -72,3 +83,20 @@ const Calculation VectorPage::calculationDefinition[] = {
     //{ VECTOR, VECTOR, VECTOR, PERP, "Perp Proj" },
     { VECTOR, EMPTY, NUMBER, LENGTH, "Length" }
 };
+
+VectorPage *VectorPage::fillIndexPage(QWidget *parent){
+    QVBoxLayout *indexPage = new QVBoxLayout(parent);
+
+    for (const Calculation &calc : calculationDefinition){
+        indexPage->addWidget(new CalculationSelectionLabel(calc.name, &calc, this, parent));
+    }
+
+    indexPage->addItem(getVerticalSpacer());
+    return this;
+}
+
+VectorPage::~VectorPage(){
+    delete dimension;
+}
+
+
