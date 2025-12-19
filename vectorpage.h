@@ -22,6 +22,7 @@ public:
 
 private:
     QSpinBox *dimension;
+    SignPane *alternativSign;
     VectorPane *primaryPane;
     ResizeBar *resizeBar;
 };

@@ -98,6 +98,14 @@ Vector Vector::cross(const Vector &other) const{
     return Vector({a, b, c});
 }
 
+Vector Vector::proj(const Vector &base, const Vector &target){
+    return base * ((target * base) / (base * base));
+}
+
+Vector Vector::perp(const Vector &base, const Vector &target){
+    return target - proj(base, target);
+}
+
 double Vector::norm() const{
     double res = 0;
 

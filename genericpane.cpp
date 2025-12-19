@@ -112,6 +112,6 @@ void GenericPane::onPaste(){
     }
 }
 
-const QString GenericPane::functionStyle = ".QStackedWidget {border-image: url(:/assets/FuncBracket.png) 0 64 0 64 stretch; border-width: 5px;}";
+const QString GenericPane::functionStyle = ".QStackedWidget {border-image: url(:/assets/FuncBracket.png) 0 96 0 96 stretch; border-width: 5px;}";
 const QString GenericPane::modulusStyle = ".QStackedWidget {border-image: url(:/assets/ModuloBorder.png) 0 6 0 6 stretch; border-width: 8px;}";
 

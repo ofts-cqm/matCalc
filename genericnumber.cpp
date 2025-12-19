@@ -15,6 +15,11 @@ GenericNumber::GenericNumber(const Vector *vec){
     this->num.vec = vec;
 }
 
+GenericNumber::GenericNumber(const Matrix *mat){
+    this->type = MATRIX;
+    this->num.mat = mat;
+}
+
 const GenericNumber GenericNumber::unknown = GenericNumber();
 
 NumberType GenericNumber::getType() const {
@@ -31,6 +36,11 @@ const Vector &GenericNumber::getVector() const {
     return *num.vec;
 }
 
+const Matrix &GenericNumber::getMatrix() const {
+    assert(this->type == MATRIX);
+    return *num.mat;
+}
+
 GenericNumber GenericNumber::deepclone() const{
     GenericNumber number;
     number.type = this->type;
@@ -42,6 +52,10 @@ GenericNumber GenericNumber::deepclone() const{
         break;
     case VECTOR:
         number.num.vec = new Vector(this->getVector());
+        break;
+    case MATRIX:
+        number.num.mat = new Matrix(this->getMatrix());
+        break;
     case UNKNOWN:
     case EMPTY:
         break;

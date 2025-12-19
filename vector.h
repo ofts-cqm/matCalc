@@ -36,6 +36,10 @@ public:
 
     Vector unit() const;
 
+    static Vector proj(const Vector &base, const Vector &target);
+
+    static Vector perp(const Vector &base, const Vector &target);
+
     int dim() const;
 };
 

@@ -27,6 +27,12 @@ GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const Ge
     case CROSS:
         vectorBuff = a->getVector().cross(b->getVector());
         break;
+    case PROJ:
+        vectorBuff = Vector::proj(a->getVector(), b->getVector());
+        break;
+    case PERP:
+        vectorBuff = Vector::perp(a->getVector(), b->getVector());
+        break;
     case LENGTH:
         numBuff = a->getVector().dim();
         break;
@@ -45,12 +51,16 @@ GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const Ge
 VectorPage::VectorPage(QWidget *parent)
     : AbstractPage(evaFunc, &calculationDefinition[0], parent)
 {
+    this->alternativSign = new SignPane(currentCalculation->sign, this);
+    this->alternativSign->setVisible(false);
+
     // control
     resizeBar = new ResizeBar("Dimension", [this](){return primaryPane == nullptr ? 3 : primaryPane->getPrivateValue()->dim();}, control);
     control->addPage()->addResizer(resizeBar);
 
     // vector
     content->addItem(getHorizontalSpacer());
+    content->addWidget(alternativSign);
     content->addWidget(registerOperand(new GenericPane(this, (primaryPane = new VectorPane())->setSizer(resizeBar), true), 1));
     content->addWidget(sign);
     content->addWidget(registerOperand(new GenericPane(this, (new VectorPane(nullptr))->setSizer(resizeBar), true), 2));
@@ -62,12 +72,35 @@ VectorPage::VectorPage(QWidget *parent)
 }
 
 void VectorPage::switchTo(const Calculation *nextCalculation){
-    if (currentCalculation->sign == CROSS) resizeBar->setVisible(true);
+    if (currentCalculation == nextCalculation) return;
 
-    if (nextCalculation->sign == CROSS){
+    switch (currentCalculation->sign){
+    case CROSS:
+        resizeBar->setVisible(true);
+        break;
+    case PERP:
+    case PROJ:
+        this->alternativSign->setVisible(false);
+        this->sign->setVisible(true);
+        break;
+    default:
+        break;
+    }
+
+    switch (nextCalculation->sign){
+    case CROSS:
         primaryPane->resizeVector(3);
         resizeBar->reload();
         resizeBar->setVisible(false);
+        break;
+    case PERP:
+    case PROJ:
+        this->alternativSign->setVisible(true);
+        this->alternativSign->display(nextCalculation->sign);
+        this->sign->setVisible(false);
+        break;
+    default:
+        break;
     }
 
     AbstractPage::switchTo(nextCalculation);
@@ -79,8 +112,8 @@ const Calculation VectorPage::calculationDefinition[] = {
     { VECTOR, NUMBER, VECTOR, MUL, "Scaling" },
     { VECTOR, VECTOR, NUMBER, DOT, "Dot" },
     { VECTOR, VECTOR, VECTOR, CROSS, "Cross" },
-    //{ VECTOR, VECTOR, VECTOR, PROJ, "Projection" },
-    //{ VECTOR, VECTOR, VECTOR, PERP, "Perp Proj" },
+    { VECTOR, VECTOR, VECTOR, PROJ, "Projection" },
+    { VECTOR, VECTOR, VECTOR, PERP, "Perp Proj" },
     { VECTOR, EMPTY, NUMBER, LENGTH, "Length" }
 };
 

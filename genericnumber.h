@@ -1,11 +1,13 @@
 #ifndef GENERICNUMBER_H
 #define GENERICNUMBER_H
 
+#include "matrix.h"
 #include "vector.h"
 
 union NumberHolder {
     const double *num;
     const Vector *vec;
+    const Matrix *mat;
 
     ~NumberHolder(){};
 };
@@ -13,6 +15,7 @@ union NumberHolder {
 enum NumberType{
     NUMBER,
     VECTOR,
+    MATRIX,
     UNKNOWN,
     EMPTY
 };
@@ -25,10 +28,12 @@ public:
     GenericNumber();
     GenericNumber(const double *);
     GenericNumber(const Vector *);
+    GenericNumber(const Matrix *);
 
     NumberType getType() const;
     const double &getDouble() const;
     const Vector &getVector() const;
+    const Matrix &getMatrix() const;
 
     const GenericNumber &operator=(const GenericNumber &src) {
         this->type = src.type;
