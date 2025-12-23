@@ -1,4 +1,5 @@
 #include "util.h"
+#include "matrixpane.h"
 #include "numberpane.h"
 #include "vectorpane.h"
 #include <QWidget>

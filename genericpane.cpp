@@ -47,6 +47,12 @@ GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool 
     currentType = initialPage->getType();
 }
 
+GenericPane *GenericPane::append(AbstractNumberPane *pane){
+    typeIndex[pane->getType()] = content->count();
+    content->addWidget(pane);
+    return this;
+}
+
 void GenericPane::switchTo(NumberType type){
     if (type != currentType){
         if (currentType == UNKNOWN || currentType == EMPTY){

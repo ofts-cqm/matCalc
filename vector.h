@@ -30,6 +30,8 @@ public:
 
     Vector operator*(double num) const;
 
+    Vector &operator*=(double num);
+
     Vector cross(const Vector &other) const;
 
     double norm() const;

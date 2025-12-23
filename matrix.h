@@ -34,6 +34,8 @@ public:
 
     Matrix operator-(const Matrix &other) const;
 
+    Matrix operator*(const double scale) const;
+
     Vector operator*(const Vector &vector) const;
 
     Matrix operator*(const Matrix &other) const;

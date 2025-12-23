@@ -20,6 +20,8 @@ public:
 
     void display(GenericNumber number);
 
+    GenericPane *append(AbstractNumberPane *pane);
+
     void switchTo(NumberType type);
 
     void applyBorder(SignDefinition type);

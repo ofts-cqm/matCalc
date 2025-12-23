@@ -85,6 +85,14 @@ Vector Vector::operator*(double num) const{
     return newVec;
 }
 
+Vector &Vector::operator*=(double num){
+    for (int i = 0; i < this->dim(); i++){
+        (* this)[i] *= num;
+    }
+
+    return *this;
+}
+
 Vector Vector::cross(const Vector &other) const{
     if (this->dim() != 3)
         throw new DimensionMismatchException(this->dim(), 3);

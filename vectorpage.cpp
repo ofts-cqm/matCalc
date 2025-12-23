@@ -10,7 +10,7 @@ static GenericNumber retHolder;
 static Vector vectorBuff;
 static double numBuff;
 
-GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
+static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
     switch (calc->sign){
     case PLUS:
         vectorBuff = a->getVector() + b->getVector();
@@ -19,7 +19,7 @@ GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const Ge
         vectorBuff = a->getVector() - b->getVector();
         break;
     case MUL:
-        vectorBuff = a->getVector() * b->getDouble();
+        vectorBuff = b->getVector() * a->getDouble();
         break;
     case DOT:
         numBuff = a->getVector() * b->getVector();
@@ -109,7 +109,7 @@ void VectorPage::switchTo(const Calculation *nextCalculation){
 const Calculation VectorPage::calculationDefinition[] = {
     { VECTOR, VECTOR, VECTOR, PLUS, "+" },
     { VECTOR, VECTOR, VECTOR, MINUS, "-" },
-    { VECTOR, NUMBER, VECTOR, MUL, "Scaling" },
+    { NUMBER, VECTOR, VECTOR, MUL, "Scaling" },
     { VECTOR, VECTOR, NUMBER, DOT, "Dot" },
     { VECTOR, VECTOR, VECTOR, CROSS, "Cross" },
     { VECTOR, VECTOR, VECTOR, PROJ, "Projection" },

@@ -20,7 +20,7 @@ enum NumberType{
     EMPTY
 };
 
-#define NUMBER_TYPE_COUNT 4
+#define NUMBER_TYPE_COUNT 5
 
 class GenericNumber
 {

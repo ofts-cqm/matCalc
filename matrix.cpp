@@ -92,6 +92,16 @@ Matrix Matrix::operator-(const Matrix &other) const{
     return matrix;
 }
 
+Matrix Matrix::operator*(const double scale) const{
+    Matrix res = *this;
+
+    for (int i = 0; i < height; i++){
+        res[i] *= scale;
+    }
+
+    return res;
+}
+
 Vector Matrix::operator*(const Vector &vector) const{
     if (this->width != vector.dim()) throw new DimensionMismatchException(this->width, vector.dim());
 
