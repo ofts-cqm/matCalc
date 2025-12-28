@@ -18,9 +18,11 @@ public:
 
     ControlPane *addResizer(ResizeBar *resizer);
 
+    void switchTo(int page);
+
 private:
     QVBoxLayout *currentPageLayout;
-
+    std::vector<std::vector<ResizeBar *>> resizers;
 };
 
 #endif // CONTROLPANE_H

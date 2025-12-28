@@ -36,6 +36,7 @@ ResizeBar *ResizeBar::addTarget(DimTar target){
 }
 
 void ResizeBar::reload(){
+    internalReload = true;
     slider->setValue(source());
     onSliderReleased();
 }
@@ -45,6 +46,11 @@ void ResizeBar::onSliderReleased(){
 
     for (DimTar &target : targets){
         target(newVal);
+    }
+
+    if (internalReload){
+        internalReload = false;
+        return;
     }
 
     AbstractPage::getCurrent()->evaluate();

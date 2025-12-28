@@ -21,7 +21,7 @@ private:
     static int primeWidth();
     static int seoncdWidth();
     static MatrixPane *primaryPane, *secondaryPane;
-    ResizeBar *normalHeight, *normalWidth, *mulHeight, *mulWidth, *mulMiddle;
+    ResizeBar *normalHeight, *normalWidth, *mulHeight, *mulWidth, *mulMiddle, *normalSize;
 };
 
 #endif // MATRIXPAGE_H

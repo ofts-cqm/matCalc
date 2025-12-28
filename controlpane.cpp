@@ -14,6 +14,7 @@ ControlPane *ControlPane::addPage(){
     newPage->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     this->addWidget(newPage);
+    this->resizers.push_back(std::vector<ResizeBar *>());
     this->setCurrentWidget(newPage);
     return this;
 }
@@ -21,5 +22,14 @@ ControlPane *ControlPane::addPage(){
 ControlPane *ControlPane::addResizer(ResizeBar *resizer){
     currentPageLayout->addWidget(resizer);
     currentPageLayout->addSpacerItem(getVerticalSpacer());
+    this->resizers.back().push_back(resizer);
     return this;
+}
+
+void ControlPane::switchTo(int page){
+    if (this->currentIndex() == page) return;
+    this->setCurrentIndex(page);
+    for (ResizeBar *sizer : resizers[page]){
+        sizer->reload();
+    }
 }

@@ -26,8 +26,11 @@ public:
         return genericValue.getType();
     }
 
+    void setAsCurrent(bool current) { isCurrentPage = current; }
+
 protected:
     GenericNumber genericValue;
+    bool isCurrentPage;
 };
 
 #endif // ABSTRACTNUMBERPANE_H

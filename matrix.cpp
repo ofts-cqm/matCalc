@@ -24,6 +24,9 @@ void Matrix::resize(int height, int width){
     if (width == -1) width = this->width;
     if (height == -1) height = this->height;
 
+    this->width = width;
+    this->height = height;
+
     entries.resize(height);
 
     for (Vector &vector : entries){
@@ -120,7 +123,7 @@ Matrix Matrix::operator*(const Matrix &other) const{
     Matrix trans = other.transpose(), res(this->height, other.width);
 
     for (int i = 0; i < height; i++){
-        for (int j = 0; j < width; j++){
+        for (int j = 0; j < other.width; j++){
             res[i, j] = entries[i] * trans[j];
         }
     }

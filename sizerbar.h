@@ -29,6 +29,7 @@ private:
     DimSrc source;
     QSlider *slider;
     std::vector<DimTar> targets;
+    bool internalReload;
 };
 
 #endif // SIZERBAR_H

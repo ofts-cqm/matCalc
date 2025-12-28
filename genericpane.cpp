@@ -1,6 +1,7 @@
 #include "genericpane.h"
 #include "abstractpage.h"
 #include "util.h"
+#include "volatilestackedwidget.h"
 
 GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editable)
     : GenericPane::GenericPane(parent, getNewPageOfThisType(initialDisplay, parent, editable), editable){
@@ -20,7 +21,7 @@ GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool 
     mainLayout->addItem(contentWrapper);
 
     contentWrapper->addItem(getHorizontalSpacer());
-    contentWrapper->addWidget(content = new QStackedWidget(this));
+    contentWrapper->addWidget(content = new VolatileStackedWidget(this));
     contentWrapper->addItem(getHorizontalSpacer());
     mainLayout->addItem(getVerticalSpacer());
 
@@ -45,6 +46,8 @@ GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool 
     typeIndex[initialPage->getType()] = 0;
     this->editable = editable;
     currentType = initialPage->getType();
+    initialPage->setAsCurrent(true);
+    initialPage->reconstructPage();
 }
 
 GenericPane *GenericPane::append(AbstractNumberPane *pane){
@@ -55,6 +58,7 @@ GenericPane *GenericPane::append(AbstractNumberPane *pane){
 
 void GenericPane::switchTo(NumberType type){
     if (type != currentType){
+        static_cast<AbstractNumberPane *>(content->currentWidget())->setAsCurrent(false);
         if (currentType == UNKNOWN || currentType == EMPTY){
             this->setVisible(true);
         }
@@ -71,6 +75,10 @@ void GenericPane::switchTo(NumberType type){
         }
 
         content->setCurrentIndex(typeIndex[currentType]);
+        AbstractNumberPane *pane = static_cast<AbstractNumberPane *>(content->currentWidget());
+        pane->setAsCurrent(true);
+        pane->reconstructPage();
+        this->adjustSize();
     }
 }
 

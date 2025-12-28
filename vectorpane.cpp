@@ -58,8 +58,13 @@ void VectorPane::reconstructPage(){
     }
     ui->numLayout->layout()->addItem(getVerticalSpacer());
 
-    this->setMinimumHeight(value.dim() * 22 + 20);
-    this->setMaximumHeight(value.dim() * 22 + 20);
+    if (this->isCurrentPage){
+        this->setMinimumHeight(value.dim() * 22 + 20);
+        this->setMaximumHeight(value.dim() * 22 + 20);
+    }else{
+        this->setMinimumHeight(0);
+        this->setMaximumHeight(0);
+    }
 }
 
 const Vector *VectorPane::getPrivateValue()  {return &value; }

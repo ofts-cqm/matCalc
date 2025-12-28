@@ -77,35 +77,62 @@ MatrixPage::MatrixPage(QWidget *parent)
     normalWidth = new ResizeBar("Width", primeWidth, control);
     control->addPage()->addResizer(normalHeight)->addResizer(normalWidth);
 
-    // multiplication;
+    // matrix multiplication;
     mulHeight = new ResizeBar("n", primeHeight, control);
     mulMiddle = new ResizeBar("m", primeWidth, control);
     mulWidth = new ResizeBar("k", seoncdWidth, control);
-    control->addPage()->addResizer(mulHeight)->addResizer(mulMiddle);
     control->addPage()->addResizer(mulHeight)->addResizer(mulMiddle)->addResizer(mulWidth);
+
+    // square
+    normalSize = new ResizeBar("Dimension", primeHeight, control);
+    control->addPage()->addResizer(normalSize);
+    control->switchTo(0);
 
     content->addItem(getHorizontalSpacer());
     content->addWidget(registerOperand(new GenericPane(this,
         (primaryPane = new MatrixPane())->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
-            setHeightSizer(mulHeight)->setWidthSizer(mulMiddle), true), 1));
+            setHeightSizer(mulHeight)->setWidthSizer(mulMiddle)->
+            setHeightSizer(normalSize)->setWidthSizer(normalSize), true), 1));
     content->addWidget(sign);
     content->addWidget(registerOperand((new GenericPane(this,
         (secondaryPane = new MatrixPane(nullptr))->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
             setHeightSizer(mulMiddle)->setWidthSizer(mulWidth), true))->append(
-        (new VectorPane())->setSizer(mulMiddle)), 2));
+        (new VectorPane())->setSizer(normalWidth)), 2));
     content->addWidget(equal);
     content->addWidget(registerOperand(new GenericPane(this,
-        (new MatrixPane(nullptr, Matrix(3, 3), false))->
-            setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
-            setHeightSizer(mulHeight)->setWidthSizer(mulWidth), false), 3));
+        new MatrixPane(nullptr, Matrix(3, 3), false), false), 3));
     content->addItem(getHorizontalSpacer());
 
     AbstractPage::switchTo(&calculationdefinition[0]);
 }
 
 void MatrixPage::switchTo(const Calculation *nextCalculation){
+    switch(nextCalculation->sign){
+    case PLUS:
+    case MINUS:
+    case TRANS:
+    case RREF:
+    case RANK:
+    case NULL_SPACE:
+    case COL_SPACE:
+        control->switchTo(0);
+        break;
+    case MUL:
+        if(nextCalculation->operandA == MATRIX && nextCalculation->operandB == MATRIX){
+            control->switchTo(1);
+        } else {
+            control->switchTo(0);
+        }
+        break;
+    case INVT:
+    case DET:
+        control->switchTo(2);
+    default:
+        break;
+    }
+
     AbstractPage::switchTo(nextCalculation);
 }
 

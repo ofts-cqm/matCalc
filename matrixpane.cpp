@@ -36,8 +36,9 @@ void MatrixPane::reconstructPage(){
     ui->numLayout->layout()->addItem(getVerticalSpacer());
 
     for (int i = 0; i < getHeight(); i++){
-        QWidget *widget = new QWidget(this);
+        QWidget *widget = new QWidget(ui->numLayout);
         QHBoxLayout *layout = new QHBoxLayout(widget);
+        layout->setContentsMargins(0, 0, 0, 0);
         widget->setLayout(layout);
 
         for (int j = 0; j < getWidth(); j++){
@@ -47,6 +48,7 @@ void MatrixPane::reconstructPage(){
                 content = new DecimalLineEdit(
                     numberParser, [this, i, j](double val) {this->value[i, j] = val;},
                     this->value[i, j]);
+                content->setMaximumWidth(40);
             }else{
                 QLabel *label = new QLabel(format(this->value[i, j]), this);
                 label->setMinimumHeight(22);
@@ -59,11 +61,13 @@ void MatrixPane::reconstructPage(){
 
             layout->addWidget(content);
         }
+        ui->numLayout->layout()->addWidget(widget);
     }
 
     ui->numLayout->layout()->addItem(getVerticalSpacer());
-    this->setMaximumHeight(value.getHeight() * 22 + 20);
-    this->setMaximumWidth(value.getWidth() * 40 + 24);
+    this->setMinimumHeight(value.getHeight() * 22 + 20);
+    this->setGeometry(0, 0, value.getWidth() * 40 + 24, value.getHeight() * 22 + 20);
+    this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
 }
 
 const GenericNumber *MatrixPane::getValue(){
