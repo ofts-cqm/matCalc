@@ -1,5 +1,6 @@
 #include "vector.h"
 #include "dimensionmismatchexception.h"
+#include "util.h"
 #include <cmath>
 
 Vector::Vector(): std::vector<double>() {}
@@ -85,9 +86,44 @@ Vector Vector::operator*(double num) const{
     return newVec;
 }
 
+Vector Vector::operator/(double num) const{
+    Vector newVec(*this);
+    return newVec /= num;
+}
+
 Vector &Vector::operator*=(double num){
     for (int i = 0; i < this->dim(); i++){
         (* this)[i] *= num;
+    }
+
+    return *this;
+}
+
+Vector &Vector::operator/=(double num){
+    for (int i = 0; i < this->dim(); i++){
+        (* this)[i] /= num;
+    }
+
+    return *this;
+}
+
+Vector &Vector::operator+=(const Vector &other){
+    if (this->dim() != other.dim())
+        throw new DimensionMismatchException(this->dim(), other.dim());
+
+    for (int i = 0; i < this->dim(); i++){
+        (* this)[i] += other[i];
+    }
+
+    return *this;
+}
+
+Vector &Vector::operator-=(const Vector &other){
+    if (this->dim() != other.dim())
+        throw new DimensionMismatchException(this->dim(), other.dim());
+
+    for (int i = 0; i < this->dim(); i++){
+        (* this)[i] -= other[i];
     }
 
     return *this;
@@ -126,6 +162,13 @@ double Vector::norm() const{
 
 Vector Vector::unit() const{
     return *this * (1 / this->norm());
+}
+
+bool Vector::isFullZero() const{
+    for (double d : *this){
+        if (isZero(d)) return false;
+    }
+    return true;
 }
 
 int Vector::dim() const{

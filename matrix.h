@@ -46,8 +46,14 @@ public:
 
     Matrix reduce() const;
 
-
 private:
+
+    int ref(int fromIndex, int startingColumn);
+
+    int firstNonZeroInColumn(const int column, const int fromIndex) const;
+
+    void rowSwap(const int a, const int b);
+
     int width, height;
     std::vector<Vector> entries;
 };

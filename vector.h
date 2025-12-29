@@ -30,13 +30,23 @@ public:
 
     Vector operator*(double num) const;
 
+    Vector operator/(double num) const;
+
     Vector &operator*=(double num);
+
+    Vector &operator/=(double num);
+
+    Vector &operator+=(const Vector &other);
+
+    Vector &operator-=(const Vector &other);
 
     Vector cross(const Vector &other) const;
 
     double norm() const;
 
     Vector unit() const;
+
+    bool isFullZero() const;
 
     static Vector proj(const Vector &base, const Vector &target);
 

@@ -77,3 +77,7 @@ AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool 
         return new EmptyPane(parent);
     }
 }
+
+bool isZero(double d){
+    return d < 1e-9 && d > -1e-9;
+}

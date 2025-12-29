@@ -1,5 +1,7 @@
 #include "matrix.h"
 #include "dimensionmismatchexception.h"
+#include "util.h"
+#include <cmath>
 
 
 Matrix::Matrix(): Matrix(0, 0){}
@@ -143,6 +145,12 @@ Matrix Matrix::transpose() const{
     return res;
 }
 
+void Matrix::rowSwap(const int a, const int b){
+    Vector temp = entries[a];
+    entries[a] = entries[b];
+    entries[b] = temp;
+}
+
 double Matrix::det() const{
     if (this->height != this->width) throw new DimensionMismatchException(this->height, this->width);
 
@@ -150,9 +158,108 @@ double Matrix::det() const{
     if (this->height == 1) return entries[0][0];
     if (this->height == 2) return entries[0][0] * entries[1][1] - entries[0][1] * entries[1][0];
 
-    // TODO: Implement This
+    double det = 1.0;
+    int sign = 1, n = this->height;
+    Matrix m = *this;
+
+    for (int i = 0; i < n; i++) {
+        // Pivot selection
+        int pivot = i;
+        for (int j = i + 1; j < n; j++) {
+            if (fabs(m[j, i]) > fabs(m[pivot, i])) {
+                pivot = j;
+            }
+        }
+
+        // If pivot is zero, determinant is zero
+        if (fabs(m[pivot, i]) < 1e-9) {
+            return 0.0;
+        }
+
+        // Swap rows if needed
+        if (pivot != i) {
+            m.rowSwap(pivot, i);
+            sign = -sign;
+        }
+
+        // Eliminate below
+        for (int j = i + 1; j < n; j++) {
+            double factor = m[j, i] / m[i, i];
+            m[j] -= m[i] * factor;
+        }
+
+        det *= m[i, i];
+    }
+
+    return det * sign;
+}
+
+int Matrix::firstNonZeroInColumn(int column, int fromIndex) const{
+    for (int i = fromIndex; i < height; i++) {
+        if (!isZero(entries[i][column])) return i;
+    }
+    return -1;
+}
+
+void clearEntry(Matrix &matrix, int row, int pivot, int startingIndex){
+    if (isZero(matrix[row, startingIndex])) return;
+    double multiplier = matrix[row, startingIndex];
+    matrix[row] -= matrix[pivot] * multiplier;
+}
+
+int Matrix::ref(int fromIndex, int startingColumn){
+    // find the pivot entry
+    int nonZeroIndex = firstNonZeroInColumn(startingColumn, fromIndex);
+    while (nonZeroIndex == -1){
+        // no pivot entry??? next row!
+        startingColumn++;
+        if (startingColumn == width) return width;
+        nonZeroIndex = firstNonZeroInColumn(startingColumn, fromIndex);
+    }
+
+    // if the current row (from index) is not the row containing pivot entry...
+    // just swap them
+    if (fromIndex != nonZeroIndex){
+        rowSwap(fromIndex, nonZeroIndex);
+        nonZeroIndex = fromIndex;
+    }
+
+    // reduce the pivot entry to one.
+    // this is not necessary in ref, but for convenience in later calculation, we reduce to 1
+    entries[nonZeroIndex] /= entries[nonZeroIndex][startingColumn];
+    for (int i = nonZeroIndex + 1; i < height; i++) {
+        clearEntry(*this, i, nonZeroIndex, startingColumn);
+    }
+    // next time, start in the next column
+    return startingColumn + 1;
 }
 
 Matrix Matrix::reduce() const{
-    // TODO: Implement This
+    int startingColumn = 0, refed_row = 0;
+    Matrix mat = *this;
+
+    // reduce each column to ref form
+    while (startingColumn != width){
+        startingColumn = mat.ref(refed_row, startingColumn);
+        refed_row++;
+        // reached the bottom? break!
+        if (refed_row == height) break;
+    }
+
+    // in ref, we already cleared rows below each pivot entry.
+    // now, we need to clear rows above each pivot entry
+    int currentRow = 0;
+    for (int i = 0; i < width; i++) { // scan from left to right
+        if (currentRow == height) break; // break if reached bottom
+        if (isZero(mat[currentRow, i])) continue; // skip if not pivot entry
+
+        // we found a pivot entry! clear all rows from row 0 to this row!
+        for (int j = 0; j < currentRow; j++) {
+            clearEntry(mat, j, currentRow, i);
+        }
+        currentRow++;
+    }
+
+    // done!
+    return mat;
 }

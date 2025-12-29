@@ -19,6 +19,8 @@ std::optional<double> numberParser(QStringView s);
 QSpacerItem *getHorizontalSpacer();
 QSpacerItem *getVerticalSpacer();
 
+bool isZero(double d);
+
 class EmptyPane : public AbstractNumberPane{
 public:
     EmptyPane(QWidget *parent);

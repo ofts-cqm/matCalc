@@ -29,11 +29,15 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         matrixBuff = a->getMatrix().transpose();
         break;
     case RREF:
+        matrixBuff = b->getMatrix().reduce();
+        break;
+    case DET:
+        numBuff = b->getMatrix().det();
+        break;
     case INVT:
     case NULL_SPACE:
     case COL_SPACE:
     case RANK:
-    case DET:
     default:
         break;
     }
@@ -51,7 +55,9 @@ const Calculation MatrixPage::calculationdefinition[] = {
     { NUMBER, MATRIX, MATRIX, MUL, "Scaling" },
     { MATRIX, MATRIX, MATRIX, MUL, "Mat Prod " },
     { MATRIX, VECTOR, VECTOR, MUL, "Mat-Vec" },
-    { MATRIX, EMPTY, MATRIX, TRANS, "Transpose" }
+    { MATRIX, EMPTY, MATRIX, TRANS, "Transpose" },
+    { EMPTY, MATRIX, NUMBER, DET, "Det" },
+    { EMPTY, MATRIX, MATRIX, RREF, "Reduce" }
 };
 
 int MatrixPage::primeHeight(){
@@ -92,13 +98,13 @@ MatrixPage::MatrixPage(QWidget *parent)
     content->addWidget(registerOperand(new GenericPane(this,
         (primaryPane = new MatrixPane())->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
-            setHeightSizer(mulHeight)->setWidthSizer(mulMiddle)->
-            setHeightSizer(normalSize)->setWidthSizer(normalSize), true), 1));
+            setHeightSizer(mulHeight)->setWidthSizer(mulMiddle), true), 1));
     content->addWidget(sign);
     content->addWidget(registerOperand((new GenericPane(this,
         (secondaryPane = new MatrixPane(nullptr))->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
-            setHeightSizer(mulMiddle)->setWidthSizer(mulWidth), true))->append(
+            setHeightSizer(mulMiddle)->setWidthSizer(mulWidth)->
+            setHeightSizer(normalSize)->setWidthSizer(normalSize), true))->append(
         (new VectorPane())->setSizer(normalWidth)), 2));
     content->addWidget(equal);
     content->addWidget(registerOperand(new GenericPane(this,
