@@ -207,13 +207,13 @@ void clearEntry(Matrix &matrix, int row, int pivot, int startingIndex){
     matrix[row] -= matrix[pivot] * multiplier;
 }
 
-int Matrix::ref(int fromIndex, int startingColumn){
+void Matrix::ref(int fromIndex, int& startingColumn){
     // find the pivot entry
     int nonZeroIndex = firstNonZeroInColumn(startingColumn, fromIndex);
     while (nonZeroIndex == -1){
         // no pivot entry??? next row!
         startingColumn++;
-        if (startingColumn == width) return width;
+        if (startingColumn == width) return;
         nonZeroIndex = firstNonZeroInColumn(startingColumn, fromIndex);
     }
 
@@ -231,7 +231,7 @@ int Matrix::ref(int fromIndex, int startingColumn){
         clearEntry(*this, i, nonZeroIndex, startingColumn);
     }
     // next time, start in the next column
-    return startingColumn + 1;
+    startingColumn ++;
 }
 
 Matrix Matrix::reduce() const{
@@ -239,12 +239,7 @@ Matrix Matrix::reduce() const{
     Matrix mat = *this;
 
     // reduce each column to ref form
-    while (startingColumn != width){
-        startingColumn = mat.ref(refed_row, startingColumn);
-        refed_row++;
-        // reached the bottom? break!
-        if (refed_row == height) break;
-    }
+    while (startingColumn != width && refed_row != height) mat.ref(refed_row++, startingColumn);
 
     // in ref, we already cleared rows below each pivot entry.
     // now, we need to clear rows above each pivot entry

@@ -48,7 +48,7 @@ public:
 
 private:
 
-    int ref(int fromIndex, int startingColumn);
+    void ref(int fromIndex, int& startingColumn);
 
     int firstNonZeroInColumn(const int column, const int fromIndex) const;
 
