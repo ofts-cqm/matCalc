@@ -55,6 +55,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         matrixpane.h matrixpane.cpp
         matrixpage.h matrixpage.cpp
         volatilestackedwidget.h volatilestackedwidget.cpp
+        reducedmatrix.h reducedmatrix.cpp
+
 
     )
 # Define target properties for Android with Qt 6 as:

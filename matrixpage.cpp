@@ -2,6 +2,7 @@
 #include "calculationselectionlabel.h"
 #include "util.h"
 #include "vectorpane.h"
+#include "reducedmatrix.h"
 
 static GenericNumber retHolder;
 static Matrix matrixBuff;
@@ -29,15 +30,19 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         matrixBuff = a->getMatrix().transpose();
         break;
     case RREF:
-        matrixBuff = b->getMatrix().reduce();
+        matrixBuff = b->getMatrix().reduceAsMatrix();
         break;
     case DET:
         numBuff = b->getMatrix().det();
         break;
     case INVT:
+        matrixBuff = ReducedMatrix::reduce(a->getMatrix(), Matrix::unit(a->getMatrix().getHeight())).augmentedMatrix();
+        break;
+    case RANK:
+        numBuff = b->getMatrix().reduce().rank();
+        break;
     case NULL_SPACE:
     case COL_SPACE:
-    case RANK:
     default:
         break;
     }
@@ -55,7 +60,9 @@ const Calculation MatrixPage::calculationdefinition[] = {
     { NUMBER, MATRIX, MATRIX, MUL, "Scaling" },
     { MATRIX, MATRIX, MATRIX, MUL, "Mat Prod " },
     { MATRIX, VECTOR, VECTOR, MUL, "Mat-Vec" },
+    { MATRIX, EMPTY, MATRIX, INVT, "Invert"},
     { MATRIX, EMPTY, MATRIX, TRANS, "Transpose" },
+    { EMPTY, MATRIX, NUMBER, RANK, "Rank" },
     { EMPTY, MATRIX, NUMBER, DET, "Det" },
     { EMPTY, MATRIX, MATRIX, RREF, "Reduce" }
 };

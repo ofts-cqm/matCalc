@@ -129,6 +129,18 @@ Vector &Vector::operator-=(const Vector &other){
     return *this;
 }
 
+Vector Vector::append(const Vector &other) const{
+    Vector newVec(*this);
+    newVec.append_range((std::vector<double>)other);
+    return newVec;
+}
+
+Vector Vector::append(double num) const{
+    Vector newVec(*this);
+    newVec.append(num);
+    return newVec;
+}
+
 Vector Vector::cross(const Vector &other) const{
     if (this->dim() != 3)
         throw new DimensionMismatchException(this->dim(), 3);

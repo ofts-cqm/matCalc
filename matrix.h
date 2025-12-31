@@ -3,6 +3,8 @@
 
 #include "vector.h"
 
+class ReducedMatrix;
+
 class Matrix
 {
 public:
@@ -12,11 +14,13 @@ public:
 
     Matrix(const Matrix &other);
 
+    static Matrix unit(int size);
+
     int getHeight() const;
 
     int getWidth() const;
 
-    void resize(int height = -1, int width = -1);
+    virtual void resize(int height = -1, int width = -1);
 
     Matrix &operator=(const Matrix &other);
 
@@ -44,7 +48,9 @@ public:
 
     double det() const;
 
-    Matrix reduce() const;
+    ReducedMatrix reduce() const;
+
+    Matrix reduceAsMatrix() const;
 
 private:
 

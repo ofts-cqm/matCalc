@@ -40,6 +40,10 @@ public:
 
     Vector &operator-=(const Vector &other);
 
+    Vector append(const Vector &other) const;
+
+    Vector append(double num) const;
+
     Vector cross(const Vector &other) const;
 
     double norm() const;

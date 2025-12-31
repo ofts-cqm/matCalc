@@ -1,5 +1,6 @@
 #include "matrix.h"
 #include "dimensionmismatchexception.h"
+#include "reducedmatrix.h"
 #include "util.h"
 #include <cmath>
 
@@ -16,6 +17,16 @@ Matrix::Matrix(const Matrix &other){
     this->entries = other.entries;
     this->height = other.height;
     this->width = other.width;
+}
+
+Matrix Matrix::unit(int size){
+    Matrix mat(size, size);
+
+    for (int i = 0; i < size; i++){
+        mat[i, i] = 1;
+    }
+
+    return mat;
 }
 
 int Matrix::getHeight() const { return this->height; }
@@ -234,7 +245,11 @@ void Matrix::ref(int fromIndex, int& startingColumn){
     startingColumn ++;
 }
 
-Matrix Matrix::reduce() const{
+ReducedMatrix Matrix::reduce() const {
+    return reduceAsMatrix();
+}
+
+Matrix Matrix::reduceAsMatrix() const{
     int startingColumn = 0, refed_row = 0;
     Matrix mat = *this;
 
