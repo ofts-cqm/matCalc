@@ -24,6 +24,11 @@ bool isZero(double d);
 class EmptyPane : public AbstractNumberPane{
 public:
     EmptyPane(QWidget *parent);
+
+    virtual void reconstructPage() override {}
+    virtual void display(GenericNumber num) override {}
+    virtual void paste(GenericNumber num) override {}
+
 };
 
 AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool editable = true);

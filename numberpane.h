@@ -16,6 +16,8 @@ public:
 
     virtual void display(GenericNumber num);
 
+    virtual void paste(GenericNumber num) {display(num);}
+
     virtual const GenericNumber *getValue();
 
 private:

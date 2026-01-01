@@ -11,14 +11,14 @@ Q_OBJECT
 public:
     AbstractNumberPane(QWidget *parent) : QWidget(parent){}
 
-    virtual void reconstructPage(){}
+    virtual void reconstructPage() = 0;
 
     // display: display the target number regardless if its a different form
-    virtual void display(GenericNumber num){}
+    virtual void display(GenericNumber num) = 0;
 
     // instead of display another number, this set the current number to the target number
-    // which means this preserves the current type format, while display() does not
-    virtual void paste(GenericNumber num){}
+    // which means this preserves the current type and info (i.e, size), while display() does not
+    virtual void paste(GenericNumber num) = 0;
 
     virtual const GenericNumber *getValue() {return &genericValue; }
 

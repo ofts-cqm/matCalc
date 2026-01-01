@@ -1,5 +1,6 @@
 #include "reducedmatrix.h"
 #include "dimensionmismatchexception.h"
+#include <cassert>
 
 ReducedMatrix::ReducedMatrix(): Matrix() {
     this->boundary = -1;
@@ -58,16 +59,18 @@ int ReducedMatrix::rank() const{
 }
 
 Matrix ReducedMatrix::mainMatrix() const{
-    Matrix mat(this->getHeight(), this->boundary);
+    int boundary = this->boundary == -1 ? this->getWidth() : this->boundary;
+    Matrix mat(this->getHeight(), boundary);
     for (int i = 0; i < this->getHeight(); i++){
         Vector vec = (*this)[i];
-        vec.setSize(this->boundary);
+        vec.setSize(boundary);
         mat[i] = vec;
     }
     return mat;
 }
 
 Matrix ReducedMatrix::augmentedMatrix() const{
+    assert(this->boundary != -1);
     int w = this->getWidth() - this->boundary;
     Matrix mat(this->getHeight(), w);
     for (int i = 0; i < this->getHeight(); i++){
@@ -81,6 +84,7 @@ Matrix ReducedMatrix::augmentedMatrix() const{
 }
 
 Vector ReducedMatrix::augmentedVector() const{
+    assert(this->boundary != -1);
     Vector vec(this->getHeight());
     for (int i = 0; i < this->getHeight(); i++){
         vec[i] = (* this)[i, this->boundary];

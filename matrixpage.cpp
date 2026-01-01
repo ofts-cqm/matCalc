@@ -8,8 +8,11 @@ static GenericNumber retHolder;
 static Matrix matrixBuff;
 static Vector vectorBuff;
 static double numBuff;
+static std::string labBuff;
 
 static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
+    labBuff = "";
+
     switch (calc->sign){
     case PLUS:
         matrixBuff = a->getMatrix() + b->getMatrix();
@@ -38,6 +41,7 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
     case INVT: {
         ReducedMatrix mat = ReducedMatrix::reduce(a->getMatrix(), Matrix::unit(a->getMatrix().getHeight()));
         if (mat.rank() == a->getMatrix().getHeight()) matrixBuff = mat.augmentedMatrix();
+        else labBuff = "Matrix Not Invertable";
         break;
     }
     case RANK:
@@ -52,6 +56,8 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
     if (calc->result == VECTOR) retHolder = &vectorBuff;
     else if (calc->result == MATRIX) retHolder = &matrixBuff;
     else retHolder = &numBuff;
+
+    if (labBuff != "") retHolder = &labBuff;
 
     return &retHolder;
 }
@@ -107,7 +113,8 @@ MatrixPage::MatrixPage(QWidget *parent)
     content->addWidget(registerOperand(new GenericPane(this,
         (primaryPane = new MatrixPane())->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
-            setHeightSizer(mulHeight)->setWidthSizer(mulMiddle), true), 1));
+            setHeightSizer(mulHeight)->setWidthSizer(mulMiddle)->
+            setHeightSizer(normalSize)->setWidthSizer(normalSize), true), 1));
     content->addWidget(sign);
     content->addWidget(registerOperand((new GenericPane(this,
         (secondaryPane = new MatrixPane(nullptr))->
@@ -144,6 +151,7 @@ void MatrixPage::switchTo(const Calculation *nextCalculation){
     case INVT:
     case DET:
         control->switchTo(2);
+        break;
     default:
         break;
     }

@@ -20,6 +20,11 @@ GenericNumber::GenericNumber(const Matrix *mat){
     this->num.mat = mat;
 }
 
+GenericNumber::GenericNumber(const std::string *str){
+    this->type = LABEL;
+    this->num.lab = str;
+}
+
 const GenericNumber GenericNumber::unknown = GenericNumber();
 
 NumberType GenericNumber::getType() const {
@@ -41,6 +46,11 @@ const Matrix &GenericNumber::getMatrix() const {
     return *num.mat;
 }
 
+const std::string &GenericNumber::getLabel() const {
+    assert(this->type == LABEL);
+    return *num.lab;
+}
+
 GenericNumber GenericNumber::deepclone() const{
     GenericNumber number;
     number.type = this->type;
@@ -57,7 +67,10 @@ GenericNumber GenericNumber::deepclone() const{
         number.num.mat = new Matrix(this->getMatrix());
         break;
     case UNKNOWN:
+        number.num.lab = &this->getLabel();
     case EMPTY:
+        break;
+    case LABEL:
         break;
     }
 

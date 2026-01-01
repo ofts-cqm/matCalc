@@ -2,6 +2,7 @@
 #include "matrixpane.h"
 #include "numberpane.h"
 #include "vectorpane.h"
+#include "labelpane.h"
 #include <QWidget>
 
 QString format(double val){
@@ -72,9 +73,12 @@ AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool 
         return new VectorPane(parent, Vector(3), editable);
     case MATRIX:
         return new MatrixPane(parent, Matrix(3, 3), editable);
+    case LABEL:
+        return new LabelPane(QString::fromStdString(""), parent);
     case UNKNOWN:
     case EMPTY:
         return new EmptyPane(parent);
+        break;
     }
 }
 
