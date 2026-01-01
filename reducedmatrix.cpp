@@ -50,8 +50,9 @@ ReducedMatrix &ReducedMatrix::operator=(const ReducedMatrix &other) {
 }
 
 int ReducedMatrix::rank() const{
+    Matrix mat = this->mainMatrix();
     for (int i = 0; i < this->getHeight(); i++){
-        if ((* this)[i].isFullZero()) return i;
+        if (mat[i].isFullZero()) return i;
     }
     return this->getHeight();
 }

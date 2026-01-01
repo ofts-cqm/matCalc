@@ -178,7 +178,7 @@ Vector Vector::unit() const{
 
 bool Vector::isFullZero() const{
     for (double d : *this){
-        if (isZero(d)) return false;
+        if (!isZero(d)) return false;
     }
     return true;
 }

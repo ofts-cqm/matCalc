@@ -35,9 +35,11 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
     case DET:
         numBuff = b->getMatrix().det();
         break;
-    case INVT:
-        matrixBuff = ReducedMatrix::reduce(a->getMatrix(), Matrix::unit(a->getMatrix().getHeight())).augmentedMatrix();
+    case INVT: {
+        ReducedMatrix mat = ReducedMatrix::reduce(a->getMatrix(), Matrix::unit(a->getMatrix().getHeight()));
+        if (mat.rank() == a->getMatrix().getHeight()) matrixBuff = mat.augmentedMatrix();
         break;
+    }
     case RANK:
         numBuff = b->getMatrix().reduce().rank();
         break;
