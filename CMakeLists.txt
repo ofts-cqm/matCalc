@@ -57,6 +57,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         volatilestackedwidget.h volatilestackedwidget.cpp
         reducedmatrix.h reducedmatrix.cpp
         labelpane.h labelpane.cpp
+        spanset.h spanset.cpp
 
 
     )

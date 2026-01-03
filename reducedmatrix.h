@@ -18,7 +18,11 @@ public:
 
     ReducedMatrix &operator=(const ReducedMatrix &other);
 
-    int rank() const;
+    int rank(bool augmented = false) const;
+
+    bool hasSolu() const;
+
+    bool hasEntry(int col) const;
 
     Matrix mainMatrix() const;
 

@@ -3,6 +3,8 @@
 
 #include <vector>
 
+class SpanSet;
+
 class Vector : private std::vector<double>
 {
 public:
@@ -52,11 +54,15 @@ public:
 
     bool isFullZero() const;
 
+    bool isFullZeroAfter(int &index) const;
+
     static Vector proj(const Vector &base, const Vector &target);
 
     static Vector perp(const Vector &base, const Vector &target);
 
     int dim() const;
+
+    friend class SpanSet;
 };
 
 #endif // VECTOR_H

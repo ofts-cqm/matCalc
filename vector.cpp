@@ -177,9 +177,15 @@ Vector Vector::unit() const{
 }
 
 bool Vector::isFullZero() const{
-    for (double d : *this){
-        if (!isZero(d)) return false;
+    int start = 0;
+    return isFullZeroAfter(start);
+}
+
+bool Vector::isFullZeroAfter(int &index) const{
+    for (; index < this->dim(); index++){
+        if (!isZero((* this)[index])) return false & index++;
     }
+    index++;
     return true;
 }
 

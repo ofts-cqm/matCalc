@@ -77,16 +77,19 @@ const GenericNumber *MatrixPane::getValue(){
 
 MatrixPane *MatrixPane::setHeightSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.resize(dim); reconstructPage(); });
+    heightSizers.push_back(bar);
     return this;
 }
 
 MatrixPane *MatrixPane::setWidthSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.resize(-1, dim); reconstructPage(); });
+    widthSizers.push_back(bar);
     return this;
 }
 
 MatrixPane *MatrixPane::setSquareSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.resize(dim, dim); reconstructPage(); });
+    squareSizers.push_back(bar);
     return this;
 }
 

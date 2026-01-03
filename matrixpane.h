@@ -8,6 +8,8 @@
 #include "sizerbar.h"
 #include "ui_vectorpane.h"
 
+class SpanSet;
+
 class MatrixPane : public AbstractNumberPane
 {
     Q_OBJECT
@@ -38,9 +40,12 @@ public:
     void resizeMatrix(int size);
 
 private:
+    friend class Spanset;
+
     Ui::VectorPane *ui;
     bool editable;
     Matrix value;
+    std::vector<ResizeBar *> heightSizers = {}, widthSizers = {}, squareSizers = {};
 };
 
 #endif // MATRIXPANE_H

@@ -50,10 +50,19 @@ ReducedMatrix &ReducedMatrix::operator=(const ReducedMatrix &other) {
     return *this;
 }
 
-int ReducedMatrix::rank() const{
-    Matrix mat = this->mainMatrix();
+bool ReducedMatrix::hasSolu() const {
+    return rank(false) == rank(true);
+}
+
+bool ReducedMatrix::hasEntry(int col) const{
+    return !column(col).isFullZero();
+}
+
+int ReducedMatrix::rank(bool augmented) const{
+    Matrix mat = augmented ? (Matrix)(* this) : this->mainMatrix();
+    int start = 0;
     for (int i = 0; i < this->getHeight(); i++){
-        if (mat[i].isFullZero()) return i;
+        if (mat[i].isFullZeroAfter(start)) return i;
     }
     return this->getHeight();
 }

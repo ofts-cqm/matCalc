@@ -53,6 +53,7 @@ public:
     Matrix reduceAsMatrix() const;
 
 private:
+    friend class SpanSet;
 
     void ref(int fromIndex, int& startingColumn);
 
