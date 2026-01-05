@@ -1,6 +1,7 @@
 #include "util.h"
 #include "matrixpane.h"
 #include "numberpane.h"
+#include "spansetpane.h"
 #include "vectorpane.h"
 #include "labelpane.h"
 #include <QWidget>
@@ -20,6 +21,24 @@ QString format(double val){
     }
 
     return QString::fromStdString(s);
+}
+
+std::string nameForNumberType(NumberType type){
+    switch (type){
+    case NUMBER:
+        return "Number";
+    case VECTOR:
+        return "Vector";
+    case MATRIX:
+        return "Matrix";
+    case SPAN_SET:
+        return "Set";
+    case LABEL:
+        return "Info Label";
+    case UNKNOWN:
+    case EMPTY:
+        return "Empty";
+    }
 }
 
 QFont getLargeFont(){
@@ -75,6 +94,8 @@ AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool 
         return new MatrixPane(parent, Matrix(3, 3), editable);
     case LABEL:
         return new LabelPane(QString::fromStdString(""), parent);
+    case SPAN_SET:
+        return new SpanSetPane(SpanSet(), editable, parent);
     case UNKNOWN:
     case EMPTY:
         return new EmptyPane(parent);

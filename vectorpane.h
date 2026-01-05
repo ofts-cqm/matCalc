@@ -32,10 +32,16 @@ public:
 
     void resizeVector(int size);
 
+    VectorPane *setID(int id);
+
 private:
     Ui::VectorPane *ui;
     bool editable;
     Vector value;
+    int id = -1;
+
+Q_SIGNALS:
+    void onFieldChanged(int id, int pos, double val);
 };
 
 #endif // VECTORPANE_H

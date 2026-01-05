@@ -8,6 +8,7 @@ union NumberHolder {
     const double *num;
     const Vector *vec;
     const Matrix *mat;
+    const SpanSet *set;
     const std::string *lab;
 
     ~NumberHolder(){};
@@ -17,6 +18,7 @@ enum NumberType{
     NUMBER,
     VECTOR,
     MATRIX,
+    SPAN_SET,
     LABEL,
     UNKNOWN,
     EMPTY
@@ -32,11 +34,13 @@ public:
     GenericNumber(const Vector *);
     GenericNumber(const Matrix *);
     GenericNumber(const std::string *);
+    GenericNumber(const SpanSet *);
 
     NumberType getType() const;
     const double &getDouble() const;
     const Vector &getVector() const;
     const Matrix &getMatrix() const;
+    const SpanSet &getSpanSet() const;
     const std::string &getLabel() const;
 
     const GenericNumber &operator=(const GenericNumber &src) {

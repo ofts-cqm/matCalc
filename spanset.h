@@ -21,6 +21,8 @@ public:
 
     Matrix &asMatrix();
 
+    const Matrix &asMatrix() const;
+
     double &operator[](int i, int j);
 
     const double operator[](int i, int j) const;

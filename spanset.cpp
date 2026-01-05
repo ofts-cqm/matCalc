@@ -12,6 +12,8 @@ SpanSet::SpanSet(const Matrix &base): Matrix(base) {}
 
 Matrix &SpanSet::asMatrix() { return *this; }
 
+const Matrix &SpanSet::asMatrix() const { return *this; }
+
 double &SpanSet::operator[](int i, int j){ return Matrix::operator[](i, j); }
 
 const double SpanSet::operator[](int i, int j) const { return Matrix::operator[](i, j); }
@@ -85,10 +87,7 @@ SpanSet &SpanSet::operator&=(const std::vector<bool> cols){
 }
 
 SpanSet SpanSet::reduce() const{
-    ReducedMatrix mat = Matrix::reduce();
-    std::vector<bool> significant;
-    for (int i = 0; i < mat.getWidth(); i++) significant.push_back(mat.hasEntry(i));
-    return *this & significant;
+    return *this & Matrix::reduce().pivots();
 }
 
 SpanSet SpanSet::extend() const{

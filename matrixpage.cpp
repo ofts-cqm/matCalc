@@ -1,5 +1,6 @@
 #include "matrixpage.h"
 #include "calculationselectionlabel.h"
+#include "spanset.h"
 #include "util.h"
 #include "vectorpane.h"
 #include "reducedmatrix.h"
@@ -9,6 +10,7 @@ static Matrix matrixBuff;
 static Vector vectorBuff;
 static double numBuff;
 static std::string labBuff;
+static SpanSet setBuff;
 
 static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
     labBuff = "";
@@ -48,13 +50,18 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         numBuff = b->getMatrix().reduce().rank();
         break;
     case NULL_SPACE:
+        setBuff = b->getMatrix().nullSpace();
+        break;
     case COL_SPACE:
+        setBuff = b->getMatrix().colSpace();
+        break;
     default:
         break;
     }
 
     if (calc->result == VECTOR) retHolder = &vectorBuff;
     else if (calc->result == MATRIX) retHolder = &matrixBuff;
+    else if (calc->result == SPAN_SET) retHolder = &setBuff;
     else retHolder = &numBuff;
 
     if (labBuff != "") retHolder = &labBuff;
@@ -72,7 +79,9 @@ const Calculation MatrixPage::calculationdefinition[] = {
     { MATRIX, EMPTY, MATRIX, TRANS, "Transpose" },
     { EMPTY, MATRIX, NUMBER, RANK, "Rank" },
     { EMPTY, MATRIX, NUMBER, DET, "Det" },
-    { EMPTY, MATRIX, MATRIX, RREF, "Reduce" }
+    { EMPTY, MATRIX, MATRIX, RREF, "Reduce" },
+    { EMPTY, MATRIX, SPAN_SET, COL_SPACE, "Range" },
+    { EMPTY, MATRIX, SPAN_SET, NULL_SPACE, "Kernal" }
 };
 
 int MatrixPage::primeHeight(){

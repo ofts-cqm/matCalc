@@ -33,6 +33,10 @@ void MainWindow::setPage(AbstractPage *page){
     instance->ui->stackedWidget->setCurrentWidget(page);
 }
 
+void MainWindow::setMessage(QString message){
+    instance->ui->statusbar->showMessage(message, 3000);
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;

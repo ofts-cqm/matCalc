@@ -1,5 +1,6 @@
 #include "matrixpane.h"
 #include "decimallineedit.h"
+#include "spanset.h"
 #include "util.h"
 #include <QLabel>
 
@@ -24,7 +25,13 @@ void MatrixPane::display(GenericNumber matrix){
 void MatrixPane::paste(GenericNumber num){
     int oldWidth = value.getWidth();
     int oldHeight = value.getHeight();
-    this->value = num.getMatrix();
+    if (num.getType() == MATRIX){
+        this->value = num.getMatrix();
+    } else if (num.getType() == SPAN_SET){
+        this->value = num.getSpanSet().asMatrix();
+    } else {
+        throw IncompatiblePasteException(*this, num);
+    }
     this->value.resize(oldHeight, oldWidth);
     reconstructPage();
 }

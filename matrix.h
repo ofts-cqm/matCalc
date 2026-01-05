@@ -52,6 +52,10 @@ public:
 
     Matrix reduceAsMatrix() const;
 
+    SpanSet nullSpace() const;
+
+    SpanSet colSpace() const;
+
 private:
     friend class SpanSet;
 

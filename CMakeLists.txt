@@ -58,6 +58,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         reducedmatrix.h reducedmatrix.cpp
         labelpane.h labelpane.cpp
         spanset.h spanset.cpp
+        incompatiblepasteexception.h incompatiblepasteexception.cpp
+        spansetpane.h spansetpane.cpp spansetpane.ui
 
 
     )

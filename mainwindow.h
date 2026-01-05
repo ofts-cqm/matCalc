@@ -17,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     static void setPage(AbstractPage *);
+    static void setMessage(QString str);
     ~MainWindow();
 
 private:

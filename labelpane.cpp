@@ -1,4 +1,5 @@
 #include "labelpane.h"
+#include "incompatiblepasteexception.h"
 #include <QVBoxLayout>
 
 LabelPane::LabelPane(QString label, QWidget *parent) : AbstractNumberPane(parent){
@@ -15,5 +16,6 @@ void LabelPane::display(GenericNumber num) {
 }
 
 void LabelPane::paste(GenericNumber num) {
+    if (num.getType() != LABEL) throw IncompatiblePasteException(*this, num);
     display(num);
 }

@@ -3,11 +3,14 @@
 
 #include "abstractnumberpane.h"
 #include "genericnumber.h"
+#include "incompatiblepasteexception.h"
 #include <QString>
 #include <QtGui/qfont.h>
 #include <QLayout>
 
 QString format(double val);
+
+std::string nameForNumberType(NumberType type);
 
 QFont getLargeFont();
 QFont getXLFont();
@@ -27,7 +30,9 @@ public:
 
     virtual void reconstructPage() override {}
     virtual void display(GenericNumber num) override {}
-    virtual void paste(GenericNumber num) override {}
+    virtual void paste(GenericNumber num) override {
+        throw IncompatiblePasteException(*this, num);
+    }
 
 };
 

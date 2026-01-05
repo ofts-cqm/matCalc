@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include "dimensionmismatchexception.h"
 #include "reducedmatrix.h"
+#include "spanset.h"
 #include "util.h"
 #include <cmath>
 
@@ -154,6 +155,14 @@ Matrix Matrix::transpose() const{
     }
 
     return res;
+}
+
+SpanSet Matrix::nullSpace() const {
+    return SpanSet(reduce().nullSpace());
+}
+
+SpanSet Matrix::colSpace() const{
+    return SpanSet(*this).reduce();
 }
 
 void Matrix::rowSwap(const int a, const int b){

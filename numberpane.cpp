@@ -29,6 +29,7 @@ const GenericNumber *NumberPane::getValue(){
 }
 
 void NumberPane::display(GenericNumber num){
+    if (num.getType() != NUMBER) throw IncompatiblePasteException(*this, num);
     this->value = num.getDouble();
     this->content->setValue(num.getDouble());
 }

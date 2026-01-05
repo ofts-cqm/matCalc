@@ -1,4 +1,5 @@
 #include "genericnumber.h"
+#include "spanset.h"
 #include <cassert>
 
 GenericNumber::GenericNumber(){
@@ -23,6 +24,11 @@ GenericNumber::GenericNumber(const Matrix *mat){
 GenericNumber::GenericNumber(const std::string *str){
     this->type = LABEL;
     this->num.lab = str;
+}
+
+GenericNumber::GenericNumber(const SpanSet *set){
+    this->type = SPAN_SET;
+    this->num.set = set;
 }
 
 const GenericNumber GenericNumber::unknown = GenericNumber();
@@ -51,6 +57,11 @@ const std::string &GenericNumber::getLabel() const {
     return *num.lab;
 }
 
+const SpanSet &GenericNumber::getSpanSet() const {
+    assert(this->type == SPAN_SET);
+    return *num.set;
+}
+
 GenericNumber GenericNumber::deepclone() const{
     GenericNumber number;
     number.type = this->type;
@@ -66,11 +77,14 @@ GenericNumber GenericNumber::deepclone() const{
     case MATRIX:
         number.num.mat = new Matrix(this->getMatrix());
         break;
-    case UNKNOWN:
-        number.num.lab = &this->getLabel();
-    case EMPTY:
-        break;
     case LABEL:
+        number.num.lab = &this->getLabel();
+        break;
+    case SPAN_SET:
+        number.num.set = new SpanSet(this->getSpanSet());
+        break;
+    case UNKNOWN:
+    case EMPTY:
         break;
     }
 

@@ -1,5 +1,6 @@
 #include "reducedmatrix.h"
 #include "dimensionmismatchexception.h"
+#include "util.h"
 #include <cassert>
 
 ReducedMatrix::ReducedMatrix(): Matrix() {
@@ -54,8 +55,90 @@ bool ReducedMatrix::hasSolu() const {
     return rank(false) == rank(true);
 }
 
-bool ReducedMatrix::hasEntry(int col) const{
-    return !column(col).isFullZero();
+Matrix ReducedMatrix::getSolutionMatrix() const {
+    int width = (boundary == -1 ? getWidth() : boundary), height = getHeight(), num_var = 0, last_exist = -1, variable[width];
+    for (int i = 0; i < width; i++) variable[i] = 0;
+
+    // for each variable, we want to know if it exists as a pivot point.
+    // "variable" is used to store all function's variable's type.
+    // "-1" simply means it's a pivot points
+    // here, we search from up to down
+    // to make sure we cover all variables, still use width as boundary
+    for (int i = 0; i < width; i++) {
+        // scan from left to right
+        if (i < height) for (int j = last_exist + 1; j < width; j++) {
+            // the first number we meet is the pivot entry
+            if (!isZero(( *this)[j, i])) {
+                variable[j] = -1; // record it as pivot entry
+                last_exist = j; // all pivot entries are on the right side of this, so start from here
+                goto lp; // search next row
+            }
+        }
+        // if we cannot find a pivot entry, then this row and all below are full zero
+        // we can record number of variables now.
+        num_var = width - i;
+        break;
+        lp:
+    }
+
+    Matrix answerMatrix(num_var + 1, width);
+
+    // here, we assign index to all free variables
+    int assignedVariable = 0;
+    for (int i = 0; i < width; i++) {
+        if (variable[i] == 0) { // if a variable does not have pivot entry, it is free
+            variable[i] = ++assignedVariable;// assign new index to this entry
+            answerMatrix[i, assignedVariable] = 1;// set this variable's entry to 1
+        }
+    }
+
+    // now, we iterate through the matrix to fill the answer matrix.
+    // we search from up to down
+    for (int i = 0; i < height; i++) {
+        int pivot = -1;
+
+        // first try to find a pivot entry
+        for (int j = 0; j < width; j++) {
+            if (!isZero((*this)[i, j])){
+                pivot = j;
+                break;
+            }
+        }
+
+        // cannot find? congratulation! we reached the end!
+        if (pivot == -1) break;
+
+        // pivot entry are not important in this case because we are defining them
+        // start from its right
+        for (int j = pivot + 1; j < width; j++) {
+            // if we find a non-zero entry
+            if (!isZero((* this)[i, j])){
+                // we use variable[j] to find this entry's related free-variable
+                // and set this free-variable's value as the negative of the solved matrix's
+                // negative because we implicitly moved the answer from right-hand-side
+                // of the equal sign to the left-hand-side, so negative
+                answerMatrix[pivot, variable[j]] = -(*this)[i, j];
+            }
+        }
+        // don't forget to assign the trivial solution
+        answerMatrix[pivot, 0] = -augmentedVector()[i];
+    }
+
+    return answerMatrix;
+}
+
+std::vector<bool> ReducedMatrix::pivots(){
+    int row = 0;
+    std::vector<bool> pivots;
+    for (int i = 0; i < getWidth(); i++){
+        if (isZero((*this)[row, i])){
+            pivots.push_back(false);
+        }else{
+            pivots.push_back(true);
+            row++;
+        }
+    }
+    return pivots;
 }
 
 int ReducedMatrix::rank(bool augmented) const{
@@ -93,7 +176,8 @@ Matrix ReducedMatrix::augmentedMatrix() const{
 }
 
 Vector ReducedMatrix::augmentedVector() const{
-    assert(this->boundary != -1);
+    if (this->boundary == -1) return Vector(this->getHeight());
+
     Vector vec(this->getHeight());
     for (int i = 0; i < this->getHeight(); i++){
         vec[i] = (* this)[i, this->boundary];

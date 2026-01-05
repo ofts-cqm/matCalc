@@ -1,5 +1,7 @@
 #include "genericpane.h"
 #include "abstractpage.h"
+#include "incompatiblepasteexception.h"
+#include "mainwindow.h"
 #include "util.h"
 #include "volatilestackedwidget.h"
 
@@ -120,9 +122,11 @@ void GenericPane::onCopy(){
 }
 
 void GenericPane::onPaste(){
-    if (clipBoard.getType() == this->getType()){
+    try{
         static_cast<AbstractNumberPane *>(content->currentWidget())->paste(clipBoard);
         AbstractPage::getCurrent()->evaluate();
+    }catch (IncompatiblePasteException e){
+        MainWindow::setMessage(e.what());
     }
 }
 

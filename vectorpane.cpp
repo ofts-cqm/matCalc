@@ -25,6 +25,7 @@ void VectorPane::display(GenericNumber vector){
 }
 
 void VectorPane::paste(GenericNumber vector){
+    if (vector.getType() != VECTOR) throw IncompatiblePasteException(*this, vector);
     int oldSize = this->value.dim();
     this->value = vector.getVector();
     this->value.setSize(oldSize);
@@ -42,7 +43,7 @@ void VectorPane::reconstructPage(){
 
         if (editable){
             widget = new DecimalLineEdit(
-                numberParser, [this, i](double val) { this->value[i] = val; },
+                numberParser, [this, i](double val) { this->value[i] = val; emit onFieldChanged(this->id, i, val); },
                 this->value[i]);
         }else{
             QLabel *label = new QLabel(format(this->value[i]), this);
@@ -82,6 +83,11 @@ void VectorPane::resizeVector(int size){
 const GenericNumber *VectorPane::getValue(){
     genericValue = GenericNumber(&value);
     return &genericValue;
+}
+
+VectorPane *VectorPane::setID(int id){
+    this->id = id;
+    return this;
 }
 
 VectorPane::~VectorPane()

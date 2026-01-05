@@ -22,7 +22,9 @@ public:
 
     bool hasSolu() const;
 
-    bool hasEntry(int col) const;
+    Matrix getSolutionMatrix() const;
+
+    std::vector<bool> pivots();
 
     Matrix mainMatrix() const;
 

@@ -4,5 +4,6 @@
         <file>bracket.png</file>
         <file>ModuloBorder.png</file>
         <file>FuncBracket.png</file>
+        <file>SetBracket.png</file>
     </qresource>
 </RCC>
