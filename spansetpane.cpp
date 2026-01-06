@@ -10,7 +10,6 @@ SpanSetPane::SpanSetPane(SpanSet value, bool editable, QWidget *parent)
     , value(value)
 {
     ui->setupUi(this);
-    //ui->numLayout->setLayout(new QHBoxLayout(ui->numLayout));
     SpanSetPane::reconstructPage();
 }
 
@@ -27,6 +26,14 @@ void SpanSetPane::paste(GenericNumber num){
     display(num);
 }
 
+QSize SpanSetPane::sizeHint() const{
+    return this->isCurrentPage ? QSize(value.getWidth() > 3 ? 300 : value.getWidth() * 80 + 40, value.getHeight() * 22 + 92) : QSize(0, 0);
+}
+
+QSize SpanSetPane::minimumSizeHint() const{
+    return QSize(0, 0);
+}
+
 void SpanSetPane::reconstructPage(){
     clearLayout(ui->numLayout->layout());
 
@@ -38,10 +45,15 @@ void SpanSetPane::reconstructPage(){
         ui->numLayout->layout()->addWidget(pane);
     }
 
-    this->setMinimumHeight(value.getHeight() * 22 + 92);
-    this->setMinimumWidth(200);
-
-    this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    if (this->isCurrentPage){
+        this->setMinimumHeight(value.getHeight() * 22 + 92);
+        this->setMinimumWidth(value.getWidth() > 3 ? 300 : value.getWidth() * 80 + 40);
+        this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    }else{
+        this->setMinimumWidth(0);
+        this->setMinimumHeight(0);
+        this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    }
 }
 
 const GenericNumber *SpanSetPane::getValue(){

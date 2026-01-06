@@ -60,7 +60,10 @@ GenericPane *GenericPane::append(AbstractNumberPane *pane){
 
 void GenericPane::switchTo(NumberType type){
     if (type != currentType){
-        static_cast<AbstractNumberPane *>(content->currentWidget())->setAsCurrent(false);
+        AbstractNumberPane *pane = static_cast<AbstractNumberPane *>(content->currentWidget());
+        pane->setAsCurrent(false);
+        pane->reconstructPage();
+        pane->adjustSize();
         if (currentType == UNKNOWN || currentType == EMPTY){
             this->setVisible(true);
         }
@@ -77,7 +80,7 @@ void GenericPane::switchTo(NumberType type){
         }
 
         content->setCurrentIndex(typeIndex[currentType]);
-        AbstractNumberPane *pane = static_cast<AbstractNumberPane *>(content->currentWidget());
+        pane = static_cast<AbstractNumberPane *>(content->currentWidget());
         pane->setAsCurrent(true);
         pane->reconstructPage();
         this->adjustSize();

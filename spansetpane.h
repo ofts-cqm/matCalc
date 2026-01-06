@@ -26,6 +26,10 @@ public:
 
     virtual const GenericNumber *getValue();
 
+    virtual QSize sizeHint() const;
+
+    virtual QSize minimumSizeHint() const;
+
     SpanSetPane *vecSizer(ResizeBar *bar);
 
     SpanSetPane *setSizer(ResizeBar *bar);

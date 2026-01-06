@@ -158,7 +158,7 @@ Matrix Matrix::transpose() const{
 }
 
 SpanSet Matrix::nullSpace() const {
-    return SpanSet(reduce().getSolutionMatrix());
+    return SpanSet(reduce()/*.getSolutionMatrix()*/);
 }
 
 SpanSet Matrix::colSpace() const{
