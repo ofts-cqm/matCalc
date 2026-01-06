@@ -34,12 +34,15 @@ public:
 
     SpanSetPane *setSizer(ResizeBar *bar);
 
+    SpanSetPane *hasSpan(bool span);
+
 private slots:
     void onVecFieldChanged(int id, int pos, double val);
 
 private:
     Ui::SpanSetPane *ui;
     bool editable;
+    bool span;
     SpanSet value;
 };
 

@@ -57,18 +57,22 @@ Matrix &Matrix::operator=(const Matrix &other){
 }
 
 double &Matrix::operator[](int i, int j){
+    if (i >= height) throwRangeException(i, height);
     return entries[i][j];
 }
 
 const double Matrix::operator[](int i, int j) const{
+    if (i >= height) throwRangeException(i, height);
     return entries[i][j];
 }
 
 const Vector &Matrix::operator[](int i) const{
+    if (i >= height) throwRangeException(i, height);
     return entries[i];
 }
 
 Vector &Matrix::operator[](int i){
+    if (i >= height) throwRangeException(i, height);
     return entries[i];
 }
 
@@ -158,7 +162,7 @@ Matrix Matrix::transpose() const{
 }
 
 SpanSet Matrix::nullSpace() const {
-    return SpanSet(reduce()/*.getSolutionMatrix()*/);
+    return SpanSet(reduce().getSolutionMatrix(false));
 }
 
 SpanSet Matrix::colSpace() const{

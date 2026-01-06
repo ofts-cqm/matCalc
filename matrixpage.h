@@ -3,6 +3,7 @@
 
 #include "abstractpage.h"
 #include "matrixpane.h"
+#include "spansetpane.h"
 
 class MatrixPage : public AbstractPage
 {
@@ -21,6 +22,7 @@ private:
     static int primeWidth();
     static int seoncdWidth();
     static MatrixPane *primaryPane, *secondaryPane;
+    static SpanSetPane *resPane;
     ResizeBar *normalHeight, *normalWidth, *mulHeight, *mulWidth, *mulMiddle, *normalSize;
 };
 

@@ -22,7 +22,7 @@ public:
 
     bool hasSolu() const;
 
-    Matrix getSolutionMatrix() const;
+    Matrix getSolutionMatrix(bool withVector) const;
 
     std::vector<bool> pivots();
 

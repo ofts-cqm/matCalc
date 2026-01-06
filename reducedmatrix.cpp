@@ -55,76 +55,38 @@ bool ReducedMatrix::hasSolu() const {
     return rank(false) == rank(true);
 }
 
-Matrix ReducedMatrix::getSolutionMatrix() const {
-    int width = (boundary == -1 ? getWidth() : boundary), height = getHeight(), num_var = 0, last_exist = -1, variable[width];
-    for (int i = 0; i < width; i++) variable[i] = 0;
+Matrix ReducedMatrix::getSolutionMatrix(bool withVector) const {
+    int width = (boundary == -1 || !withVector ? getWidth() : boundary), height = getHeight();
 
-    // for each variable, we want to know if it exists as a pivot point.
-    // "variable" is used to store all function's variable's type.
-    // "-1" simply means it's a pivot points
-    // here, we search from up to down
-    // to make sure we cover all variables, still use width as boundary
-    for (int i = 0; i < width; i++) {
-        // scan from left to right
-        if (i < height) for (int j = last_exist + 1; j < width; j++) {
-            // the first number we meet is the pivot entry
-            if (!isZero(( *this)[i, j])) {
-                variable[j] = -1; // record it as pivot entry
-                last_exist = j; // all pivot entries are on the right side of this, so start from here
-                goto lp; // search next row
-            }
-        }
-        // if we cannot find a pivot entry, then this row and all below are full zero
-        // we can record number of variables now.
-        num_var = width - i;
-        break;
-        lp:
+    // varColumn: index is ith var, value is matrix column
+    // varRow: same, but value is the row that needs the var
+    std::vector<int> varColumn, varRow;
+    int pivotRow = 0;
+    for (int i = 0; i < width; i++){
+        if (isZero(column(i)[pivotRow])) {
+            varColumn.push_back(i);
+            varRow.push_back(pivotRow + varRow.size());
+        } else pivotRow++;
     }
 
-    Matrix answerMatrix(num_var + 1, width);
+    for(int i = width; i < height; i++){
+        varColumn.push_back(-1);
+        varRow.push_back(i);
+    }
 
-    // here, we assign index to all free variables
-    int assignedVariable = 0;
-    for (int i = 0; i < width; i++) {
-        if (variable[i] == 0) { // if a variable does not have pivot entry, it is free
-            variable[i] = ++assignedVariable;// assign new index to this entry
-            answerMatrix[i, assignedVariable] = 1;// set this variable's entry to 1
+    const int matOffSet = withVector;
+    Vector equVec = augmentedVector();
+    Matrix sol = Matrix(height, varColumn.size() + matOffSet);
+    for (int i = 0; i < height; i++){
+        if (withVector) sol[i, 0] = equVec[i];
+
+        for (int j = 0; j < varColumn.size(); j++){
+            if (varRow[j] == i) sol[i, j + matOffSet] = 1;
+            else if (varColumn[j] != -1) sol[i, j + matOffSet] = -(* this)[i, varColumn[j]];
         }
     }
 
-    // now, we iterate through the matrix to fill the answer matrix.
-    // we search from up to down
-    for (int i = 0; i < height; i++) {
-        int pivot = -1;
-
-        // first try to find a pivot entry
-        for (int j = 0; j < width; j++) {
-            if (!isZero((*this)[i, j])){
-                pivot = j;
-                break;
-            }
-        }
-
-        // cannot find? congratulation! we reached the end!
-        if (pivot == -1) break;
-
-        // pivot entry are not important in this case because we are defining them
-        // start from its right
-        for (int j = pivot + 1; j < width; j++) {
-            // if we find a non-zero entry
-            if (!isZero((* this)[i, j])){
-                // we use variable[j] to find this entry's related free-variable
-                // and set this free-variable's value as the negative of the solved matrix's
-                // negative because we implicitly moved the answer from right-hand-side
-                // of the equal sign to the left-hand-side, so negative
-                answerMatrix[pivot, variable[j]] = -(*this)[i, j];
-            }
-        }
-        // don't forget to assign the trivial solution
-        answerMatrix[pivot, 0] = -augmentedVector()[i];
-    }
-
-    return answerMatrix;
+    return sol;
 }
 
 std::vector<bool> ReducedMatrix::pivots(){

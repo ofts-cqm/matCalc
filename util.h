@@ -24,6 +24,8 @@ QSpacerItem *getVerticalSpacer();
 
 bool isZero(double d);
 
+void throwRangeException(int accessed, int maximum) noexcept(false);
+
 class EmptyPane : public AbstractNumberPane{
 public:
     EmptyPane(QWidget *parent);

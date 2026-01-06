@@ -20,6 +20,8 @@ QString format(double val){
         s.pop_back();
     }
 
+    if (s == "-0") return "0";
+
     return QString::fromStdString(s);
 }
 
@@ -66,6 +68,11 @@ void clearLayout(QLayout* layout, bool deleteWidgets) {
         }
         delete item;
     }
+}
+
+void throwRangeException(int accessed, int maximum) {
+    std::string str = "Invalid access of index " + std::to_string(accessed) + ", length is " + std::to_string(maximum);
+    throw std::out_of_range(str);
 }
 
 std::optional<double> numberParser(QStringView s){

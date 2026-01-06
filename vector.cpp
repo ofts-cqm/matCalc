@@ -24,10 +24,12 @@ void Vector::setSize(int size){
 }
 
 double &Vector::operator[](int index){
+    if (index >= dim()) throwRangeException(index, dim());
     return std::vector<double>::operator[](index);
 }
 
 double Vector::operator[](int index) const{
+    if (index >= dim()) throwRangeException(index, dim());
     return std::vector<double>::operator[](index);
 }
 
@@ -182,10 +184,11 @@ bool Vector::isFullZero() const{
 }
 
 bool Vector::isFullZeroAfter(int &index) const{
+    int initial = index;
     for (; index < this->dim(); index++){
         if (!isZero((* this)[index])) return false & index++;
     }
-    index++;
+    index = initial;
     return true;
 }
 

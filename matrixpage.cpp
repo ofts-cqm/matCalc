@@ -1,6 +1,7 @@
 #include "matrixpage.h"
 #include "calculationselectionlabel.h"
 #include "spanset.h"
+#include "spansetpane.h"
 #include "util.h"
 #include "vectorpane.h"
 #include "reducedmatrix.h"
@@ -56,6 +57,9 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
     case COL_SPACE:
         setBuff = b->getMatrix().colSpace();
         break;
+    case BASE:
+        setBuff = b->getSpanSet().reduce();
+        break;
     default:
         break;
     }
@@ -82,7 +86,8 @@ const Calculation MatrixPage::calculationdefinition[] = {
     { EMPTY, MATRIX, NUMBER, DET, "Det" },
     { EMPTY, MATRIX, MATRIX, RREF, "Reduce" },
     { EMPTY, MATRIX, SPAN_SET, COL_SPACE, "Range" },
-    { EMPTY, MATRIX, SPAN_SET, NULL_SPACE, "Kernal" }
+    { EMPTY, MATRIX, SPAN_SET, NULL_SPACE, "Kernal" },
+    { EMPTY, SPAN_SET, SPAN_SET, BASE, "Find Base" }
 };
 
 int MatrixPage::primeHeight(){
@@ -99,6 +104,7 @@ int MatrixPage::seoncdWidth(){
 
 MatrixPane *MatrixPage::primaryPane = nullptr;
 MatrixPane *MatrixPage::secondaryPane = nullptr;
+SpanSetPane *MatrixPage::resPane = nullptr;
 
 MatrixPage::MatrixPage(QWidget *parent)
     : AbstractPage(evaFunc, &calculationdefinition[0], parent){
@@ -120,28 +126,33 @@ MatrixPage::MatrixPage(QWidget *parent)
     control->switchTo(0);
 
     content->addItem(getHorizontalSpacer());
-    content->addWidget(registerOperand(new GenericPane(this,
+    content->addWidget(registerOperand((new GenericPane(this,
         (primaryPane = new MatrixPane())->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
             setHeightSizer(mulHeight)->setWidthSizer(mulMiddle)->
-            setHeightSizer(normalSize)->setWidthSizer(normalSize), true), 1));
+            setHeightSizer(normalSize)->setWidthSizer(normalSize), true)), 1));
     content->addWidget(sign);
     content->addWidget(registerOperand((new GenericPane(this,
         (secondaryPane = new MatrixPane(nullptr))->
             setHeightSizer(normalHeight)->setWidthSizer(normalWidth)->
             setHeightSizer(mulMiddle)->setWidthSizer(mulWidth)->
             setHeightSizer(normalSize)->setWidthSizer(normalSize), true))->append(
-        (new VectorPane())->setSizer(normalWidth)), 2));
+        (new VectorPane())->setSizer(normalWidth))->append(
+        (new SpanSetPane(SpanSet(), true))->setSizer(normalWidth)->vecSizer(normalHeight)->hasSpan(false)), 2));
     content->addWidget(equal);
-    content->addWidget(registerOperand(new GenericPane(this,
-        new MatrixPane(nullptr, Matrix(3, 3), false), false), 3));
+    content->addWidget(registerOperand((new GenericPane(this,
+        new MatrixPane(nullptr, Matrix(3, 3), false), false))->append(
+        resPane = new SpanSetPane(SpanSet(), false)), 3));
     content->addItem(getHorizontalSpacer());
 
     AbstractPage::switchTo(&calculationdefinition[0]);
 }
 
 void MatrixPage::switchTo(const Calculation *nextCalculation){
+    resPane->hasSpan(true);
     switch(nextCalculation->sign){
+    case BASE:
+        resPane->hasSpan(false);
     case PLUS:
     case MINUS:
     case TRANS:

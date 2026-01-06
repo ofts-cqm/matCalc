@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>100</width>
+    <width>137</width>
     <height>400</height>
    </rect>
   </property>
@@ -22,10 +22,17 @@
   <property name="styleSheet">
    <string notr="true">.QScrollArea#scrollArea {
 	border-image: url(:/assets/SetBracket.png) 36 36 36 36 stretch;
-	border-width: 12px;
+	border-width: 6px;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <widget class="QLabel" name="span">
+     <property name="text">
+      <string>Span</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
@@ -36,8 +43,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>52</width>
-        <height>352</height>
+        <width>62</width>
+        <height>364</height>
        </rect>
       </property>
       <property name="sizePolicy">

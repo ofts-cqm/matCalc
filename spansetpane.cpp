@@ -1,4 +1,5 @@
 #include "spansetpane.h"
+#include "labelpane.h"
 #include "ui_spansetpane.h"
 #include "util.h"
 #include "vectorpane.h"
@@ -10,6 +11,8 @@ SpanSetPane::SpanSetPane(SpanSet value, bool editable, QWidget *parent)
     , value(value)
 {
     ui->setupUi(this);
+    span = true;
+    ui->span->setFont(getLargeFont());
     SpanSetPane::reconstructPage();
 }
 
@@ -27,7 +30,8 @@ void SpanSetPane::paste(GenericNumber num){
 }
 
 QSize SpanSetPane::sizeHint() const{
-    return this->isCurrentPage ? QSize(value.getWidth() > 3 ? 300 : value.getWidth() * 80 + 40, value.getHeight() * 22 + 92) : QSize(0, 0);
+    if (this->value.getWidth() == 0) return QSize(135, 40);
+    return this->isCurrentPage ? QSize(value.getWidth() > 2 ? 252 : value.getWidth() * 92 + 68, value.getHeight() * 22 + 92) : QSize(0, 0);
 }
 
 QSize SpanSetPane::minimumSizeHint() const{
@@ -36,6 +40,16 @@ QSize SpanSetPane::minimumSizeHint() const{
 
 void SpanSetPane::reconstructPage(){
     clearLayout(ui->numLayout->layout());
+    if (span) ui->span->show();
+    else
+        ui->span->hide();
+
+    if (value.getWidth() == 0){
+        ui->numLayout->layout()->addWidget(new LabelPane("(Empty Set)"));
+        this->setMinimumHeight(40);
+        this->setMinimumWidth(135);
+        return;
+    }
 
     for (int i = 0; i < value.getWidth(); i++){
         VectorPane *pane = (new VectorPane(ui->numLayout, value[i], editable))->setID(i);
@@ -47,7 +61,7 @@ void SpanSetPane::reconstructPage(){
 
     if (this->isCurrentPage){
         this->setMinimumHeight(value.getHeight() * 22 + 92);
-        this->setMinimumWidth(value.getWidth() > 3 ? 300 : value.getWidth() * 80 + 40);
+        this->setMinimumWidth(value.getWidth() > 2 ? 252 : value.getWidth() * 92 + 68);
         this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     }else{
         this->setMinimumWidth(0);
@@ -68,6 +82,11 @@ SpanSetPane *SpanSetPane::vecSizer(ResizeBar *bar){
 
 SpanSetPane *SpanSetPane::setSizer(ResizeBar *bar){
     bar->addTarget([this](int dim){ value.resize(-1, dim); reconstructPage(); });
+    return this;
+}
+
+SpanSetPane *SpanSetPane::hasSpan(bool span){
+    this->span = span;
     return this;
 }
 
