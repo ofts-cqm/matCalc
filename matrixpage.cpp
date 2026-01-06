@@ -50,10 +50,12 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         numBuff = b->getMatrix().reduce().rank();
         break;
     case NULL_SPACE:
-        setBuff = b->getMatrix().nullSpace();
+        //setBuff = b->getMatrix().nullSpace();
+        setBuff = SpanSet(b->getMatrix());
         break;
     case COL_SPACE:
-        setBuff = b->getMatrix().colSpace();
+        //setBuff = b->getMatrix().colSpace();
+        setBuff = SpanSet(b->getMatrix());
         break;
     default:
         break;

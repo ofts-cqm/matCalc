@@ -18,13 +18,13 @@ public:
     explicit VectorPane(QWidget *parent = nullptr, Vector vec = Vector(3), bool editable = true);
     ~VectorPane();
 
-    virtual void display(GenericNumber vector);
+    virtual void display(GenericNumber vector) override;
 
-    virtual void paste(GenericNumber num);
+    virtual void paste(GenericNumber num) override;
 
-    virtual void reconstructPage();
+    virtual void reconstructPage() override;
 
-    virtual const GenericNumber *getValue();
+    virtual const GenericNumber *getValue() override;
 
     const Vector *getPrivateValue();
 

@@ -68,7 +68,7 @@ Matrix ReducedMatrix::getSolutionMatrix() const {
         // scan from left to right
         if (i < height) for (int j = last_exist + 1; j < width; j++) {
             // the first number we meet is the pivot entry
-            if (!isZero(( *this)[j, i])) {
+            if (!isZero(( *this)[i, j])) {
                 variable[j] = -1; // record it as pivot entry
                 last_exist = j; // all pivot entries are on the right side of this, so start from here
                 goto lp; // search next row

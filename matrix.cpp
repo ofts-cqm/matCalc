@@ -76,7 +76,7 @@ Vector &Matrix::operator[](int i){
 const Vector Matrix::column(int i) const{
     Vector vec(this->height);
 
-    for (int j = 0; i < height; j++){
+    for (int j = 0; j < height; j++){
         vec[j] = entries[j][i];
     }
 
@@ -158,7 +158,7 @@ Matrix Matrix::transpose() const{
 }
 
 SpanSet Matrix::nullSpace() const {
-    return SpanSet(reduce().nullSpace());
+    return SpanSet(reduce().getSolutionMatrix());
 }
 
 SpanSet Matrix::colSpace() const{

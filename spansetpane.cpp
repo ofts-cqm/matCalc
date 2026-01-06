@@ -10,7 +10,7 @@ SpanSetPane::SpanSetPane(SpanSet value, bool editable, QWidget *parent)
     , value(value)
 {
     ui->setupUi(this);
-    ui->numLayout->setLayout(new QHBoxLayout(ui->numLayout));
+    //ui->numLayout->setLayout(new QHBoxLayout(ui->numLayout));
     SpanSetPane::reconstructPage();
 }
 
@@ -32,12 +32,15 @@ void SpanSetPane::reconstructPage(){
 
     for (int i = 0; i < value.getWidth(); i++){
         VectorPane *pane = (new VectorPane(ui->numLayout, value[i], editable))->setID(i);
+        pane->setAsCurrent(true);
+        pane->reconstructPage();
         connect(pane, &VectorPane::onFieldChanged, this, &SpanSetPane::onVecFieldChanged);
         ui->numLayout->layout()->addWidget(pane);
     }
 
-    this->setMaximumHeight(value.getHeight() * 22 + 92);
-    this->setMaximumWidth(400);
+    this->setMinimumHeight(value.getHeight() * 22 + 92);
+    this->setMinimumWidth(200);
+
     this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
