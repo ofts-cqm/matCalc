@@ -1,8 +1,8 @@
 #ifndef GENERICNUMBER_H
 #define GENERICNUMBER_H
 
-#include "matrix.h"
-#include "vector.h"
+#include "numbers/matrix.h"
+#include "numbers/vector.h"
 
 union NumberHolder {
     const double *num;

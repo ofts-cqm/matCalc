@@ -1,9 +1,9 @@
 #include "util.h"
-#include "matrixpane.h"
-#include "numberpane.h"
-#include "spansetpane.h"
-#include "vectorpane.h"
-#include "labelpane.h"
+#include "panes/matrixpane.h"
+#include "panes/numberpane.h"
+#include "panes/spansetpane.h"
+#include "panes/vectorpane.h"
+#include "panes/labelpane.h"
 #include <QWidget>
 
 QString format(double val){

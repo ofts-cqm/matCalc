@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "./vectorpage.h"
-#include "matrixpage.h"
+#include "calculatorPage/vectorpage.h"
+#include "calculatorPage/matrixpage.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

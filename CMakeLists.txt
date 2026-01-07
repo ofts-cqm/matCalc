@@ -32,36 +32,35 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(MatCalc
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        vectorpane.h vectorpane.cpp vectorpane.ui
+        panes/vectorpane.h panes/vectorpane.cpp panes/vectorpane.ui
         vectorSquare.qrc
-        vectorpage.h vectorpage.cpp
-        vector.h vector.cpp
+        calculatorPage/vectorpage.h calculatorPage/vectorpage.cpp
+        numbers/vector.h numbers/vector.cpp
         dimensionmismatchexception.cpp
         dimensionmismatchexception.h
         util.h util.cpp
-        decimallineedit.h decimallineedit.cpp
-        abstractnumberpane.h abstractnumberpane.cpp
-        numberpane.h numberpane.cpp
+        panes/decimallineedit.h panes/decimallineedit.cpp
+        panes/abstractnumberpane.h panes/abstractnumberpane.cpp
+        panes/numberpane.h panes/numberpane.cpp
         genericnumber.h genericnumber.cpp
-        genericpane.h genericpane.cpp
-        signpane.h signpane.cpp
-        abstractpage.h abstractpage.cpp
+        panes/genericpane.h panes/genericpane.cpp
+        panes/signpane.h panes/signpane.cpp
+        calculatorPage/abstractpage.h calculatorPage/abstractpage.cpp
         calculator_basic.h
-        genericpane.ui
-        sizerbar.h sizerbar.cpp
-        controlpane.h controlpane.cpp
+        panes/genericpane.ui
+        calculatorPage/sizerbar.h calculatorPage/sizerbar.cpp
+        panes/controlpane.h panes/controlpane.cpp
         calculationselectionlabel.h calculationselectionlabel.cpp
-        matrix.h matrix.cpp
-        matrixpane.h matrixpane.cpp
-        matrixpage.h matrixpage.cpp
-        volatilestackedwidget.h volatilestackedwidget.cpp
-        reducedmatrix.h reducedmatrix.cpp
-        labelpane.h labelpane.cpp
-        spanset.h spanset.cpp
-        incompatiblepasteexception.h incompatiblepasteexception.cpp
-        spansetpane.h spansetpane.cpp spansetpane.ui
-
-
+        numbers/matrix.h numbers/matrix.cpp
+        panes/matrixpane.h panes/matrixpane.cpp
+        calculatorPage/matrixpage.h calculatorPage/matrixpage.cpp
+        panes/volatilestackedwidget.h panes/volatilestackedwidget.cpp
+        numbers/reducedmatrix.h numbers/reducedmatrix.cpp
+        panes/labelpane.h panes/labelpane.cpp
+        numbers/spanset.h numbers/spanset.cpp
+        panes/incompatiblepasteexception.h panes/incompatiblepasteexception.cpp
+        panes/spansetpane.h panes/spansetpane.cpp panes/spansetpane.ui
+        calc/calculator.h calc/calculator.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MatCalc APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

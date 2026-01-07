@@ -1,7 +1,7 @@
 #ifndef CALCULATIONSELECTIONLABEL_H
 #define CALCULATIONSELECTIONLABEL_H
 
-#include "abstractpage.h"
+#include "calculatorPage/abstractpage.h"
 #include "calculator_basic.h"
 #include <QLabel>
 

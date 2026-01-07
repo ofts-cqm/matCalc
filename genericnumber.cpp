@@ -1,5 +1,5 @@
 #include "genericnumber.h"
-#include "spanset.h"
+#include "numbers/spanset.h"
 #include <cassert>
 
 GenericNumber::GenericNumber(){

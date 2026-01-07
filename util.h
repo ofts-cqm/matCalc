@@ -1,9 +1,9 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-#include "abstractnumberpane.h"
+#include "panes/abstractnumberpane.h"
 #include "genericnumber.h"
-#include "incompatiblepasteexception.h"
+#include "panes/incompatiblepasteexception.h"
 #include <QString>
 #include <QtGui/qfont.h>
 #include <QLayout>

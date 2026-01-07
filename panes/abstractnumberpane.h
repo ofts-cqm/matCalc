@@ -1,0 +1,36 @@
+#ifndef ABSTRACTNUMBERPANE_H
+#define ABSTRACTNUMBERPANE_H
+
+
+#include "../genericnumber.h"
+#include <QtWidgets/qwidget.h>
+class AbstractNumberPane : public QWidget
+{
+Q_OBJECT
+
+public:
+    AbstractNumberPane(QWidget *parent) : QWidget(parent){}
+
+    virtual void reconstructPage() = 0;
+
+    // display: display the target number regardless if its a different form
+    virtual void display(GenericNumber num) = 0;
+
+    // instead of display another number, this set the current number to the target number
+    // which means this preserves the current type and info (i.e, size), while display() does not
+    virtual void paste(GenericNumber num) = 0;
+
+    virtual const GenericNumber *getValue() {return &genericValue; }
+
+    virtual const NumberType getType() const {
+        return genericValue.getType();
+    }
+
+    void setAsCurrent(bool current) { isCurrentPage = current; }
+
+protected:
+    GenericNumber genericValue;
+    bool isCurrentPage;
+};
+
+#endif // ABSTRACTNUMBERPANE_H
