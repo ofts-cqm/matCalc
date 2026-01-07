@@ -29,7 +29,10 @@
    <item>
     <widget class="QLabel" name="span">
      <property name="text">
-      <string>Span</string>
+      <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::TextFormat::PlainText</enum>
      </property>
     </widget>
    </item>
@@ -43,7 +46,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>62</width>
+        <width>93</width>
         <height>364</height>
        </rect>
       </property>

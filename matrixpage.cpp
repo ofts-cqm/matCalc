@@ -138,7 +138,7 @@ MatrixPage::MatrixPage(QWidget *parent)
             setHeightSizer(mulMiddle)->setWidthSizer(mulWidth)->
             setHeightSizer(normalSize)->setWidthSizer(normalSize), true))->append(
         (new VectorPane())->setSizer(normalWidth))->append(
-        (new SpanSetPane(SpanSet(), true))->setSizer(normalWidth)->vecSizer(normalHeight)->hasSpan(false)), 2));
+        (new SpanSetPane(SpanSet(3, 3), true))->setSizer(normalWidth)->vecSizer(normalHeight)->hasSpan(false)), 2));
     content->addWidget(equal);
     content->addWidget(registerOperand((new GenericPane(this,
         new MatrixPane(nullptr, Matrix(3, 3), false), false))->append(

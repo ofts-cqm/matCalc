@@ -10,6 +10,7 @@ SpanSetPane::SpanSetPane(SpanSet value, bool editable, QWidget *parent)
     , editable(editable)
     , value(value)
 {
+    this->genericValue = &value;
     ui->setupUi(this);
     span = true;
     ui->span->setFont(getLargeFont());
@@ -41,13 +42,12 @@ QSize SpanSetPane::minimumSizeHint() const{
 void SpanSetPane::reconstructPage(){
     clearLayout(ui->numLayout->layout());
     if (span) ui->span->show();
-    else
-        ui->span->hide();
+    else ui->span->hide();
 
     if (value.getWidth() == 0){
-        ui->numLayout->layout()->addWidget(new LabelPane("(Empty Set)"));
+        ui->numLayout->layout()->addWidget(new LabelPane("Empty"));
         this->setMinimumHeight(40);
-        this->setMinimumWidth(135);
+        this->setMinimumWidth(span ? 150 : 40);
         return;
     }
 
@@ -87,11 +87,13 @@ SpanSetPane *SpanSetPane::setSizer(ResizeBar *bar){
 
 SpanSetPane *SpanSetPane::hasSpan(bool span){
     this->span = span;
+    if (span) ui->span->show();
+    else ui->span->hide();
     return this;
 }
 
 void SpanSetPane::onVecFieldChanged(int id, int pos, double val){
-    value[id, pos] = val;
+    value[pos, id] = val;
 }
 
 SpanSetPane::~SpanSetPane()
