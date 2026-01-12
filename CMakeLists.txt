@@ -61,6 +61,14 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         panes/incompatiblepasteexception.h panes/incompatiblepasteexception.cpp
         panes/spansetpane.h panes/spansetpane.cpp panes/spansetpane.ui
         calc/calculator.h calc/calculator.cpp
+        calc/inputmatcher.h calc/inputmatcher.cpp
+        calc/token.h calc/token.cpp
+        calc/logger.h calc/logger.cpp
+        calc/numbertoken.h calc/numbertoken.cpp
+        calc/operatortoken.h calc/operatortoken.cpp
+        calc/roottoken.h calc/roottoken.cpp
+        calc/parenthesistoken.h calc/parenthesistoken.cpp
+        calc/binaryoperatortoken.h calc/binaryoperatortoken.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MatCalc APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
