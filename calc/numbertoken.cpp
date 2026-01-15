@@ -5,23 +5,29 @@
 
 long matchNum(InputMatcher &input, int start);
 
-int getNextDigit(InputMatcher input);
+int getNextDigit(InputMatcher &input);
 
 NumberToken::NumberToken():Token() {}
 
 NumberToken::NumberToken(double val, OperatorToken *lastToken): Token(lastToken), val(val) {}
 
-NumberToken::~NumberToken(){};
+bool returnToken(double val, Token *lastInput){
+    OperatorToken *parent = dynamic_cast<OperatorToken *>(lastInput);
+    parent->right = std::make_unique<NumberToken>(val, parent);
+    lastToken = parent->right.get();
+    return true;
+}
 
 double NumberToken::evaluate() const {return val;}
 
-Token *NumberToken::parse(InputMatcher &input, Token *lastInput) const {
-    if (input.match("E", false)) return finalizeToken(lastInput, lastToken = new NumberToken(std::numbers::e));
-    if (input.match("PI", false) || input.match("π")) return finalizeToken(lastInput, lastToken = new NumberToken(std::numbers::pi));
-    if (input.match("ANS", false)) return finalizeToken(lastInput, lastToken = new NumberToken(previousAnswer));
+bool NumberToken::parse(InputMatcher &input, Token *lastInput) const {
+    if (input.match("E", false)) return finalizeToken(lastInput, std::make_unique<NumberToken>(std::numbers::e));
+    if (input.match("PI", false) || input.match("π")) return finalizeToken(lastInput, std::make_unique<NumberToken>(std::numbers::pi));
+    if (input.match("ANS", false)) return finalizeToken(lastInput, std::make_unique<NumberToken>(previousAnswer));
 
-    if (lastInput->type() != TokenType::Operator){
+    if (lastInput->type() != TokenType::Operator && lastInput->type() != TokenType::Root){
         logError("Error: Cannot Process Numbers Without Prior Operator", input);
+        return false;
     }
 
     input.push();
@@ -29,7 +35,7 @@ Token *NumberToken::parse(InputMatcher &input, Token *lastInput) const {
     int digit = getNextDigit(input);
     if (digit == -1) {
         input.pop();
-        return nullptr;
+        return false;
     }
     long number = matchNum(input, digit);
 
@@ -39,7 +45,7 @@ Token *NumberToken::parse(InputMatcher &input, Token *lastInput) const {
             long decimal = matchNum(input, digit);
             double fp = decimal / pow(10, std::to_string(decimal).size());
             input.ignore();
-            return lastToken = new NumberToken(number + fp, dynamic_cast<OperatorToken *>(lastInput));
+            return returnToken(number + fp, lastInput);
         }
     }
 
@@ -53,15 +59,15 @@ Token *NumberToken::parse(InputMatcher &input, Token *lastInput) const {
             long exponent = matchNum(input, digit);
             if (flip) exponent *= -1;
             input.ignore();
-            return lastToken = new NumberToken(number * pow(10, exponent), dynamic_cast<OperatorToken *>(lastInput));
+            return returnToken(number * pow(10, exponent), lastInput);
         }
 
         input.pop();
-        return lastToken = new NumberToken(number);
+        return returnToken(number, lastInput);
     }
 
     input.ignore();
-    return lastToken = new NumberToken(number, dynamic_cast<OperatorToken *>(lastInput));
+    return returnToken(number, lastInput);
 }
 
 void NumberToken::debug() const{
@@ -70,8 +76,8 @@ void NumberToken::debug() const{
 
 TokenType NumberToken::type() const {return TokenType::Number; }
 
-int getNextDigit(InputMatcher input) {
-    std::string_view tmp = input.get(1);
+int getNextDigit(InputMatcher &input) {
+    std::string tmp = input.get(1);
     if (tmp == "") return -1;
     int c = tmp[0] - '0';
     if (c >= 0 && c <= 9) {
@@ -81,7 +87,7 @@ int getNextDigit(InputMatcher input) {
     return -1;
 }
 
-long matchNum(InputMatcher input, int start) {
+long matchNum(InputMatcher &input, int start){
     long number = 0;
     while (start != -1) {
         number *= 10;

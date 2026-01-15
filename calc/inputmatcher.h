@@ -17,7 +17,7 @@ public:
 
     void skip(int length);
 
-    std::string_view get(int length, bool allowPartial = false) const;
+    std::string get(int length, bool allowPartial = false) const;
 
     bool match(const std::string &str, bool matchCase = true);
 

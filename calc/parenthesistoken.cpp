@@ -1,40 +1,37 @@
 #include "parenthesistoken.h"
 
 ParenthesisToken::ParenthesisToken(RootToken &content, Token *parent)
-    : Token(dynamic_cast<OperatorToken *>(parent)), content(content){}
+    : Token(dynamic_cast<OperatorToken *>(parent)), content(std::move(content)){
+
+}
 
 double ParenthesisToken::evaluate() const{
     return content.evaluate();
 }
 
-Token *ParenthesisToken::parse(InputMatcher &input, Token *lastInput) const{
+bool ParenthesisToken::parse(InputMatcher &input, Token *lastInput) const{
+    if (!input.match("(")) return false;
+
     input.push();
-    if (!input.match("(")){
-        input.pop();
-        return nullptr;
-    }
-
     RootToken root;
-    Token *matched = matchNext(input, &root);
-    root.right = matched;
-
-    if (matched == nullptr){
-        logError("Error: Nothing In Parentheses", input);
-        input.pop();
-        return nullptr;
-    }
+    lastToken = &root;
 
     while (!input.match(")")){
-        matched = matchNext(input, &root);
-        if (matched == nullptr){
-            logError("Error: Nothing In Parentheses", input);
+        if(!matchNext(input, lastToken)){
+            logError("Error: Parenthesis Not Closed!", input);
             input.pop();
-            return nullptr;
+            return false;
         }
     }
 
+    if (root.right == nullptr){
+        logError("Error: Parenthesis Is Empty", input);
+        input.pop();
+        return false;
+    }
+
     input.ignore();
-    return finalizeToken(lastInput, lastToken = new ParenthesisToken(root, lastInput));
+    return finalizeToken(lastInput, std::make_unique<ParenthesisToken>(root, lastInput));
 }
 
 void ParenthesisToken::debug() const{

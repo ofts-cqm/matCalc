@@ -16,7 +16,7 @@ Logger &Logger::finish(){
 }
 
 Logger &Logger::write(const std::string &str, bool isLast){
-    for (int i = 0; i < indentationRules.size(); i++){
+    for (int i = 0; i < indentationRules.size() - 1; i++){
         std::cout << (indentationRules[i] ? "│  " : "   ");
     }
 

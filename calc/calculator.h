@@ -7,16 +7,16 @@
 
 class Token;
 
-bool radianMode = false;
-bool debugMode = false;
-double previousAnswer = 0;
-InputMatcher input("");
-std::ostringstream error_message;
-Token *lastToken;
+extern bool radianMode;
+extern bool debugMode;
+extern double previousAnswer;
+extern InputMatcher input;
+static std::ostringstream error_message;
+extern Token *lastToken;
 
 std::optional<double> evaluate(std::string expression, std::string &error_message, bool record_result = false);
 
-Token *matchNext(InputMatcher &input, Token *lastInput);
+bool matchNext(InputMatcher &input, Token *lastInput);
 
 void logError(std::string error, const InputMatcher &context);
 

@@ -10,11 +10,9 @@ public:
 
     NumberToken(double val, OperatorToken *lastInput = nullptr);
 
-    virtual ~NumberToken();
-
     virtual double evaluate() const;
 
-    virtual Token *parse(InputMatcher &input, Token *lastInput) const;
+    virtual bool parse(InputMatcher &input, Token *lastInput) const;
 
     virtual void debug() const;
 

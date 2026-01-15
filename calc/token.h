@@ -20,13 +20,13 @@ class Token
 public:
     Token(OperatorToken *parent);
 
-    Token();
+    Token() = default;
 
-    virtual ~Token() = 0;
+    virtual ~Token() = default;
 
     virtual double evaluate() const = 0;
 
-    virtual Token *parse(InputMatcher &input, Token *lastInput) const = 0;
+    virtual bool parse(InputMatcher &input, Token *lastInput) const = 0;
 
     virtual void debug() const = 0;
 
@@ -37,6 +37,6 @@ public:
     static Logger logger;
 };
 
-Token *finalizeToken(Token *lastInput, Token *generated);
+bool finalizeToken(Token *lastInput, std::unique_ptr<Token> &&generated);
 
 #endif // TOKEN_H

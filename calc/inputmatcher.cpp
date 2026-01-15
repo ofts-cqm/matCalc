@@ -1,7 +1,9 @@
 #include "inputmatcher.h"
 
 InputMatcher::InputMatcher(const std::string &expression)
-    : expression_base(expression), expression(expression_base), length(expression.length()) {}
+    : expression_base(expression), expression(), length(expression.length()) {
+    this->expression = expression_base;
+}
 
 bool InputMatcher::isEnd() const {return index == length; };
 
@@ -23,9 +25,9 @@ void InputMatcher::skip(int length){
     trim();
 }
 
-std::string_view InputMatcher::get(int length, bool allowPartial) const{
-    if (index + length < this->length) return expression.substr(index, length);
-    return allowPartial ? expression.substr(index) : "";
+std::string InputMatcher::get(int length, bool allowPartial) const{
+    if (index + length <= this->length) return expression_base.substr(index, length);
+    return allowPartial ? expression_base.substr(index) : "";
 }
 
 bool compareIgnoreCase(const std::string_view& str1, const std::string& str2)
@@ -43,8 +45,8 @@ bool compareIgnoreCase(const std::string_view& str1, const std::string& str2)
 
 bool InputMatcher::match(const std::string &str, bool matchCase){
     if (str.length() + index > this->length) return false;
-    bool matched = matchCase ? expression.compare(index, str.length(), str)
-        : compareIgnoreCase(expression.substr(index, str.length()), str);
+    bool matched = matchCase ? expression_base.compare(index, str.length(), str) == 0
+        : compareIgnoreCase(expression_base.substr(index, str.length()), str);
 
     if (matched) skip(str.length());
     return matched;

@@ -2,32 +2,29 @@
 #define BINARYOPERATORTOKEN_H
 
 #include "operatortoken.h"
+#include <memory>
 
 class BinaryOperatorToken : public OperatorToken
 {
 public:
-    using BinaryEvaluator = std::function<double(double, double)>;
-
-    BinaryOperatorToken(Token *left, const BinaryOperatorToken &tmplt);
-
-    virtual ~BinaryOperatorToken();
+    BinaryOperatorToken(std::unique_ptr<Token> &&left, const BinaryOperatorToken &tmplt);
 
     virtual double evaluate() const override;
 
-    virtual Token *parse(InputMatcher &input, Token *lastInput) const override;
+    virtual bool parse(InputMatcher &input, Token *lastInput) const override;
 
     virtual void debug() const override;
 
-    Token *left;
+    std::unique_ptr<Token> left;
 
-    const BinaryEvaluator &evaluator;
+    const Sign sign;
 
     static void init(std::vector<Token *> &tokens);
 
     static BinaryOperatorToken *multiply;
 
 protected:
-    BinaryOperatorToken(int precedence, const std::string &operation, const BinaryEvaluator &evaluator);
+    BinaryOperatorToken(int precedence, const std::string &operation, Sign sign);
 };
 
 #endif // BINARYOPERATORTOKEN_H

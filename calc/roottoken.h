@@ -9,6 +9,8 @@ class RootToken : public OperatorToken
 public:
     RootToken();
 
+    RootToken(RootToken &&other);
+
     virtual TokenType type() const override;
 };
 

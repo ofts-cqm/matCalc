@@ -32,18 +32,12 @@ std::optional<double> evaluate(std::string expression, std::string &error, bool 
     return result;
 }
 
-Token *matchNext(InputMatcher &input, Token *lastInput){
-    Token *matched;
+bool matchNext(InputMatcher &input, Token *lastInput){
     for (const Token *token : registeredTokens){
-        matched = token->parse(input, lastInput);
-        if (matched != nullptr) {
-            if (matched->parent == nullptr){
-                logError("Internal Error: Unconnected Node!", input);
-            }
-            return matched;
-        }
+        if(token->parse(input, lastInput))
+            return true;
     }
-    return nullptr;
+    return false;
 }
 
 void logError(std::string error, const InputMatcher &context){
@@ -51,6 +45,12 @@ void logError(std::string error, const InputMatcher &context){
     error_message << "At Index = " << context.getIndex() << ":\n";
     error_message << context.get(10, true) << "\n\n";
 }
+
+bool radianMode = false;
+bool debugMode = false;
+double previousAnswer = 0;
+InputMatcher input = InputMatcher("");
+Token *lastToken;
 
 void init(){
     OperatorToken::init(registeredTokens);

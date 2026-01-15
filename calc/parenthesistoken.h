@@ -11,7 +11,7 @@ public:
 
     virtual double evaluate() const override;
 
-    virtual Token *parse(InputMatcher &input, Token *lastInput) const override;
+    virtual bool parse(InputMatcher &input, Token *lastInput) const override;
 
     virtual void debug() const override;
 

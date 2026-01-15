@@ -2,39 +2,20 @@
 #include <cmath>
 #include "calculator.h"
 
-OperatorToken::OperatorToken(int precedence, const std::string &operation, const Evaluator &evaluator)
+OperatorToken::OperatorToken(int precedence, const std::string &operation, const Evaluator evaluator)
     : precedence(precedence), operation(operation), evaluator(evaluator) {}
 
 OperatorToken::OperatorToken(const OperatorToken &tmplt)
     : precedence(tmplt.precedence), operation(tmplt.operation), evaluator(tmplt.evaluator) {}
 
-OperatorToken::~OperatorToken(){
-    delete right;
-}
-
 double OperatorToken::evaluate() const{
     return evaluator(right->evaluate());
 }
 
-Token *OperatorToken::parse(InputMatcher &input, Token *lastToken) const{
-    input.push();
-    if (!input.match(operation)){
-        input.ignore();
-        return nullptr;
-    }
+bool OperatorToken::parse(InputMatcher &input, Token *lastInput) const{
+    if (!input.match(operation)) return false;
 
-    OperatorToken *token = new OperatorToken(*this);
-    Token *finalToken = finalizeToken(lastToken, token);
-    token->right = matchNext(input, token);
-
-    if (token->right == nullptr){
-        input.pop();
-        logError("Error: No Token Matched", input);
-        return nullptr;
-    }
-
-    input.ignore();
-    return finalToken;
+    return finalizeToken(lastInput, std::make_unique<OperatorToken>(*this));
 }
 
 void OperatorToken::debug() const{
