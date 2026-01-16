@@ -30,7 +30,7 @@ public:
 
     virtual void debug() const = 0;
 
-    virtual TokenType type() const = 0;
+    virtual Calculator::TokenType type() const = 0;
 
     OperatorToken *parent;
 

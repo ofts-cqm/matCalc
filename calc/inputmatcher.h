@@ -17,7 +17,9 @@ public:
 
     void skip(int length);
 
-    std::string get(int length, bool allowPartial = false) const;
+    std::string get(int length, bool allowPartial = false, int preview = 0) const;
+
+    std::pair<int, int> getLastRequestCutOff() const;
 
     bool match(const std::string &str, bool matchCase = true);
 

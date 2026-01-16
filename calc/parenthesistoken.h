@@ -15,7 +15,7 @@ public:
 
     virtual void debug() const override;
 
-    virtual TokenType type() const override;
+    virtual Calculator::TokenType type() const override;
 
     RootToken content;
 };

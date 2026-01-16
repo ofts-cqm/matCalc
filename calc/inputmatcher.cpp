@@ -25,9 +25,19 @@ void InputMatcher::skip(int length){
     trim();
 }
 
-std::string InputMatcher::get(int length, bool allowPartial) const{
-    if (index + length <= this->length) return expression_base.substr(index, length);
-    return allowPartial ? expression_base.substr(index) : "";
+int acturalPreview, acturalLength;
+
+std::string InputMatcher::get(int length, bool allowPartial, int preview) const{
+    if (preview > index) acturalPreview = preview = index;
+    if (index - preview + length <= this->length) return expression_base.substr(index - preview, length);
+    acturalLength = this->length - index + preview;
+    std::string cutted = expression_base.substr(index - preview);
+    if (!allowPartial) cutted.resize(length, ' ');
+    return cutted;
+}
+
+std::pair<int, int> InputMatcher::getLastRequestCutOff() const{
+    return std::make_pair(acturalPreview, acturalLength);
 }
 
 bool compareIgnoreCase(const std::string_view& str1, const std::string& str2)

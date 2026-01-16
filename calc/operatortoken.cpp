@@ -2,6 +2,8 @@
 #include <cmath>
 #include "calculator.h"
 
+using namespace Calculator;
+
 OperatorToken::OperatorToken(int precedence, const std::string &operation, const Evaluator evaluator)
     : precedence(precedence), operation(operation), evaluator(evaluator) {}
 

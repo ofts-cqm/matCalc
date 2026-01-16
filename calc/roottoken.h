@@ -11,7 +11,7 @@ public:
 
     RootToken(RootToken &&other);
 
-    virtual TokenType type() const override;
+    virtual Calculator::TokenType type() const override;
 };
 
 #endif // ROOTTOKEN_H

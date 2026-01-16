@@ -2,6 +2,8 @@
 #include "binaryoperatortoken.h"
 #include "calculator.h"
 
+using namespace Calculator;
+
 Token::Token(OperatorToken *parent): parent(parent){};
 
 bool finalizeToken(Token *lastInput, std::unique_ptr<Token> &&generated){

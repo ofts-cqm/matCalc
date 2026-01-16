@@ -145,7 +145,7 @@ MatrixPage::MatrixPage(QWidget *parent)
         resPane = new SpanSetPane(SpanSet(), false)), 3));
     content->addItem(getHorizontalSpacer());
 
-    AbstractPage::switchTo(&calculationdefinition[0]);
+    //AbstractPage::switchTo(&calculationdefinition[0]);
 }
 
 void MatrixPage::switchTo(const Calculation *nextCalculation){

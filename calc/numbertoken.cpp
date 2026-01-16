@@ -3,6 +3,8 @@
 #include <cmath>
 #include <numbers>
 
+using namespace Calculator;
+
 long matchNum(InputMatcher &input, int start);
 
 int getNextDigit(InputMatcher &input);
@@ -25,19 +27,18 @@ bool NumberToken::parse(InputMatcher &input, Token *lastInput) const {
     if (input.match("PI", false) || input.match("π")) return finalizeToken(lastInput, std::make_unique<NumberToken>(std::numbers::pi));
     if (input.match("ANS", false)) return finalizeToken(lastInput, std::make_unique<NumberToken>(previousAnswer));
 
-    if (lastInput->type() != TokenType::Operator && lastInput->type() != TokenType::Root){
-        logError("Error: Cannot Process Numbers Without Prior Operator", input);
-        return false;
-    }
-
     input.push();
-
     int digit = getNextDigit(input);
     if (digit == -1) {
         input.pop();
         return false;
     }
     long number = matchNum(input, digit);
+
+    if (lastInput->type() != TokenType::Operator && lastInput->type() != TokenType::Root){
+        logError("Error: Cannot Process Numbers Without Prior Operator", input);
+        return false;
+    }
 
     if (input.match(".")) {
         digit = getNextDigit(input);

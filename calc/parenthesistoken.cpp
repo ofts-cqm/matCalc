@@ -1,5 +1,7 @@
 #include "parenthesistoken.h"
 
+using namespace Calculator;
+
 ParenthesisToken::ParenthesisToken(RootToken &content, Token *parent)
     : Token(dynamic_cast<OperatorToken *>(parent)), content(std::move(content)){
 

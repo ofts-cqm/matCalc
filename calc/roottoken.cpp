@@ -1,5 +1,7 @@
 #include "roottoken.h"
 
+using namespace Calculator;
+
 RootToken::RootToken()
     : OperatorToken(114514, "Root Token", [](double d){return d;}) {}
 

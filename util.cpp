@@ -1,9 +1,11 @@
 #include "util.h"
+#include "calc/calculator.h"
 #include "panes/matrixpane.h"
 #include "panes/numberpane.h"
 #include "panes/spansetpane.h"
 #include "panes/vectorpane.h"
 #include "panes/labelpane.h"
+#include "mainwindow.h"
 #include <QWidget>
 
 QString format(double val){
@@ -78,7 +80,11 @@ void throwRangeException(int accessed, int maximum) {
 std::optional<double> numberParser(QStringView s){
     bool ok = false;
     double v = s.toDouble(&ok);
-    return ok ? std::optional<double>(v) : std::nullopt;
+    //return ok ? std::optional<double>(v) : std::nullopt;
+    if (ok) return v;
+    std::optional<double> res = Calculator::evaluate(s.toString().toStdString());
+    MainWindow::setMessage(QString(Calculator::getShortErrorMessage().c_str()));
+    return res;
 };
 
 QSpacerItem *getHorizontalSpacer(){

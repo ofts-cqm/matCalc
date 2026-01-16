@@ -17,7 +17,7 @@ public:
 
     virtual void debug() const;
 
-    virtual TokenType type() const;
+    virtual Calculator::TokenType type() const;
 
     std::unique_ptr<Token> right;
 

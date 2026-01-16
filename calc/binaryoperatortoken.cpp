@@ -1,6 +1,8 @@
 #include "binaryoperatortoken.h"
 #include <cmath>
 
+using namespace Calculator;
+
 BinaryOperatorToken::BinaryOperatorToken(std::unique_ptr<Token> &&left, const BinaryOperatorToken &tmplt)
     : OperatorToken(tmplt), left(std::move(left)), sign(tmplt.sign) {
     this->left->parent = this;
