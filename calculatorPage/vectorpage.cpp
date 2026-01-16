@@ -42,8 +42,8 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
     }
 
     //vectorBuff = a->getVector() + b->getVector();
-    if (calc->result == VECTOR) retHolder = &vectorBuff;
-    else retHolder = &numBuff;
+    if (calc->result == VECTOR) retHolder = vectorBuff;
+    else retHolder = numBuff;
 
     return &retHolder;
 }

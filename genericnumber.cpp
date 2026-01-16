@@ -2,36 +2,46 @@
 #include "numbers/spanset.h"
 #include <cassert>
 
-GenericNumber::GenericNumber(){
-    this->type = UNKNOWN;
-}
-
-GenericNumber::GenericNumber(const double *num) {
-    this->type = NUMBER;
-    this->num.num = num;
-}
-
-GenericNumber::GenericNumber(const Vector *vec){
-    this->type = VECTOR;
-    this->num.vec = vec;
-}
-
-GenericNumber::GenericNumber(const Matrix *mat){
-    this->type = MATRIX;
-    this->num.mat = mat;
-}
-
-GenericNumber::GenericNumber(const std::string *str){
-    this->type = LABEL;
-    this->num.lab = str;
-}
-
-GenericNumber::GenericNumber(const SpanSet *set){
-    this->type = SPAN_SET;
-    this->num.set = set;
-}
-
 const GenericNumber GenericNumber::unknown = GenericNumber();
+
+GenericNumber::GenericNumber()
+    : type(UNKNOWN) {}
+
+GenericNumber::GenericNumber(const GenericNumber &other)
+    : type(other.getType()), num(other.num){}
+
+GenericNumber::GenericNumber(GenericNumber &&other)
+    : type(other.getType()), num(std::move(other.num)){}
+
+GenericNumber::GenericNumber(const double &num)
+    : num(num), type(NUMBER) {}
+
+GenericNumber::GenericNumber(const Vector &num)
+    : num(num), type(VECTOR) {}
+
+GenericNumber::GenericNumber(const Matrix &num)
+    : num(num), type(MATRIX) {}
+
+GenericNumber::GenericNumber(const std::string &num)
+    : num(num), type(LABEL) {}
+
+GenericNumber::GenericNumber(const SpanSet &num)
+    : num(num), type(SPAN_SET) {}
+
+GenericNumber::GenericNumber(double &&num)
+    : num(std::move(num)), type(NUMBER) {}
+
+GenericNumber::GenericNumber(Vector &&num)
+    : num(std::move(num)), type(VECTOR) {}
+
+GenericNumber::GenericNumber(Matrix &&num)
+    : num(std::move(num)), type(MATRIX) {}
+
+GenericNumber::GenericNumber(std::string &&num)
+    : num(std::move(num)), type(LABEL) {}
+
+GenericNumber::GenericNumber(SpanSet &&num)
+    : num(std::move(num)), type(SPAN_SET) {}
 
 NumberType GenericNumber::getType() const {
     return this->type;
@@ -39,54 +49,31 @@ NumberType GenericNumber::getType() const {
 
 const double &GenericNumber::getDouble() const {
     assert(this->type == NUMBER);
-    return *num.num;
+    return std::get<double>(num);
 }
 
 const Vector &GenericNumber::getVector() const {
     assert(this->type == VECTOR);
-    return *num.vec;
+    return std::get<Vector>(num);
 }
 
 const Matrix &GenericNumber::getMatrix() const {
     assert(this->type == MATRIX);
-    return *num.mat;
+    return std::get<Matrix>(num);
 }
 
 const std::string &GenericNumber::getLabel() const {
     assert(this->type == LABEL);
-    return *num.lab;
+    return std::get<std::string>(num);
 }
 
 const SpanSet &GenericNumber::getSpanSet() const {
     assert(this->type == SPAN_SET);
-    return *num.set;
+    return std::get<SpanSet>(num);
 }
 
-GenericNumber GenericNumber::deepclone() const{
-    GenericNumber number;
-    number.type = this->type;
-
-    switch (this->type){
-
-    case NUMBER:
-        number.num.num = new double {this->getDouble()};
-        break;
-    case VECTOR:
-        number.num.vec = new Vector(this->getVector());
-        break;
-    case MATRIX:
-        number.num.mat = new Matrix(this->getMatrix());
-        break;
-    case LABEL:
-        number.num.lab = &this->getLabel();
-        break;
-    case SPAN_SET:
-        number.num.set = new SpanSet(this->getSpanSet());
-        break;
-    case UNKNOWN:
-    case EMPTY:
-        break;
-    }
-
-    return number;
+const GenericNumber &GenericNumber::operator=(const GenericNumber &src){
+    this->type = src.getType();
+    this->num = src.num;
+    return *this;
 }

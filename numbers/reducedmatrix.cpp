@@ -10,13 +10,14 @@ ReducedMatrix::ReducedMatrix(): Matrix() {
 ReducedMatrix::ReducedMatrix(const ReducedMatrix &other)
     : ReducedMatrix((Matrix)other, other.boundary){}
 
+ReducedMatrix::ReducedMatrix(ReducedMatrix &&other)
+    : Matrix(std::move(other)), boundary(other.boundary) {}
+
 ReducedMatrix::ReducedMatrix(const Matrix &other)
     : ReducedMatrix(other, -1){}
 
 ReducedMatrix::ReducedMatrix(const Matrix &other, int boundary)
-    : Matrix(other){
-    this->boundary = boundary;
-}
+    : Matrix(other), boundary(boundary){}
 
 ReducedMatrix ReducedMatrix::reduce(const Matrix &matrix){
     return matrix.reduce();

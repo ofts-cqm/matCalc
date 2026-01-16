@@ -24,7 +24,7 @@ void NumberPane::reconstructPage(){
 }
 
 const GenericNumber *NumberPane::getValue(){
-    this->genericValue = &value;
+    this->genericValue = value;
     return &genericValue;
 }
 

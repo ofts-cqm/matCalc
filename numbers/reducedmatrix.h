@@ -10,6 +10,8 @@ public:
 
     ReducedMatrix(const ReducedMatrix &other);
 
+    ReducedMatrix(ReducedMatrix &&other);
+
     static ReducedMatrix reduce(const Matrix &matrix);
     static ReducedMatrix reduce(const Matrix &matrix, const Matrix &augmented);
     static ReducedMatrix reduce(const Matrix &matrix, const Vector &vector);

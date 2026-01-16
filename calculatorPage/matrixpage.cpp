@@ -64,12 +64,12 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         break;
     }
 
-    if (calc->result == VECTOR) retHolder = &vectorBuff;
-    else if (calc->result == MATRIX) retHolder = &matrixBuff;
-    else if (calc->result == SPAN_SET) retHolder = &setBuff;
-    else retHolder = &numBuff;
+    if (calc->result == VECTOR) retHolder = vectorBuff;
+    else if (calc->result == MATRIX) retHolder = matrixBuff;
+    else if (calc->result == SPAN_SET) retHolder = setBuff;
+    else retHolder = numBuff;
 
-    if (labBuff != "") retHolder = &labBuff;
+    if (labBuff != "") retHolder = labBuff;
 
     return &retHolder;
 }

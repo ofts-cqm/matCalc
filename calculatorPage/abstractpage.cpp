@@ -3,8 +3,7 @@
 #include <QtWidgets/qboxlayout.h>
 
 AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, QWidget *parent)
-    : QWidget(parent){
-    this->evaluator = evaluator;
+    : QWidget(parent), evaluator(evaluator) {
     this->sign = new SignPane(defaultCalculation->sign, this);
     this->equal = new SignPane(EQU, this);
 
@@ -23,6 +22,10 @@ AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalcul
     main->addLayout(content = new QHBoxLayout());
     main->addItem(getVerticalSpacer());
     this->currentCalculation = defaultCalculation;
+}
+
+AbstractPage::~AbstractPage(){
+    clearLayout(this->layout());
 }
 
 GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){

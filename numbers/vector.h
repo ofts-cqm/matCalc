@@ -8,13 +8,17 @@ class SpanSet;
 class Vector : private std::vector<double>
 {
 public:
-    Vector();
+    Vector() = default;
+
+    Vector(const std::vector<double> &vec);
+
+    Vector(std::vector<double> &&vec);
+
+    Vector(const Vector &) = default;
+
+    Vector(Vector &&) = default;
 
     Vector(int size);
-
-    Vector(std::vector<double> source);
-
-    Vector(Vector const& source);
 
     void setSize(int size);
 
@@ -60,7 +64,7 @@ public:
 
     static Vector perp(const Vector &base, const Vector &target);
 
-    int dim() const;
+    int dim() const noexcept;
 
     friend class SpanSet;
 };

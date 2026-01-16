@@ -6,11 +6,9 @@
 class SpanSet: private Matrix
 {
 public:
-    SpanSet();
+    SpanSet() = default;
 
     SpanSet(int vecDim, int spaceDim);
-
-    SpanSet(const SpanSet &other);
 
     explicit SpanSet(const Matrix &base);
 

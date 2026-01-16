@@ -20,6 +20,12 @@ Matrix::Matrix(const Matrix &other){
     this->width = other.width;
 }
 
+Matrix::Matrix(Matrix &&other){
+    this->entries = std::move(other.entries);
+    this->height = other.height;
+    this->width = other.width;
+}
+
 Matrix Matrix::unit(int size){
     Matrix mat(size, size);
 

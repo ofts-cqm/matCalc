@@ -14,6 +14,8 @@ public:
 
     Matrix(const Matrix &other);
 
+    Matrix(Matrix &&);
+
     static Matrix unit(int size);
 
     int getHeight() const;

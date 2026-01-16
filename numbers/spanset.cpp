@@ -2,11 +2,7 @@
 #include "reducedmatrix.h"
 #include "../dimensionmismatchexception.h"
 
-SpanSet::SpanSet(): Matrix() {}
-
 SpanSet::SpanSet(int vecDim, int spaceDim): Matrix(vecDim, spaceDim) {}
-
-SpanSet::SpanSet(const SpanSet &other): Matrix(other) {}
 
 SpanSet::SpanSet(const Matrix &base): Matrix(base) {}
 

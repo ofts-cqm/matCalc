@@ -121,7 +121,7 @@ const NumberType GenericPane::getType() const{
 static GenericNumber clipBoard;
 
 void GenericPane::onCopy(){
-    clipBoard = this->getValue()->deepclone();
+    clipBoard = *this->getValue();
 }
 
 void GenericPane::onPaste(){

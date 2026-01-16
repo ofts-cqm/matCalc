@@ -10,7 +10,7 @@ SpanSetPane::SpanSetPane(SpanSet value, bool editable, QWidget *parent)
     , editable(editable)
     , value(value)
 {
-    this->genericValue = &value;
+    this->genericValue = value;
     ui->setupUi(this);
     span = true;
     ui->span->setFont(getLargeFont());
@@ -71,7 +71,7 @@ void SpanSetPane::reconstructPage(){
 }
 
 const GenericNumber *SpanSetPane::getValue(){
-    genericValue = GenericNumber(&value);
+    genericValue = GenericNumber(value);
     return &genericValue;
 }
 

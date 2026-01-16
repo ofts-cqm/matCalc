@@ -2,17 +2,9 @@
 #define GENERICNUMBER_H
 
 #include "numbers/matrix.h"
+#include "numbers/spanset.h"
 #include "numbers/vector.h"
-
-union NumberHolder {
-    const double *num;
-    const Vector *vec;
-    const Matrix *mat;
-    const SpanSet *set;
-    const std::string *lab;
-
-    ~NumberHolder(){};
-};
+#include <variant>
 
 enum NumberType{
     NUMBER,
@@ -30,11 +22,22 @@ class GenericNumber
 {
 public:
     GenericNumber();
-    GenericNumber(const double *);
-    GenericNumber(const Vector *);
-    GenericNumber(const Matrix *);
-    GenericNumber(const std::string *);
-    GenericNumber(const SpanSet *);
+
+    GenericNumber(const GenericNumber &);
+
+    GenericNumber(GenericNumber &&other);
+
+    GenericNumber(const double &);
+    GenericNumber(const Vector &);
+    GenericNumber(const Matrix &);
+    GenericNumber(const std::string &);
+    GenericNumber(const SpanSet &);
+
+    GenericNumber(double &&);
+    GenericNumber(Vector &&);
+    GenericNumber(Matrix &&);
+    GenericNumber(std::string &&);
+    GenericNumber(SpanSet &&);
 
     NumberType getType() const;
     const double &getDouble() const;
@@ -43,19 +46,15 @@ public:
     const SpanSet &getSpanSet() const;
     const std::string &getLabel() const;
 
-    const GenericNumber &operator=(const GenericNumber &src) {
-        this->type = src.type;
-        this->num = src.num;
-        return *this;
-    }
-
-    GenericNumber deepclone() const;
+    const GenericNumber &operator=(const GenericNumber &src);
 
     static const GenericNumber unknown;
 
+    //friend NumberHolder;
+
 private:
     NumberType type;
-    NumberHolder num;
+    std::variant<double, Vector, Matrix, std::string, SpanSet> num;
 };
 
 #endif // GENERICNUMBER_H

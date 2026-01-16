@@ -3,20 +3,12 @@
 #include "../util.h"
 #include <cmath>
 
-Vector::Vector(): std::vector<double>() {}
+Vector::Vector(const std::vector<double> &vec): std::vector<double>(vec) {}
 
-//Vector::Vector(std::vector<double> source): std::vector<double>(source) {}
-
-Vector::Vector(std::vector<double> source) : Vector(source.size()){
-    std::vector<double>::operator=(source);
-}
+Vector::Vector(std::vector<double> &&vec): std::vector<double>(std::move(vec)) {}
 
 Vector::Vector(int size): std::vector<double>() {
     this->resize(size, 0);
-}
-
-Vector::Vector(Vector const& source): Vector((std::vector<double>)source){
-
 }
 
 void Vector::setSize(int size){
@@ -48,7 +40,7 @@ Vector Vector::operator+(const Vector &other) const{
         newVec[i] = (* this)[i] + other[i];
     }
 
-    return newVec;
+    return std::move(newVec);
 }
 
 Vector Vector::operator-(const Vector &other) const{
@@ -192,6 +184,6 @@ bool Vector::isFullZeroAfter(int &index) const{
     return true;
 }
 
-int Vector::dim() const{
+int Vector::dim() const noexcept{
     return this->size();
 }

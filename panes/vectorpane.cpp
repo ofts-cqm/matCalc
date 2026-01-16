@@ -5,15 +5,14 @@
 #include <QtWidgets/qlabel.h>
 #include <QPlainTextEdit>
 
-VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable):
-    ui(new Ui::VectorPane)
-    , AbstractNumberPane(parent)
+VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable)
+    : ui(new Ui::VectorPane), AbstractNumberPane(parent)
 {
     ui->setupUi(this);
 
     this->editable = editable;
     this->value = vec;
-    this->genericValue = GenericNumber(&value);
+    this->genericValue = GenericNumber(value);
     //if (editable) ui->numLayout->layout()->setSpacing(5);
 
     VectorPane::reconstructPage();
@@ -81,7 +80,7 @@ void VectorPane::resizeVector(int size){
 }
 
 const GenericNumber *VectorPane::getValue(){
-    genericValue = GenericNumber(&value);
+    genericValue = GenericNumber(value);
     return &genericValue;
 }
 

@@ -19,6 +19,8 @@ class AbstractPage: public QWidget
 public:
     AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, QWidget *parent = nullptr);
 
+    ~AbstractPage();
+
     GenericPane *registerOperand(GenericPane *operand, int position);
 
     virtual void switchTo(const Calculation *nextCalculation);

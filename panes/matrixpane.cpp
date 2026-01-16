@@ -12,7 +12,7 @@ MatrixPane::MatrixPane(QWidget *parent, Matrix mat, bool editable)
 
     this->editable = editable;
     this->value = mat;
-    this->genericValue = GenericNumber(&value);
+    this->genericValue = GenericNumber(value);
 
     MatrixPane::reconstructPage();
 }
@@ -78,7 +78,7 @@ void MatrixPane::reconstructPage(){
 }
 
 const GenericNumber *MatrixPane::getValue(){
-    genericValue = GenericNumber(&value);
+    genericValue = GenericNumber(value);
     return &genericValue;
 }
 
