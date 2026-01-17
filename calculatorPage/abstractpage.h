@@ -25,7 +25,7 @@ public:
 
     virtual void switchTo(const Calculation *nextCalculation);
 
-    void evaluate();
+    void evaluate(bool record = false);
 
     static AbstractPage *getCurrent();
 

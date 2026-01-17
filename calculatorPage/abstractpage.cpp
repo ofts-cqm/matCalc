@@ -1,5 +1,6 @@
 #include "abstractpage.h"
 #include "../util.h"
+#include "../history/calculationhistory.h"
 #include <QtWidgets/qboxlayout.h>
 
 AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, QWidget *parent)
@@ -58,12 +59,12 @@ void AbstractPage::switchTo(const Calculation *nextCalculation){
     evaluate();
 }
 
-void AbstractPage::evaluate(){
-    GenericNumber *number = evaluator(
-        currentCalculation,
-        operandA == nullptr ? &GenericNumber::unknown : operandA->getValue(),
-        operandB == nullptr ? &GenericNumber::unknown : operandB->getValue());
+void AbstractPage::evaluate(bool record){
+    const GenericNumber *op1 = operandA == nullptr ? &GenericNumber::unknown : operandA->getValue();
+    const GenericNumber *op2 = operandB == nullptr ? &GenericNumber::unknown : operandB->getValue();
+    GenericNumber *number = evaluator(currentCalculation, op1, op2);
     resultPane->display(*number);
+    if (record) History::addHistory(currentCalculation->sign, *op1, *op2, *number);
 }
 
 AbstractPage *AbstractPage::getCurrent(){

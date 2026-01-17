@@ -6,6 +6,8 @@ SpanSet::SpanSet(int vecDim, int spaceDim): Matrix(vecDim, spaceDim) {}
 
 SpanSet::SpanSet(const Matrix &base): Matrix(base) {}
 
+SpanSet::SpanSet(Matrix &&base): Matrix(std::move(base)) {}
+
 Matrix &SpanSet::asMatrix() { return *this; }
 
 const Matrix &SpanSet::asMatrix() const { return *this; }

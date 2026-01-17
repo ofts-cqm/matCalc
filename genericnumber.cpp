@@ -1,5 +1,8 @@
 #include "genericnumber.h"
 #include "numbers/spanset.h"
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
 #include <cassert>
 
 const GenericNumber GenericNumber::unknown = GenericNumber();
@@ -42,6 +45,97 @@ GenericNumber::GenericNumber(std::string &&num)
 
 GenericNumber::GenericNumber(SpanSet &&num)
     : num(std::move(num)), type(SPAN_SET) {}
+
+std::vector<double> getArray(QJsonArray &&array){
+    std::vector<double> arr(array.size());
+    for (int i = 0; i < array.size(); i++) arr[i] = array[i].toDouble();
+    return arr;
+}
+
+QJsonArray getArray(const Vector &vector){
+    QJsonArray arr;
+    for (const double &d : vector) arr.push_back(d);
+    return arr;
+}
+
+QJsonArray get2DArray(const Matrix &mat){
+    QJsonArray arr;
+    for (const Vector &v : mat) arr.push_back(getArray(v));
+    return arr;
+}
+
+GenericNumber::GenericNumber(const QJsonObject &cache){
+    QString type = cache["type"].toString();
+    switch (type[0].toLatin1()){
+    case 'N':
+        this->type = NUMBER;
+        this->num = cache["number"].toDouble();
+        break;
+    case 'V':
+        this->type = VECTOR;
+        this->num =  Vector(getArray(cache["vec"].toArray()));
+        break;
+    case 'M':
+        this->type = MATRIX;
+        {
+            Matrix mat(cache["height"].toInt(), cache["width"].toInt());
+            QJsonArray arr = cache["mat"].toArray();
+            for (int i = 0; i < mat.getHeight(); i++) mat[i] = getArray(arr[i].toArray());
+            this->num = mat;
+        }
+        break;
+    case 'S':
+        this->type = SPAN_SET;
+        {
+            Matrix mat(cache["height"].toInt(), cache["width"].toInt());
+            QJsonArray arr = cache["mat"].toArray();
+            for (int i = 0; i < mat.getHeight(); i++) mat[i] = getArray(arr[i].toArray());
+            this->num = SpanSet(std::move(mat));
+        }
+        break;
+    case 'L':
+        this->type = LABEL;
+        this->num = cache["label"].toString().toStdString();
+        break;
+    case 'E':
+        this->type = EMPTY;
+        break;
+    default:
+        throw std::invalid_argument("Unknown Number Type:" + type.toStdString());
+    }
+}
+
+QJsonObject GenericNumber::toJson() const{
+    switch (this->type){
+
+    case NUMBER:
+        return { { "type", "N" }, { "number", this->getDouble() } };
+    case VECTOR:
+        return { { "type", "V" }, { "vec", getArray(this->getVector())} };
+    case MATRIX:
+        return
+        {
+            { "type", "M" },
+            { "height", getMatrix().getHeight()},
+            { "width", getMatrix().getWidth()},
+            { "mat", get2DArray(getMatrix()) }
+        };
+    case SPAN_SET:
+        return
+        {
+            { "type", "S" },
+            { "height", getMatrix().getHeight()},
+            { "width", getMatrix().getWidth()},
+            { "mat", get2DArray(getMatrix()) }
+        };
+    case LABEL:
+        return { { "type", "L" }, { "label", this->getLabel().c_str() } };
+    case UNKNOWN:
+    case EMPTY:
+        return { { "type", "E" } };
+        break;
+    }
+}
 
 NumberType GenericNumber::getType() const {
     return this->type;

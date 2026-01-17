@@ -69,6 +69,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         calc/roottoken.h calc/roottoken.cpp
         calc/parenthesistoken.h calc/parenthesistoken.cpp
         calc/binaryoperatortoken.h calc/binaryoperatortoken.cpp
+        history/calculationhistory.h history/calculationhistory.cpp
 
 
     )

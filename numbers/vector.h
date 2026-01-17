@@ -8,6 +8,11 @@ class SpanSet;
 class Vector : private std::vector<double>
 {
 public:
+    using std::vector<double>::begin;
+    using std::vector<double>::end;
+    using std::vector<double>::cbegin;
+    using std::vector<double>::cend;
+
     Vector() = default;
 
     Vector(const std::vector<double> &vec);

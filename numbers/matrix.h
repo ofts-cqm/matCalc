@@ -22,6 +22,10 @@ public:
 
     int getWidth() const;
 
+    std::vector<Vector>::const_iterator begin() const;
+
+    std::vector<Vector>::const_iterator end() const;
+
     virtual void resize(int height = -1, int width = -1);
 
     Matrix &operator=(const Matrix &other);

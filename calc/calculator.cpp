@@ -77,8 +77,9 @@ namespace Calculator{
     }
 
     std::string getShortErrorMessage(){
+        if (errorCount == 0) return "";
         if (errorCount == 1) return first_error;
-        return first_error + "( and " + std::to_string(errorCount) + " more)";
+        return first_error + "( and " + std::to_string(errorCount - 1) + " more)";
     }
 
     std::string getLongErrorMessage() { return error_message.str(); }

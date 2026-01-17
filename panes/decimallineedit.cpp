@@ -18,6 +18,8 @@ DecimalLineEdit::DecimalLineEdit(
             this, &DecimalLineEdit::onTextEdited);
     connect(this, &QLineEdit::editingFinished,
             this, &DecimalLineEdit::onEditingFinished);
+    connect(this, &QLineEdit::returnPressed,
+            this, &DecimalLineEdit::onEditingFinished);
     this->setFont(getLargeFont());
     this->setMaximumWidth(80);
 }
@@ -32,8 +34,13 @@ void DecimalLineEdit::focusInEvent(QFocusEvent* event)
     selectAll();
 }
 
+void DecimalLineEdit::onEnterPressed(){
+    formal = true;
+}
+
 void DecimalLineEdit::onEditingFinished(){
-    if(AbstractPage::getCurrent()) AbstractPage::getCurrent()->evaluate();
+    if(AbstractPage::getCurrent()) AbstractPage::getCurrent()->evaluate(formal);
+    formal = false;
 }
 
 void DecimalLineEdit::onTextEdited(const QString& text)

@@ -26,11 +26,13 @@ protected:
 private slots:
     void onTextEdited(const QString& text);
     void onEditingFinished();
+    void onEnterPressed();
 
 private:
     const Parser parserFunc;
     const Setter setterFunc;
 
+    bool formal = false;
     void setError(bool enabled);
 };
 

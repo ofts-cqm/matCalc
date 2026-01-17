@@ -4,6 +4,7 @@
 #include "numbers/matrix.h"
 #include "numbers/spanset.h"
 #include "numbers/vector.h"
+#include <QtCore/qobject.h>
 #include <variant>
 
 enum NumberType{
@@ -39,6 +40,8 @@ public:
     GenericNumber(std::string &&);
     GenericNumber(SpanSet &&);
 
+    explicit GenericNumber(const QJsonObject &cache);
+
     NumberType getType() const;
     const double &getDouble() const;
     const Vector &getVector() const;
@@ -47,6 +50,8 @@ public:
     const std::string &getLabel() const;
 
     const GenericNumber &operator=(const GenericNumber &src);
+
+    QJsonObject toJson() const;
 
     static const GenericNumber unknown;
 

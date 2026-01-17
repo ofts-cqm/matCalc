@@ -8,23 +8,14 @@
 
 Matrix::Matrix(): Matrix(0, 0){}
 
-Matrix::Matrix(int height, int width){
-    entries.resize(height, Vector(width));
-    this->width = width;
-    this->height = height;
-}
+Matrix::Matrix(int height, int width)
+    : entries(height, Vector(width)), width(width), height(height){}
 
-Matrix::Matrix(const Matrix &other){
-    this->entries = other.entries;
-    this->height = other.height;
-    this->width = other.width;
-}
+Matrix::Matrix(const Matrix &other)
+    : entries(other.entries), height(other.height), width(other.width) {}
 
-Matrix::Matrix(Matrix &&other){
-    this->entries = std::move(other.entries);
-    this->height = other.height;
-    this->width = other.width;
-}
+Matrix::Matrix(Matrix &&other)
+    : entries(std::move(other.entries)), height(other.height), width(other.width) {}
 
 Matrix Matrix::unit(int size){
     Matrix mat(size, size);
@@ -39,6 +30,14 @@ Matrix Matrix::unit(int size){
 int Matrix::getHeight() const { return this->height; }
 
 int Matrix::getWidth() const { return this->width; }
+
+std::vector<Vector>::const_iterator Matrix::begin() const{
+    return entries.begin();
+}
+
+std::vector<Vector>::const_iterator Matrix::end() const{
+    return entries.end();
+}
 
 void Matrix::resize(int height, int width){
     if (width == -1) width = this->width;

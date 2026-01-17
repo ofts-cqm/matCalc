@@ -12,6 +12,8 @@ public:
 
     explicit SpanSet(const Matrix &base);
 
+    explicit SpanSet(Matrix &&base);
+
     using Matrix::getHeight;
     using Matrix::getWidth;
     using Matrix::resize;
