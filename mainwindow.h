@@ -18,10 +18,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     static void setPage(AbstractPage *);
     static void setMessage(QString str);
+    static MainWindow *getInstance();
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
     static MainWindow *instance;
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 };
 #endif // MAINWINDOW_H

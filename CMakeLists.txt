@@ -70,6 +70,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         calc/parenthesistoken.h calc/parenthesistoken.cpp
         calc/binaryoperatortoken.h calc/binaryoperatortoken.cpp
         history/calculationhistory.h history/calculationhistory.cpp
+        history/historywriter.h history/historywriter.cpp
+        history/historywindow.h history/historywindow.cpp
+        history/historyitem.h history/historyitem.cpp history/historyitem.ui
 
 
     )

@@ -19,7 +19,7 @@ DecimalLineEdit::DecimalLineEdit(
     connect(this, &QLineEdit::editingFinished,
             this, &DecimalLineEdit::onEditingFinished);
     connect(this, &QLineEdit::returnPressed,
-            this, &DecimalLineEdit::onEditingFinished);
+            this, &DecimalLineEdit::onEnterPressed);
     this->setFont(getLargeFont());
     this->setMaximumWidth(80);
 }

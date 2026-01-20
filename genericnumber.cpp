@@ -152,6 +152,7 @@ const Vector &GenericNumber::getVector() const {
 }
 
 const Matrix &GenericNumber::getMatrix() const {
+    if (this->type == SPAN_SET) return getSpanSet().asMatrix();
     assert(this->type == MATRIX);
     return std::get<Matrix>(num);
 }

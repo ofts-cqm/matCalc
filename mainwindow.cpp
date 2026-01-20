@@ -2,15 +2,18 @@
 #include "./ui_mainwindow.h"
 #include "calculatorPage/vectorpage.h"
 #include "calculatorPage/matrixpage.h"
+#include "history/calculationhistory.h"
+#include "history/historywriter.h"
+#include "history/historywindow.h"
+
+#include <QtConcurrent/QtConcurrent>
+#include <QtGui/qevent.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //QLayout *layout = new QHBoxLayout();
-    //layout->addWidget((new VectorPage(ui->page_vector))->fillIndexPage(ui->bar_vector));
-    //ui->page_vector->setLayout(layout);
     this->ui->stackedWidget->addWidget((new VectorPage(ui->page_vector))->fillIndexPage(ui->bar_vector));
     this->ui->stackedWidget->addWidget((new MatrixPage(ui->page_matrix))->fillIndexPage(ui->bar_matrix));
     this->ui->stackedWidget->setCurrentIndex(2);
@@ -27,6 +30,17 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     instance = this;
+
+    auto future = QtConcurrent::run(History::loadHistory);
+    auto *watcher = new QFutureWatcher<bool>();
+    connect(watcher, &QFutureWatcher<bool>::finished, this, [=] {
+        bool success = watcher->result();
+        if (!success){
+            History::promptFileAccess();
+        }
+        HistoryWindow::instance->refreshHistory();
+    });
+    watcher->setFuture(future);
 }
 
 void MainWindow::setPage(AbstractPage *page){
@@ -36,6 +50,13 @@ void MainWindow::setPage(AbstractPage *page){
 void MainWindow::setMessage(QString message){
     instance->ui->statusbar->showMessage(message, 3000);
 }
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    QCoreApplication::quit();
+    event->accept();
+}
+
+MainWindow *MainWindow::getInstance(){return instance;}
 
 MainWindow::~MainWindow()
 {

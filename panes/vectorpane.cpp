@@ -51,6 +51,7 @@ void VectorPane::reconstructPage(){
             label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
             label->setAlignment(Qt::AlignCenter);
             label->setFont(getLargeFont());
+            label->setToolTip(format(this->value[i]));
             widget = label;
         }
 

@@ -1,5 +1,7 @@
 #include "calculationhistory.h"
 #include "../mainwindow.h"
+#include "historywindow.h"
+#include "historywriter.h"
 #include <QJsonArray>
 
 using namespace History;
@@ -29,9 +31,10 @@ QJsonObject CalculationHistory::toJson() const{
     };
 }
 
-void addHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res){
+void History::addHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res){
     CalculationHistory history(sign, op1, op2, res);
     histories.push_back(history);
+    HistoryWindow::instance->refreshHistory();
     try{
         jsons.push_back(history.toJson());
     }catch(std::exception &e){
@@ -44,10 +47,14 @@ void addHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, c
         jsons.erase(jsons.begin());
     }
 
-    // call DocumentWriter to write history
+    writeToFile(jsons);
 }
 
+std::vector<CalculationHistory> History::histories = {};
+
 static bool errorOccurred = false;
+
+bool History::historyReady = false;
 
 static void writeHistoryToGenericToken(const QJsonValue &record){
     try{
@@ -58,14 +65,16 @@ static void writeHistoryToGenericToken(const QJsonValue &record){
     }
 }
 
-void restoreHistory(const QJsonArray &array){
+void History::restoreHistory(){
     errorOccurred = false;
-    jsons = array;
     histories.clear();
-    std::for_each(array.cbegin(), array.cend(), writeHistoryToGenericToken);
+    std::for_each(jsons.cbegin(), jsons.cend(), writeHistoryToGenericToken);
     if (errorOccurred) MainWindow::setMessage("Error When Restoring Calculation History");
+    historyReady = true;
 }
 
-void loadHistory(){
-
+bool History::loadHistory(){
+    jsons = loadFromFile();
+    restoreHistory();
+    return writeFile;
 }

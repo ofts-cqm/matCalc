@@ -22,14 +22,15 @@ namespace History{
         QJsonObject toJson() const;
     };
 
-    static std::vector<CalculationHistory> histories;
-    static QJsonArray jsons;
+    extern std::vector<CalculationHistory> histories;
+    static QJsonArray jsons = {};
+    extern bool historyReady;
 
-    void loadHistory();
+    bool loadHistory();
 
     void addHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res);
 
-    void restoreHistory(const QJsonArray &array);
+    void restoreHistory();
 }
 
 #endif // CALCULATIONHISTORY_H
