@@ -16,9 +16,19 @@ public:
     explicit HistoryItem(const History::CalculationHistory *item, QWidget *parent = nullptr);
     ~HistoryItem();
 
+    History::CalculationHistory itemBase;
+    Calculation *calcBase;
+
+protected:
+    virtual void mousePressEvent(QMouseEvent *event) override;
+
+private slots:
+    void op1Pressed();
+    void op2Pressed();
+    void op3Pressed();
+
 private:
-    Ui::HistoryItem *ui;
-    const History::CalculationHistory *itemBase;
+    Ui::HistoryItem *ui;  
 };
 
 #endif // HISTORYITEM_H

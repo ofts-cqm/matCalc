@@ -37,7 +37,7 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         numBuff = a->getVector().dim();
         break;
     default:
-        qDebug("Unexpected Sign for VectorPage: %d", calc->sign);
+        throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
         break;
     }
 
@@ -49,7 +49,7 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
 }
 
 VectorPage::VectorPage(QWidget *parent)
-    : AbstractPage(evaFunc, &calculationDefinition[0], parent)
+    : AbstractPage(evaFunc, &calculationDefinition[0], History::Page::VECTOR, parent)
 {
     this->alternativSign = new SignPane(currentCalculation->sign, this);
     this->alternativSign->setVisible(false);

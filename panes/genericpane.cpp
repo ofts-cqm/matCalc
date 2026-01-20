@@ -124,6 +124,10 @@ void GenericPane::onCopy(){
     clipBoard = *this->getValue();
 }
 
+void GenericPane::setClipBoard(const GenericNumber &number){
+    clipBoard = number;
+}
+
 void GenericPane::onPaste(){
     try{
         static_cast<AbstractNumberPane *>(content->currentWidget())->paste(clipBoard);

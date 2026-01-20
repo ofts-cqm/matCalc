@@ -14,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->ui->stackedWidget->addWidget((new VectorPage(ui->page_vector))->fillIndexPage(ui->bar_vector));
-    this->ui->stackedWidget->addWidget((new MatrixPage(ui->page_matrix))->fillIndexPage(ui->bar_matrix));
+    this->setWindowTitle("MatCalc");
+    this->ui->stackedWidget->addWidget(vecPage = (new VectorPage(ui->page_vector))->fillIndexPage(ui->bar_vector));
+    this->ui->stackedWidget->addWidget(matPage = (new MatrixPage(ui->page_matrix))->fillIndexPage(ui->bar_matrix));
     this->ui->stackedWidget->setCurrentIndex(2);
 
     for (QLayout* layout : ui->mainFrame->findChildren<QLayout*>()) {
@@ -41,10 +42,29 @@ MainWindow::MainWindow(QWidget *parent)
         HistoryWindow::instance->refreshHistory();
     });
     watcher->setFuture(future);
+
+    historyWindow = new HistoryWindow();
+    connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::openHistory);
 }
 
 void MainWindow::setPage(AbstractPage *page){
     instance->ui->stackedWidget->setCurrentWidget(page);
+}
+
+void MainWindow::openHistory(){
+    historyWindow->show();
+}
+
+AbstractPage *MainWindow::setPage(History::Page page){
+    switch(page){
+    case History::Page::VECTOR:
+        instance->ui->stackedWidget->setCurrentWidget(instance->vecPage);
+        break;
+    case History::Page::MATRIX:
+        instance->ui->stackedWidget->setCurrentWidget(instance->matPage);
+    }
+
+    return static_cast<AbstractPage *>(instance->ui->stackedWidget->currentWidget());
 }
 
 void MainWindow::setMessage(QString message){

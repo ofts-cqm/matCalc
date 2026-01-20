@@ -61,12 +61,12 @@ void clearLayout(QLayout* layout, bool deleteWidgets) {
     while (QLayoutItem* item = layout->takeAt(0)) {
         if (QLayout* childLayout = item->layout()) {
             clearLayout(childLayout, deleteWidgets);
+            delete childLayout;
         }
 
         QWidget *w = item->widget();
         if (deleteWidgets && w){
-            w->setParent(nullptr);
-            delete w;
+            w->deleteLater();
         }
         delete item;
     }

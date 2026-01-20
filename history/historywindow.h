@@ -16,6 +16,9 @@ public:
 
     static HistoryWindow *instance;
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     QVBoxLayout *contentLayout;
     QWidget *content;

@@ -61,7 +61,7 @@ static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, c
         setBuff = b->getSpanSet().reduce();
         break;
     default:
-        break;
+        throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
     }
 
     if (calc->result == VECTOR) retHolder = vectorBuff;
@@ -107,7 +107,7 @@ MatrixPane *MatrixPage::secondaryPane = nullptr;
 SpanSetPane *MatrixPage::resPane = nullptr;
 
 MatrixPage::MatrixPage(QWidget *parent)
-    : AbstractPage(evaFunc, &calculationdefinition[0], parent){
+    : AbstractPage(evaFunc, &calculationdefinition[0], History::Page::MATRIX, parent){
 
     // addition and substraction
     normalHeight = new ResizeBar("Height", primeHeight, control);

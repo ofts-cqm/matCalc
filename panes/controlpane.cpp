@@ -26,10 +26,14 @@ ControlPane *ControlPane::addResizer(ResizeBar *resizer){
     return this;
 }
 
+void ControlPane::refreshSizer(){
+    for (ResizeBar *sizer : resizers[this->currentIndex()]){
+        sizer->reload();
+    }
+}
+
 void ControlPane::switchTo(int page){
     if (this->currentIndex() == page) return;
     this->setCurrentIndex(page);
-    for (ResizeBar *sizer : resizers[page]){
-        sizer->reload();
-    }
+    refreshSizer();
 }

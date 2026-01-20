@@ -7,17 +7,25 @@
 #include "../calculator_basic.h"
 namespace History{
 
+    enum class Page{
+        VECTOR,
+        MATRIX
+    };
+
     struct CalculationHistory {
         GenericNumber operandA;
         GenericNumber operandB;
         GenericNumber result;
         Sign sign;
+        Page page;
 
         CalculationHistory() = default;
 
-        CalculationHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res);
+        CalculationHistory(Page page, Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res);
 
         explicit CalculationHistory(const QJsonObject &cache);
+
+        Calculation *getCalculation() const;
 
         QJsonObject toJson() const;
     };
@@ -28,7 +36,7 @@ namespace History{
 
     bool loadHistory();
 
-    void addHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res);
+    void addHistory(Page page, Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res);
 
     void restoreHistory();
 }

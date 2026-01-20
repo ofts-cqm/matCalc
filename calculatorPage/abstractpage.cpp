@@ -3,8 +3,8 @@
 #include "../history/calculationhistory.h"
 #include <QtWidgets/qboxlayout.h>
 
-AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, QWidget *parent)
-    : QWidget(parent), evaluator(evaluator) {
+AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent)
+    : QWidget(parent), evaluator(evaluator), page(page) {
     this->sign = new SignPane(defaultCalculation->sign, this);
     this->equal = new SignPane(EQU, this);
 
@@ -23,10 +23,6 @@ AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalcul
     main->addLayout(content = new QHBoxLayout());
     main->addItem(getVerticalSpacer());
     this->currentCalculation = defaultCalculation;
-}
-
-AbstractPage::~AbstractPage(){
-    clearLayout(this->layout());
 }
 
 GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){
@@ -56,7 +52,15 @@ void AbstractPage::switchTo(const Calculation *nextCalculation){
         this->operandB->applyBorder(signs[nextCalculation->sign]);
     }
     currentPage = this;
+    control->refreshSizer();
     evaluate();
+}
+
+void AbstractPage::restore(const HistoryItem &history){
+    switchTo(history.calcBase);
+    this->operandA->display(history.itemBase.operandA);
+    this->operandB->display(history.itemBase.operandB);
+    this->resultPane->display(history.itemBase.result);
 }
 
 void AbstractPage::evaluate(bool record){
@@ -64,7 +68,7 @@ void AbstractPage::evaluate(bool record){
     const GenericNumber *op2 = operandB == nullptr ? &GenericNumber::unknown : operandB->getValue();
     GenericNumber *number = evaluator(currentCalculation, op1, op2);
     resultPane->display(*number);
-    if (record) History::addHistory(currentCalculation->sign, *op1, *op2, *number);
+    if (record) History::addHistory(page, currentCalculation->sign, *op1, *op2, *number);
 }
 
 AbstractPage *AbstractPage::getCurrent(){

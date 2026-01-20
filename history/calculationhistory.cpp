@@ -7,7 +7,9 @@
 using namespace History;
 
 CalculationHistory::CalculationHistory(const QJsonObject &cache)
-    : operandA(cache["operandA"].toObject()), operandB(cache["operandB"].toObject()), result(cache["operandC"].toObject()){
+    : page(static_cast<Page>(cache["page"].toInt())), operandA(cache["operandA"].toObject()),
+    operandB(cache["operandB"].toObject()), result(cache["operandC"].toObject())
+{
     QString sign = cache["sign"].toString();
     for (const SignDefinition &definition : signs){
         if (definition.literal == sign){
@@ -18,8 +20,18 @@ CalculationHistory::CalculationHistory(const QJsonObject &cache)
     throw std::invalid_argument(sign.toStdString() + " does not match any sign");
 }
 
-CalculationHistory::CalculationHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res)
-    : sign(sign), operandA(op1), operandB(op2), result(res) {}
+CalculationHistory::CalculationHistory(Page page, Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res)
+    : page(page), sign(sign), operandA(op1), operandB(op2), result(res) {}
+
+Calculation *CalculationHistory::getCalculation() const{
+    return new Calculation{
+        .operandA = operandA.getType(),
+        .operandB = operandB.getType(),
+        .result = result.getType(),
+        .sign = sign,
+        .name = ""
+    };
+}
 
 QJsonObject CalculationHistory::toJson() const{
     return
@@ -27,12 +39,13 @@ QJsonObject CalculationHistory::toJson() const{
         { "operandA", operandA.toJson() },
         { "operandB", operandB.toJson() },
         { "operandC", result.toJson() },
-        { "sign", signs[sign].literal }
+        { "sign", signs[sign].literal },
+        { "page", std::to_underlying(page) }
     };
 }
 
-void History::addHistory(Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res){
-    CalculationHistory history(sign, op1, op2, res);
+void History::addHistory(Page page, Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res){
+    CalculationHistory history(page, sign, op1, op2, res);
     histories.push_back(history);
     HistoryWindow::instance->refreshHistory();
     try{

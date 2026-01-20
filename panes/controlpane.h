@@ -18,6 +18,8 @@ public:
 
     ControlPane *addResizer(ResizeBar *resizer);
 
+    void refreshSizer();
+
     void switchTo(int page);
 
 private:

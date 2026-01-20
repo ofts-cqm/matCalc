@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>282</width>
+    <width>449</width>
     <height>80</height>
    </rect>
   </property>
@@ -30,12 +30,9 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QLabel" name="operandA">
+    <widget class="QPushButton" name="operandA">
      <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <string>PushButton</string>
      </property>
     </widget>
    </item>
@@ -50,12 +47,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="operandB">
+    <widget class="QPushButton" name="operandB">
      <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <string>PushButton</string>
      </property>
     </widget>
    </item>
@@ -67,12 +61,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="result">
+    <widget class="QPushButton" name="result">
      <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <string>PushButton</string>
      </property>
     </widget>
    </item>

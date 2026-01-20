@@ -8,6 +8,8 @@
 #include "../calculator_basic.h"
 #include "../panes/genericpane.h"
 #include "../panes/signpane.h"
+#include "../history/calculationhistory.h"
+#include "../history/historyitem.h"
 #include <functional>
 
 using Evaluator = std::function<GenericNumber *(const Calculation *, const GenericNumber *, const GenericNumber *)>;
@@ -17,13 +19,13 @@ class AbstractPage: public QWidget
     Q_OBJECT
 
 public:
-    AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, QWidget *parent = nullptr);
-
-    ~AbstractPage();
+    AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent = nullptr);
 
     GenericPane *registerOperand(GenericPane *operand, int position);
 
     virtual void switchTo(const Calculation *nextCalculation);
+
+    void restore(const HistoryItem &history);
 
     void evaluate(bool record = false);
 
@@ -37,6 +39,7 @@ protected:
     QLayout *content;
     ControlPane *control;
     static AbstractPage *currentPage;
+    History::Page page;
 };
 
 #endif // ABSTRACTPAGE_H

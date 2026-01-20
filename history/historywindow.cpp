@@ -2,6 +2,7 @@
 #include "../util.h"
 #include "calculationhistory.h"
 #include "historyitem.h"
+#include <QtGui/qevent.h>
 #include <QtWidgets/qboxlayout.h>
 #include <QPushButton>
 #include <QtWidgets/qlabel.h>
@@ -12,7 +13,8 @@ using namespace History;
 HistoryWindow::HistoryWindow(QWidget *parent)
     : QMainWindow{parent}
 {
-    this->setGeometry(0, 0, 300, 500);
+    this->setWindowTitle("Histories");
+    this->setFixedSize(300, 500);
 
     QScrollArea *wrapper = new QScrollArea(this);
     wrapper->setGeometry(0, 0, 300, 500);
@@ -25,6 +27,11 @@ HistoryWindow::HistoryWindow(QWidget *parent)
     wrapper->setWidget(content);
     instance = this;
     refreshHistory();
+}
+
+void HistoryWindow::closeEvent(QCloseEvent *event) {
+    event->ignore();
+    this->hide();
 }
 
 void HistoryWindow::refreshHistory(){

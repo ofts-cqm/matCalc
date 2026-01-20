@@ -32,6 +32,8 @@ public:
 
     const NumberType getType() const;
 
+    static void setClipBoard(const GenericNumber &number);
+
 private:
     struct Hasher{
         std::size_t operator()(const NumberType &type) const {
