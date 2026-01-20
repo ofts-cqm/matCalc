@@ -6,46 +6,27 @@
 #include <QtWidgets/qboxlayout.h>
 #include <QtWidgets/qlabel.h>
 
-static GenericNumber retHolder;
-static Vector vectorBuff;
-static double numBuff;
-
-static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
+static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
     switch (calc->sign){
     case PLUS:
-        vectorBuff = a->getVector() + b->getVector();
-        break;
+        return a->getVector() + b->getVector();
     case MINUS:
-        vectorBuff = a->getVector() - b->getVector();
-        break;
+        return a->getVector() - b->getVector();
     case MUL:
-        vectorBuff = b->getVector() * a->getDouble();
-        break;
+        return b->getVector() * a->getDouble();
     case DOT:
-        numBuff = a->getVector() * b->getVector();
-        break;
+        return a->getVector() * b->getVector();
     case CROSS:
-        vectorBuff = a->getVector().cross(b->getVector());
-        break;
+        return a->getVector().cross(b->getVector());
     case PROJ:
-        vectorBuff = Vector::proj(a->getVector(), b->getVector());
-        break;
+        return Vector::proj(a->getVector(), b->getVector());
     case PERP:
-        vectorBuff = Vector::perp(a->getVector(), b->getVector());
-        break;
+        return Vector::perp(a->getVector(), b->getVector());
     case LENGTH:
-        numBuff = a->getVector().dim();
-        break;
+        return a->getVector().dim();
     default:
         throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
-        break;
     }
-
-    //vectorBuff = a->getVector() + b->getVector();
-    if (calc->result == VECTOR) retHolder = vectorBuff;
-    else retHolder = numBuff;
-
-    return &retHolder;
 }
 
 VectorPage::VectorPage(QWidget *parent)

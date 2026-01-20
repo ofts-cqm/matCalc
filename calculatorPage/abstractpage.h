@@ -12,7 +12,7 @@
 #include "../history/historyitem.h"
 #include <functional>
 
-using Evaluator = std::function<GenericNumber *(const Calculation *, const GenericNumber *, const GenericNumber *)>;
+using Evaluator = std::function<GenericNumber(const Calculation *, const GenericNumber *, const GenericNumber *)>;
 
 class AbstractPage: public QWidget
 {

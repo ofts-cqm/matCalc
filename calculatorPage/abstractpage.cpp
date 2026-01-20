@@ -1,6 +1,7 @@
 #include "abstractpage.h"
 #include "../util.h"
 #include "../history/calculationhistory.h"
+#include "../mainwindow.h"
 #include <QtWidgets/qboxlayout.h>
 
 AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent)
@@ -66,9 +67,14 @@ void AbstractPage::restore(const HistoryItem &history){
 void AbstractPage::evaluate(bool record){
     const GenericNumber *op1 = operandA == nullptr ? &GenericNumber::unknown : operandA->getValue();
     const GenericNumber *op2 = operandB == nullptr ? &GenericNumber::unknown : operandB->getValue();
-    GenericNumber *number = evaluator(currentCalculation, op1, op2);
-    resultPane->display(*number);
-    if (record) History::addHistory(page, currentCalculation->sign, *op1, *op2, *number);
+    try{
+        GenericNumber number = evaluator(currentCalculation, op1, op2);
+        resultPane->display(number);
+        if (record) History::addHistory(page, currentCalculation->sign, *op1, *op2, number);
+    }catch (std::exception &e){
+        qCritical() << "Error When Evaluating: " << e.what();
+        MainWindow::setMessage(e.what());
+    }
 }
 
 AbstractPage *AbstractPage::getCurrent(){

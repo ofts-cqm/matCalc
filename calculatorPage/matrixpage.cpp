@@ -6,72 +6,38 @@
 #include "../panes/vectorpane.h"
 #include "../numbers/reducedmatrix.h"
 
-static GenericNumber retHolder;
-static Matrix matrixBuff;
-static Vector vectorBuff;
-static double numBuff;
-static std::string labBuff;
-static SpanSet setBuff;
-
-static GenericNumber *evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
-    labBuff = "";
-
+static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
     switch (calc->sign){
     case PLUS:
-        matrixBuff = a->getMatrix() + b->getMatrix();
-        break;
+        return a->getMatrix() + b->getMatrix();
     case MINUS:
-        matrixBuff = a->getMatrix() - b->getMatrix();
-        break;
+        return a->getMatrix() - b->getMatrix();
     case MUL:
-        if (calc->operandA == NUMBER){
-            matrixBuff = b->getMatrix() * a->getDouble();
-        } else if(calc->operandB == VECTOR){
-            vectorBuff = a->getMatrix() * b->getVector();
-        } else {
-            matrixBuff = a->getMatrix() * b->getMatrix();
-        }
-        break;
+        if (calc->operandA == NUMBER) return b->getMatrix() * a->getDouble();
+        else if(calc->operandB == VECTOR) return a->getMatrix() * b->getVector();
+        else return a->getMatrix() * b->getMatrix();
     case TRANS:
-        matrixBuff = a->getMatrix().transpose();
-        break;
+        return a->getMatrix().transpose();
     case RREF:
-        matrixBuff = b->getMatrix().reduceAsMatrix();
-        break;
+        return b->getMatrix().reduceAsMatrix();
     case DET:
-        numBuff = b->getMatrix().det();
-        break;
+        return b->getMatrix().det();
     case INVT: {
         ReducedMatrix mat = ReducedMatrix::reduce(a->getMatrix(), Matrix::unit(a->getMatrix().getHeight()));
-        if (mat.rank() == a->getMatrix().getHeight()) matrixBuff = mat.augmentedMatrix();
-        else labBuff = "Matrix Not Invertable";
-        break;
+        if (mat.rank() == a->getMatrix().getHeight()) return mat.augmentedMatrix();
+        else return std::string("Matrix Not Invertable");
     }
     case RANK:
-        numBuff = b->getMatrix().reduce().rank();
-        break;
+        return b->getMatrix().reduce().rank();
     case NULL_SPACE:
-        setBuff = b->getMatrix().nullSpace();
-        //setBuff = SpanSet(b->getMatrix());
-        break;
+        return b->getMatrix().nullSpace();
     case COL_SPACE:
-        setBuff = b->getMatrix().colSpace();
-        break;
+        return b->getMatrix().colSpace();
     case BASE:
-        setBuff = b->getSpanSet().reduce();
-        break;
+        return b->getSpanSet().reduce();
     default:
         throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
     }
-
-    if (calc->result == VECTOR) retHolder = vectorBuff;
-    else if (calc->result == MATRIX) retHolder = matrixBuff;
-    else if (calc->result == SPAN_SET) retHolder = setBuff;
-    else retHolder = numBuff;
-
-    if (labBuff != "") retHolder = labBuff;
-
-    return &retHolder;
 }
 
 const Calculation MatrixPage::calculationdefinition[] = {
