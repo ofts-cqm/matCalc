@@ -92,8 +92,13 @@ HistoryItem::HistoryItem(const CalculationHistory *item, QWidget *parent)
     ui->operandB->setToolTip(getTooltip(item->operandB));
     ui->sign->setText(signs[item->sign].literal);
     if (ui->sign->text().trimmed().isEmpty()) ui->sign->setText(" . ");
+    if (item->sign == EQU) ui->sign->hide();
     ui->result->setText(getLiteral(item->result));
     ui->result->setToolTip(getTooltip(item->result));
+
+    if (!item->operandA.hasValue()) ui->operandA->hide();
+    if (!item->operandB.hasValue()) ui->operandB->hide();
+    if (!item->result.hasValue()) ui->result->hide();
 
     connect(ui->operandA, &QPushButton::clicked, this, &HistoryItem::op1Pressed);
     connect(ui->operandB, &QPushButton::clicked, this, &HistoryItem::op2Pressed);
@@ -107,6 +112,10 @@ HistoryItem::~HistoryItem()
 }
 
 void HistoryItem::mousePressEvent(QMouseEvent *event){
+    if (itemBase.page == Page::CALCULATOR){
+        EvaluationPage::restore(QString::fromStdString(itemBase.operandA.getLabel()));
+        return;
+    }
     MainWindow::setPage(itemBase.page)->restore(*this);
 }
 

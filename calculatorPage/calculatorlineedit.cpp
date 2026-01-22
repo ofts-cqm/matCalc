@@ -1,6 +1,7 @@
 #include "calculatorlineedit.h"
 #include "../util.h"
 #include "../calc/calculator.h"
+#include "../history/calculationhistory.h"
 
 CalculatorLineEdit::CalculatorLineEdit(QWidget *parent)
     : QPlainTextEdit(parent) {
@@ -38,6 +39,7 @@ void CalculatorLineEdit::clearInput(){
 void CalculatorLineEdit::evaluate(){
     std::optional<double> result = Calculator::evaluate(toPlainText().toStdString(), true);
     if (result.has_value()) {
+        History::addHistory(History::Page::CALCULATOR, EQU, toPlainText().toStdString(), GenericNumber::unknown, result.value());
         setPlainText(format(result.value()));
         selectAll();
     }

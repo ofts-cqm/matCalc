@@ -172,3 +172,7 @@ const GenericNumber &GenericNumber::operator=(const GenericNumber &src){
     this->num = src.num;
     return *this;
 }
+
+bool GenericNumber::hasValue() const{
+    return this->type != EMPTY && this->type != UNKNOWN;
+}

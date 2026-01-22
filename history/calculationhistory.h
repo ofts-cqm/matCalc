@@ -9,7 +9,8 @@ namespace History{
 
     enum class Page{
         VECTOR,
-        MATRIX
+        MATRIX,
+        CALCULATOR,
     };
 
     struct CalculationHistory {

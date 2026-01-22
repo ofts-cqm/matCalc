@@ -84,6 +84,10 @@ void EvaluationPage::onButtonPressed(){
     }
 }
 
+void EvaluationPage::restore(const QString &history){
+    instance->input->setPlainText(history);
+}
+
 void EvaluationPage::closeEvent(QCloseEvent *event) {
     event->ignore();
     this->hide();

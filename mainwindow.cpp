@@ -64,6 +64,8 @@ AbstractPage *MainWindow::setPage(History::Page page){
         break;
     case History::Page::MATRIX:
         instance->ui->stackedWidget->setCurrentWidget(instance->matPage);
+    case History::Page::CALCULATOR:
+        break;
     }
 
     return static_cast<AbstractPage *>(instance->ui->stackedWidget->currentWidget());
@@ -75,6 +77,8 @@ void MainWindow::setMessage(QString message){
 
 void MainWindow::closeEvent(QCloseEvent *event) {
     QCoreApplication::quit();
+    HistoryWindow::instance->close();
+    EvaluationPage::instance->close();
     event->accept();
 }
 

@@ -49,6 +49,8 @@ public:
     const SpanSet &getSpanSet() const;
     const std::string &getLabel() const;
 
+    bool hasValue() const;
+
     const GenericNumber &operator=(const GenericNumber &src);
 
     QJsonObject toJson() const;

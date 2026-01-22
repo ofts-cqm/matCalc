@@ -17,6 +17,8 @@ public:
     explicit EvaluationPage(QWidget *parent = nullptr);
     ~EvaluationPage();
 
+    static void restore(const QString &history);
+
     static EvaluationPage *instance;
 
 protected:
