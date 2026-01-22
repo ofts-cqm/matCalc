@@ -4,25 +4,27 @@
 #include "../mainwindow.h"
 #include <QtWidgets/qboxlayout.h>
 
-AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent)
+AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent, bool defaultLayout)
     : QWidget(parent), evaluator(evaluator), page(page) {
     this->sign = new SignPane(defaultCalculation->sign, this);
     this->equal = new SignPane(EQU, this);
 
-    QVBoxLayout *main = new QVBoxLayout(this);
-    main->setSpacing(0);
-    this->setLayout(main);
+    if (defaultLayout){
+        QVBoxLayout *main = new QVBoxLayout(this);
+        main->setSpacing(0);
+        this->setLayout(main);
 
-    main->addItem(getVerticalSpacer());
-    QHBoxLayout *controlLayout = new QHBoxLayout();
-    controlLayout->setSpacing(0);
-    controlLayout->addSpacerItem(getHorizontalSpacer());
-    controlLayout->addWidget(control = new ControlPane(this));
-    controlLayout->addSpacerItem(getHorizontalSpacer());
-    main->addLayout(controlLayout);
+        main->addItem(getVerticalSpacer());
+        QHBoxLayout *controlLayout = new QHBoxLayout();
+        controlLayout->setSpacing(0);
+        controlLayout->addSpacerItem(getHorizontalSpacer());
+        controlLayout->addWidget(control = new ControlPane(this));
+        controlLayout->addSpacerItem(getHorizontalSpacer());
+        main->addLayout(controlLayout);
 
-    main->addLayout(content = new QHBoxLayout());
-    main->addItem(getVerticalSpacer());
+        main->addLayout(content = new QHBoxLayout());
+        main->addItem(getVerticalSpacer());
+    }
     this->currentCalculation = defaultCalculation;
 }
 

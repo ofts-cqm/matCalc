@@ -38,6 +38,8 @@ namespace History{
 
     void addHistory(Page page, Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res);
 
+    void clearHistory();
+
     void restoreHistory();
 }
 

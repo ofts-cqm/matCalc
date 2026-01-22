@@ -44,7 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
     watcher->setFuture(future);
 
     historyWindow = new HistoryWindow();
+    calculator = new EvaluationPage();
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::openHistory);
+    connect(ui->calculator, &QPushButton::clicked, calculator, &EvaluationPage::show);
 }
 
 void MainWindow::setPage(AbstractPage *page){

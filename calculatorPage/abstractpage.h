@@ -19,7 +19,7 @@ class AbstractPage: public QWidget
     Q_OBJECT
 
 public:
-    AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent = nullptr);
+    AbstractPage(Evaluator evaluator, const Calculation *defaultCalculation, History::Page page, QWidget *parent = nullptr, bool defaultLayout = true);
 
     GenericPane *registerOperand(GenericPane *operand, int position);
 

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "calculatorPage/abstractpage.h"
+#include "calculatorPage/evaluationpage.h"
 #include "history/historywindow.h"
 #include <QMainWindow>
 
@@ -24,6 +25,7 @@ public:
     ~MainWindow();
 
     HistoryWindow *historyWindow;
+    EvaluationPage *calculator;
 
 private:
     Ui::MainWindow *ui;

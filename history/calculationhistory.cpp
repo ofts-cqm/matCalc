@@ -78,6 +78,14 @@ static void writeHistoryToGenericToken(const QJsonValue &record){
     }
 }
 
+
+void History::clearHistory(){
+    histories.clear();
+    jsons = {};
+    HistoryWindow::instance->refreshHistory();
+    writeToFile(jsons);
+}
+
 void History::restoreHistory(){
     errorOccurred = false;
     histories.clear();

@@ -16,9 +16,18 @@ HistoryWindow::HistoryWindow(QWidget *parent)
     this->setWindowTitle("Histories");
     this->setFixedSize(300, 500);
 
-    QScrollArea *wrapper = new QScrollArea(this);
-    wrapper->setGeometry(0, 0, 300, 500);
-    wrapper->setWidgetResizable(false);
+    QWidget *mainWidget = new QWidget(this);
+    mainWidget->setLayout(new QVBoxLayout());
+    mainWidget->setGeometry(0, 0, 300, 500);
+    mainWidget->layout()->setContentsMargins(0, 0, 0, 0);
+
+    QPushButton *clearButton = new QPushButton(mainWidget);
+    clearButton->setText("Clear History");
+    connect(clearButton, &QPushButton::clicked, this, &HistoryWindow::onClearHistory);
+    mainWidget->layout()->addWidget(clearButton);
+
+    QScrollArea *wrapper = new QScrollArea(mainWidget);
+    mainWidget->layout()->addWidget(wrapper);
 
     this->content = new QWidget(wrapper);
     this->content->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -32,6 +41,10 @@ HistoryWindow::HistoryWindow(QWidget *parent)
 void HistoryWindow::closeEvent(QCloseEvent *event) {
     event->ignore();
     this->hide();
+}
+
+void HistoryWindow::onClearHistory(){
+    History::clearHistory();
 }
 
 void HistoryWindow::refreshHistory(){
@@ -49,7 +62,7 @@ void HistoryWindow::refreshHistory(){
     if (histories.size() == 0){
         QLabel *label = new QLabel("No Histories Yet");
         contentLayout->addWidget(label);
-        this->content->setMinimumSize(295, 42);
+        this->content->setMinimumSize(200, 42);
         return;
     }
 

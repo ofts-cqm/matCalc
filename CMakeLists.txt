@@ -20,6 +20,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -73,6 +74,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         history/historywriter.h history/historywriter.cpp
         history/historywindow.h history/historywindow.cpp
         history/historyitem.h history/historyitem.cpp history/historyitem.ui
+        calculatorPage/evaluationpage.h calculatorPage/evaluationpage.cpp calculatorPage/evaluationpage.ui
+        calculatorPage/calculatorlineedit.h calculatorPage/calculatorlineedit.cpp
 
 
     )
@@ -104,15 +107,17 @@ target_link_libraries(MatCalc PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION
 target_link_libraries(MatCalc PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(MatCalc PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(MatCalc PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(MatCalc PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.MatCalc)
+  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER net.ofts.MatCalc)
 endif()
 set_target_properties(MatCalc PROPERTIES
     ${BUNDLE_ID_OPTION}
+    BUNDLE_IDENTIFIER "net.ofts.matCalc"
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE

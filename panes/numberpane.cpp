@@ -29,6 +29,15 @@ const GenericNumber *NumberPane::getValue(){
 }
 
 void NumberPane::display(GenericNumber num){
+    if (num.getType() == LABEL){
+        QString str = QString::fromStdString(num.getLabel());
+        std::optional<double> res = numberParser(str);
+        if (res.has_value()){
+            this->value = res.value();
+            this->content->setValue(res.value());
+            return;
+        }
+    }
     if (num.getType() != NUMBER) throw IncompatiblePasteException(*this, num);
     this->value = num.getDouble();
     this->content->setValue(num.getDouble());
