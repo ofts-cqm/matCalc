@@ -15,8 +15,18 @@ double OperatorToken::evaluate() const{
 }
 
 bool OperatorToken::parse(InputMatcher &input, Token *lastInput) const{
-    if (!input.match(operation)) return false;
+    input.push();
+    if (!input.match(operation)){
+        input.pop();
+        return false;
+    }
 
+    if (operation == "-" && (lastInput->type() == TokenType::Number || lastInput->type() == TokenType::Parenthesis)){
+        input.pop();
+        return false;
+    }
+
+    input.ignore();
     return finalizeToken(lastInput, std::make_unique<OperatorToken>(*this));
 }
 

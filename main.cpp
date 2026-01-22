@@ -8,6 +8,7 @@
 int main(int argc, char *argv[])
 {
     Calculator::init();
+    Calculator::debugMode = true;
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
