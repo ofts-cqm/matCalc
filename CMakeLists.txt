@@ -76,6 +76,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         history/historyitem.h history/historyitem.cpp history/historyitem.ui
         calculatorPage/evaluationpage.h calculatorPage/evaluationpage.cpp calculatorPage/evaluationpage.ui
         calculatorPage/calculatorlineedit.h calculatorPage/calculatorlineedit.cpp
+        numbers/polynomial.h numbers/polynomial.cpp
+        numbers/sturm.h numbers/sturm.cpp
 
 
     )
