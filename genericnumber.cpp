@@ -31,6 +31,9 @@ GenericNumber::GenericNumber(const std::string &num)
 GenericNumber::GenericNumber(const SpanSet &num)
     : num(num), type(SPAN_SET) {}
 
+GenericNumber::GenericNumber(const EigenSpace &num)
+    : num(num), type(EIGEN) {}
+
 GenericNumber::GenericNumber(double &&num)
     : num(std::move(num)), type(NUMBER) {}
 
@@ -45,6 +48,9 @@ GenericNumber::GenericNumber(std::string &&num)
 
 GenericNumber::GenericNumber(SpanSet &&num)
     : num(std::move(num)), type(SPAN_SET) {}
+
+GenericNumber::GenericNumber(EigenSpace &&num)
+    : num(std::move(num)), type(EIGEN) {}
 
 std::vector<double> getArray(QJsonArray &&array){
     std::vector<double> arr(array.size());
@@ -93,6 +99,16 @@ GenericNumber::GenericNumber(const QJsonObject &cache){
             this->num = SpanSet(std::move(mat));
         }
         break;
+    case 'I':
+        this->type = EIGEN;
+        {
+            QJsonArray arr = cache["values"].toArray();
+            std::vector<double> eigenValues(arr.size());
+            for (int i = 0; i < arr.size(); i++) eigenValues[i] = arr[i].toDouble();
+            // no need to restore eigen vectors because they are not displayed, and will be recalculated when restoring
+            this->num = EigenSpace{eigenValues, std::vector<SpanSet>(arr.size(), SpanSet()), static_cast<int>(eigenValues.size()) };
+        }
+        break;
     case 'L':
         this->type = LABEL;
         this->num = cache["label"].toString().toStdString();
@@ -127,6 +143,11 @@ QJsonObject GenericNumber::toJson() const{
             { "height", getMatrix().getHeight()},
             { "width", getMatrix().getWidth()},
             { "mat", get2DArray(getMatrix()) }
+        };
+    case EIGEN:
+        return{
+            { "type", "I" },
+            { "values", getArray(this->getEigen().eigenValues) }
         };
     case LABEL:
         return { { "type", "L" }, { "label", this->getLabel().c_str() } };

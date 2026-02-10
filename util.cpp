@@ -39,6 +39,8 @@ std::string nameForNumberType(NumberType type){
         return "Set";
     case LABEL:
         return "Info Label";
+    case EIGEN:
+        return "Eigen Space";
     case UNKNOWN:
     case EMPTY:
         return "Empty";
@@ -109,6 +111,8 @@ AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool 
         return new LabelPane(QString::fromStdString(""), parent);
     case SPAN_SET:
         return new SpanSetPane(SpanSet(), editable, parent);
+    case EIGEN:
+        break;
     case UNKNOWN:
     case EMPTY:
         return new EmptyPane(parent);

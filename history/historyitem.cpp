@@ -55,6 +55,8 @@ QString getLiteral(const GenericNumber &num){
         return "\n{Set}\n";
     case LABEL:
         return QString::fromStdString(num.getLabel());
+    case EIGEN:
+        return "Eigen Space";
     case UNKNOWN:
     case EMPTY:
         return "";
@@ -75,6 +77,12 @@ QString getTooltip(const GenericNumber &num){
     case MATRIX:
     case SPAN_SET:
         return getMatrixStr(num.getMatrix()).first;
+    case EIGEN:
+    {
+        QString str = "Eigen Value(s)";
+        for (double d : num.getEigen().eigenValues) str += " " + format(d);
+        return str;
+    }
     case LABEL:
     case UNKNOWN:
     case EMPTY:

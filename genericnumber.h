@@ -4,6 +4,7 @@
 #include "numbers/matrix.h"
 #include "numbers/spanset.h"
 #include "numbers/vector.h"
+#include "numbers/eigenspace.h"
 #include <QtCore/qobject.h>
 #include <variant>
 
@@ -13,11 +14,12 @@ enum NumberType{
     MATRIX,
     SPAN_SET,
     LABEL,
+    EIGEN,
     UNKNOWN,
     EMPTY
 };
 
-#define NUMBER_TYPE_COUNT 7
+#define NUMBER_TYPE_COUNT 8
 
 class GenericNumber
 {
@@ -33,12 +35,14 @@ public:
     GenericNumber(const Matrix &);
     GenericNumber(const std::string &);
     GenericNumber(const SpanSet &);
+    GenericNumber(const EigenSpace &);
 
     GenericNumber(double &&);
     GenericNumber(Vector &&);
     GenericNumber(Matrix &&);
     GenericNumber(std::string &&);
     GenericNumber(SpanSet &&);
+    GenericNumber(EigenSpace &&);
 
     explicit GenericNumber(const QJsonObject &cache);
 
@@ -48,6 +52,7 @@ public:
     const Matrix &getMatrix() const;
     const SpanSet &getSpanSet() const;
     const std::string &getLabel() const;
+    const EigenSpace &getEigen() const;
 
     bool hasValue() const;
 
@@ -61,7 +66,7 @@ public:
 
 private:
     NumberType type;
-    std::variant<double, Vector, Matrix, std::string, SpanSet> num;
+    std::variant<double, Vector, Matrix, std::string, SpanSet, EigenSpace> num;
 };
 
 #endif // GENERICNUMBER_H
