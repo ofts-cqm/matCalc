@@ -78,6 +78,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         calculatorPage/calculatorlineedit.h calculatorPage/calculatorlineedit.cpp
         numbers/polynomial.h numbers/polynomial.cpp
         numbers/sturm.h numbers/sturm.cpp
+        numbers/polynomialmatrix.h numbers/polynomialmatrix.cpp
 
 
     )
