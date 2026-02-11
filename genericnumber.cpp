@@ -188,6 +188,11 @@ const SpanSet &GenericNumber::getSpanSet() const {
     return std::get<SpanSet>(num);
 }
 
+const EigenSpace &GenericNumber::getEigen() const {
+    assert(this->type == EIGEN);
+    return std::get<EigenSpace>(num);
+}
+
 const GenericNumber &GenericNumber::operator=(const GenericNumber &src){
     this->type = src.getType();
     this->num = src.num;

@@ -33,6 +33,8 @@ static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, co
         return b->getMatrix().nullSpace();
     case COL_SPACE:
         return b->getMatrix().colSpace();
+    case EIGEN_SPACE:
+        return b->getMatrix().eigenSpace();
     case BASE:
         return b->getSpanSet().reduce();
     default:
@@ -53,7 +55,8 @@ const Calculation MatrixPage::calculationdefinition[] = {
     { EMPTY, MATRIX, MATRIX, RREF, "Reduce" },
     { EMPTY, MATRIX, SPAN_SET, COL_SPACE, "Range" },
     { EMPTY, MATRIX, SPAN_SET, NULL_SPACE, "Kernal" },
-    { EMPTY, SPAN_SET, SPAN_SET, BASE, "Find Base" }
+    { EMPTY, MATRIX, EIGEN, EIGEN_SPACE, "Eigen" },
+    { EMPTY, SPAN_SET, SPAN_SET, BASE, "Find Base" },
 };
 
 int MatrixPage::primeHeight(){
@@ -126,6 +129,7 @@ void MatrixPage::switchTo(const Calculation *nextCalculation){
     case RANK:
     case NULL_SPACE:
     case COL_SPACE:
+    case EIGEN_SPACE:
         control->switchTo(0);
         break;
     case MUL:

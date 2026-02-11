@@ -5,6 +5,8 @@
 
 class ReducedMatrix;
 
+struct EigenSpace;
+
 class Matrix
 {
 public:
@@ -57,6 +59,8 @@ public:
     ReducedMatrix reduce() const;
 
     Matrix reduceAsMatrix() const;
+
+    EigenSpace eigenSpace() const;
 
     SpanSet nullSpace() const;
 

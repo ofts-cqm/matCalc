@@ -2,6 +2,7 @@
 #define STURM_H
 
 #include "polynomial.h"
+#include <set>
 
 struct Range{
     double upper;
@@ -19,7 +20,7 @@ public:
 
     void isolate(const Range &range, std::vector<Range> &intervals) const;
 
-    std::vector<double> roots() const;
+    std::set<double> roots() const;
 
 private:
     Polynomial p;

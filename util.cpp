@@ -1,5 +1,6 @@
 #include "util.h"
 #include "calc/calculator.h"
+#include "panes/eigenpane.h"
 #include "panes/matrixpane.h"
 #include "panes/numberpane.h"
 #include "panes/spansetpane.h"
@@ -112,7 +113,7 @@ AbstractNumberPane *getNewPageOfThisType(NumberType type, QWidget *parent, bool 
     case SPAN_SET:
         return new SpanSetPane(SpanSet(), editable, parent);
     case EIGEN:
-        break;
+        return new EigenPane(EigenSpace());
     case UNKNOWN:
     case EMPTY:
         return new EmptyPane(parent);

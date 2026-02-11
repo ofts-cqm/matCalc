@@ -4,7 +4,7 @@
 #include <QtWidgets/qlabel.h>
 
 EigenPane::EigenPane(const EigenSpace &eigen, QWidget *parent)
-    : AbstractNumberPane{parent}, currentIndex(0), eigen(eigen)
+    : AbstractNumberPane{parent}, currentIndex(0), eigen(eigen), sets()
 {
     this->genericValue = eigen;
     content = new QVBoxLayout();
@@ -31,6 +31,19 @@ EigenPane::EigenPane(const EigenSpace &eigen, QWidget *parent)
     EigenPane::reconstructPage();
 }
 
+void EigenPane::switchPage(){
+    sets[spaces->currentIndex()]->setAsCurrent(false);
+    spaces->setCurrentIndex(currentIndex);
+    sets[spaces->currentIndex()]->setAsCurrent(true);
+}
+
+QLabel *getCenterLabel(QString str){
+    QLabel *label = new QLabel(str);
+    label->setAlignment(Qt::AlignHCenter);
+    label->setFont(getLargeFont());
+    return label;
+}
+
 void EigenPane::reconstructPage(){
     this->currentIndex = 0;
     prev->setEnabled(false);
@@ -46,16 +59,18 @@ void EigenPane::reconstructPage(){
         return;
     }
 
+    sets.resize(eigen.size, nullptr);
     for (int i = 0; i < eigen.size; i++){
         QWidget *page = new QWidget();
         QVBoxLayout *pageLayout = new QVBoxLayout();
+        pageLayout->setAlignment(Qt::AlignmentFlag::AlignHCenter);
         page->setLayout(pageLayout);
         spaces->addWidget(page);
 
-        pageLayout->addWidget(new QLabel("Eigen Value: " + format(eigen.eigenValues[i])));
-        pageLayout->addWidget(new SpanSetPane(eigen.eigenSpaces[i], false, nullptr));
+        pageLayout->addWidget(getCenterLabel("Eigen Value: " + format(eigen.eigenValues[i])));
+        pageLayout->addWidget(sets[i] = new SpanSetPane(eigen.eigenSpaces[i], false, nullptr));
     }
-    spaces->setCurrentIndex(0);
+    switchPage();
 }
 
 void EigenPane::display(GenericNumber num){
@@ -69,7 +84,7 @@ void EigenPane::paste(GenericNumber num){}
 void EigenPane::onPrevPressed(){
     if (this->currentIndex == 0) return;
     currentIndex--;
-    spaces->setCurrentIndex(currentIndex);
+    switchPage();
     if (this->currentIndex == 0) prev->setEnabled(false);
     if (spaces->count() != 1) next->setEnabled(true);
 }
@@ -77,7 +92,7 @@ void EigenPane::onPrevPressed(){
 void EigenPane::onNextPressed(){
     if (this->currentIndex == spaces->count() - 1) return;
     currentIndex++;
-    spaces->setCurrentIndex(currentIndex);
+    switchPage();
     if (this->currentIndex == spaces->count() - 1) next->setEnabled(false);
     if (spaces->count() != 1) prev->setEnabled(true);
 }

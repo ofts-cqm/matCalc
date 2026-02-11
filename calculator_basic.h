@@ -21,7 +21,8 @@ enum Sign{
     BASE,
     SOLVE,
     DET,
-    EQU
+    EQU,
+    EIGEN_SPACE
 };
 
 struct SignDefinition{
@@ -58,7 +59,8 @@ const SignDefinition signs[] = {
     { BASE, "Base", true },
     { SOLVE, "Solve", true},
     { DET, "Det", true},
-    { EQU, "=", false}
+    { EQU, "=", false},
+    { EIGEN_SPACE, "Eigen", true }
 };
 
 struct Calculation{

@@ -17,6 +17,8 @@ public:
 
     Polynomial det() const;
 
+    Matrix evaluate(double x) const;
+
     int size;
 
 private:

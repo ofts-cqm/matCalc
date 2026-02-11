@@ -53,3 +53,13 @@ Polynomial PolynomialMatrix::recursiveDet(int size){
 Polynomial PolynomialMatrix::det() const{
     return const_cast<PolynomialMatrix *>(this)->recursiveDet(this->size);
 }
+
+Matrix PolynomialMatrix::evaluate(double x) const{
+    Matrix mat(this->size, this->size);
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++){
+            mat[i, j] = (*this)[i][j].evaluate(x);
+        }
+    }
+    return mat;
+}

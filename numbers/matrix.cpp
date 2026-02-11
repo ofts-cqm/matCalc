@@ -1,8 +1,10 @@
 #include "matrix.h"
 #include "../dimensionmismatchexception.h"
+#include "polynomialmatrix.h"
 #include "reducedmatrix.h"
-#include "spanset.h"
+#include "eigenspace.h"
 #include "../util.h"
+#include "sturm.h"
 #include <cmath>
 
 
@@ -164,6 +166,18 @@ Matrix Matrix::transpose() const{
     }
 
     return res;
+}
+
+EigenSpace Matrix::eigenSpace() const{
+    PolynomialMatrix polyMat(*this);
+    std::set<double> roots = Sturm(polyMat.det()).roots();
+    std::vector<double> eigenValues(roots.begin(), roots.end());
+    std::vector<SpanSet> eigenSpaces(eigenValues.size());
+
+    for (int i = 0; i < eigenSpaces.size(); i++){
+        eigenSpaces[i] = polyMat.evaluate(eigenValues[i]).nullSpace();
+    }
+    return {eigenValues, eigenSpaces, static_cast<int>(eigenSpaces.size())};
 }
 
 SpanSet Matrix::nullSpace() const {

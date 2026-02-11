@@ -2,6 +2,7 @@
 #define EIGENPANE_H
 
 #include "abstractnumberpane.h"
+#include "spansetpane.h"
 #include <QObject>
 #include <QWidget>
 #include <QBoxlayout>
@@ -20,12 +21,15 @@ public:
     virtual void paste(GenericNumber num) override;
 
 private:
+    void switchPage();
+
     QVBoxLayout *content;
     QHBoxLayout *buttonBox;
     QStackedWidget *spaces;
     QPushButton *prev, *next;
     int currentIndex;
     EigenSpace eigen;
+    std::vector<SpanSetPane *> sets;
 
 private slots:
     void onPrevPressed();

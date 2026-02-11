@@ -91,7 +91,7 @@ double newton(const Polynomial &p, double x0) {
     return x0;
 }
 
-std::vector<double> Sturm::roots() const {
+std::set<double> Sturm::roots() const {
     // Cauchy bound
     double an = p[p.degree()];
     double R = 1;
@@ -102,14 +102,13 @@ std::vector<double> Sturm::roots() const {
     vector<Range> intervals;
     isolate({R, -R}, intervals);
 
-    std::vector<double> roots;
+    std::set<double> roots;
 
     for (const Range &r: intervals) {
         double root = bisection(p, r);
         root = newton(p, root); // polish
-        roots.push_back(root);
+        roots.insert(root);
     }
 
-    sort(roots.begin(), roots.end());
     return roots;
 }
