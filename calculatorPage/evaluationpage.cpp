@@ -85,6 +85,7 @@ void EvaluationPage::onButtonPressed(){
 }
 
 void EvaluationPage::restore(const QString &history){
+    instance->show();
     instance->input->setPlainText(history);
 }
 
