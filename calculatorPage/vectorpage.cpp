@@ -23,7 +23,7 @@ static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, co
     case PERP:
         return Vector::perp(a->getVector(), b->getVector());
     case LENGTH:
-        return a->getVector().dim();
+        return a->getVector().norm();
     default:
         throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
     }

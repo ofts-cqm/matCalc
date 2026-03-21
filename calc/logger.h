@@ -2,6 +2,7 @@
 #define LOGGER_H
 
 #include <vector>
+#include <string>
 class Logger
 {
 public:

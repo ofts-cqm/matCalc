@@ -5,9 +5,9 @@
 #include "spansetpane.h"
 #include <QObject>
 #include <QWidget>
-#include <QBoxlayout>
-#include <QPushbutton>
-#include <QStackedwidget>
+#include <QBoxLayout>
+#include <QPushButton>
+#include <QStackedWidget>
 
 class EigenPane : public AbstractNumberPane
 {

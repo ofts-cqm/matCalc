@@ -2,7 +2,7 @@
 #define CALCULATORLINEEDIT_H
 
 #include <QObject>
-#include <QPlainTextedit>
+#include <QPlainTextEdit>
 
 class CalculatorLineEdit : public QPlainTextEdit
 {
