@@ -57,15 +57,15 @@ static double _atan(double ang){ return angleOut(atan(ang)); }
 
 void OperatorToken::init(std::vector<Token *> &tokens){
     tokens.append_range(std::vector<OperatorToken *>({
-        new OperatorToken(2, "sinh", sinh),
-        new OperatorToken(2, "cosh", cosh),
-        new OperatorToken(2, "tanh", tanh),
-        new OperatorToken(2, "asinh", asinh),
-        new OperatorToken(2, "acosh", acosh),
-        new OperatorToken(2, "atanh", atanh),
-        new OperatorToken(2, "arcsinh", asinh),
-        new OperatorToken(2, "arccosh", acosh),
-        new OperatorToken(2, "arctanh", atanh),
+        new OperatorToken(2, "sinh", static_cast<double(*)(double)>(std::sinh)),
+        new OperatorToken(2, "cosh", static_cast<double(*)(double)>(std::cosh)),
+        new OperatorToken(2, "tanh", static_cast<double(*)(double)>(std::tanh)),
+        new OperatorToken(2, "asinh", static_cast<double(*)(double)>(std::asinh)),
+        new OperatorToken(2, "acosh", static_cast<double(*)(double)>(std::acosh)),
+        new OperatorToken(2, "atanh", static_cast<double(*)(double)>(std::atanh)),
+        new OperatorToken(2, "arcsinh", static_cast<double(*)(double)>(std::asinh)),
+        new OperatorToken(2, "arccosh", static_cast<double(*)(double)>(std::acosh)),
+        new OperatorToken(2, "arctanh", static_cast<double(*)(double)>(std::atanh)),
         new OperatorToken(2, "sin", _sin),
         new OperatorToken(2, "cos", _cos),
         new OperatorToken(2, "tan", _tan),
@@ -78,12 +78,12 @@ void OperatorToken::init(std::vector<Token *> &tokens){
         new OperatorToken(2, "arcsin", _asin),
         new OperatorToken(2, "arccos", _acos),
         new OperatorToken(2, "arctan", _atan),
-        new OperatorToken(2, "log", log10),
-        new OperatorToken(2, "log2", log2),
-        new OperatorToken(2, "ln", log),
-        new OperatorToken(2, "abs", fabs),
-        new OperatorToken(1, "sqrt", sqrt),
-        new OperatorToken(1, "cbrt", cbrt),
+        new OperatorToken(2, "log", static_cast<double(*)(double)>(std::log10)),
+        new OperatorToken(2, "log2", static_cast<double(*)(double)>(std::log2)),
+        new OperatorToken(2, "ln", static_cast<double(*)(double)>(std::log)),
+        new OperatorToken(2, "abs", static_cast<double(*)(double)>(std::abs)),
+        new OperatorToken(1, "sqrt", static_cast<double(*)(double)>(std::sqrt)),
+        new OperatorToken(1, "cbrt", static_cast<double(*)(double)>(std::cbrt)),
         new OperatorToken(0, "-", [](double d){return -d;})
     }));
 }
