@@ -2,6 +2,7 @@
 #define POLYNOMIAL_H
 
 #include <vector>
+#include <string>
 
 class Polynomial: private std::vector<double>
 {

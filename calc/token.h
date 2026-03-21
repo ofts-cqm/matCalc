@@ -4,6 +4,7 @@
 #include "calculator.h"
 #include "inputmatcher.h"
 #include "logger.h"
+#include <memory>
 
 class OperatorToken;
 

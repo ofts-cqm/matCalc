@@ -57,15 +57,15 @@ static double _atan(double ang){ return angleOut(atan(ang)); }
 
 void OperatorToken::init(std::vector<Token *> &tokens){
     tokens.append_range(std::vector<OperatorToken *>({
-        new OperatorToken(2, "sinh", sinh<double>),
-        new OperatorToken(2, "cosh", cosh<double>),
-        new OperatorToken(2, "tanh", tanh<double>),
-        new OperatorToken(2, "asinh", asinh<double>),
-        new OperatorToken(2, "acosh", acosh<double>),
-        new OperatorToken(2, "atanh", atanh<double>),
-        new OperatorToken(2, "arcsinh", asinh<double>),
-        new OperatorToken(2, "arccosh", acosh<double>),
-        new OperatorToken(2, "arctanh", atanh<double>),
+        new OperatorToken(2, "sinh", sinh),
+        new OperatorToken(2, "cosh", cosh),
+        new OperatorToken(2, "tanh", tanh),
+        new OperatorToken(2, "asinh", asinh),
+        new OperatorToken(2, "acosh", acosh),
+        new OperatorToken(2, "atanh", atanh),
+        new OperatorToken(2, "arcsinh", asinh),
+        new OperatorToken(2, "arccosh", acosh),
+        new OperatorToken(2, "arctanh", atanh),
         new OperatorToken(2, "sin", _sin),
         new OperatorToken(2, "cos", _cos),
         new OperatorToken(2, "tan", _tan),
@@ -78,12 +78,12 @@ void OperatorToken::init(std::vector<Token *> &tokens){
         new OperatorToken(2, "arcsin", _asin),
         new OperatorToken(2, "arccos", _acos),
         new OperatorToken(2, "arctan", _atan),
-        new OperatorToken(2, "log", log10<double>),
-        new OperatorToken(2, "log2", log2<double>),
-        new OperatorToken(2, "ln", log<double>),
-        new OperatorToken(2, "abs", fabs<double>),
-        new OperatorToken(1, "sqrt", sqrt<double>),
-        new OperatorToken(1, "cbrt", cbrt<double>),
+        new OperatorToken(2, "log", log10),
+        new OperatorToken(2, "log2", log2),
+        new OperatorToken(2, "ln", log),
+        new OperatorToken(2, "abs", fabs),
+        new OperatorToken(1, "sqrt", sqrt),
+        new OperatorToken(1, "cbrt", cbrt),
         new OperatorToken(0, "-", [](double d){return -d;})
     }));
 }
