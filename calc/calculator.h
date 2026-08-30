@@ -18,7 +18,7 @@ namespace Calculator{
 
     bool matchNext(InputMatcher &input, Token *lastInput);
 
-    static void logError(const std::string& error, const InputMatcher &context);
+    void logError(const std::string& error, const InputMatcher &context);
 
     std::string getShortErrorMessage();
 

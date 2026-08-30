@@ -13,7 +13,7 @@ GenericNumber::GenericNumber()
 GenericNumber::GenericNumber(const GenericNumber &other)
     : type(other.getType()), num(other.num){}
 
-GenericNumber::GenericNumber(GenericNumber &&other)
+GenericNumber::GenericNumber(GenericNumber &&other) noexcept
     : type(other.getType()), num(std::move(other.num)){}
 
 GenericNumber::GenericNumber(const double &num)

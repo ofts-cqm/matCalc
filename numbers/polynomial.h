@@ -9,7 +9,7 @@ class Polynomial: private std::vector<double>
 public:
     Polynomial();
     Polynomial(const Polynomial &);
-    Polynomial(Polynomial &&);
+    Polynomial(Polynomial &&) noexcept;
     Polynomial(std::initializer_list<double> list);
 
     using ::Polynomial::vector::operator=;

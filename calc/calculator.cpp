@@ -66,7 +66,7 @@ namespace Calculator{
         return false;
     }
 
-    static void logError(const std::string& error, const InputMatcher &context){
+   void logError(const std::string& error, const InputMatcher &context){
         if (errorCount == 0) first_error = error;
 
         error_message << error << '\n';

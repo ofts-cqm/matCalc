@@ -16,7 +16,8 @@ bool finalizeToken(Token *lastInput, std::unique_ptr<Token> &&generated){
         parent->right->parent = parent.get();
         grandParent->right = std::move(parent);
         return true;
-    }else if (lastInput->type() == TokenType::Operator || lastInput->type() == TokenType::Root){
+    }
+    if (lastInput->type() == TokenType::Operator || lastInput->type() == TokenType::Root){
         generated->parent = static_cast<OperatorToken *>(lastInput);
         lastToken = generated.get();
         static_cast<OperatorToken *>(lastInput)->right = std::move(generated);
