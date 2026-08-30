@@ -5,16 +5,16 @@
 
 using namespace Calculator;
 
-long matchNum(InputMatcher &input, int start);
+static long matchNum(InputMatcher &input, int start);
 
-int getNextDigit(InputMatcher &input);
+static int getNextDigit(InputMatcher &input);
 
 NumberToken::NumberToken():Token() {}
 
-NumberToken::NumberToken(double val, OperatorToken *lastToken): Token(lastToken), val(val) {}
+NumberToken::NumberToken(const double val, OperatorToken *lastToken): Token(lastToken), val(val) {}
 
-bool returnToken(double val, Token *lastInput){
-    OperatorToken *parent = dynamic_cast<OperatorToken *>(lastInput);
+static bool returnToken(double val, Token *lastInput){
+    auto *parent = dynamic_cast<OperatorToken *>(lastInput);
     parent->right = std::make_unique<NumberToken>(val, parent);
     lastToken = parent->right.get();
     return true;
@@ -79,7 +79,7 @@ TokenType NumberToken::type() const {return TokenType::Number; }
 
 int getNextDigit(InputMatcher &input) {
     std::string tmp = input.get(1);
-    if (tmp == "") return -1;
+    if (tmp.empty()) return -1;
     int c = tmp[0] - '0';
     if (c >= 0 && c <= 9) {
         input.skip(1);

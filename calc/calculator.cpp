@@ -16,7 +16,7 @@ namespace Calculator{
         int errorCount = 0;
     }
 
-    std::optional<double> evaluate(std::string expression, bool record_result){
+    std::optional<double> evaluate(const std::string& expression, const bool record_result){
         errorCount = 0;
         input = InputMatcher(expression);
         error_message = std::ostringstream();
@@ -24,8 +24,6 @@ namespace Calculator{
         lastToken = root.get();
 
         while (matchNext(input, lastToken)){}
-
-
 
         OperatorToken *temp;
         bool abort = false;
@@ -68,7 +66,7 @@ namespace Calculator{
         return false;
     }
 
-    void logError(std::string error, const InputMatcher &context){
+    static void logError(const std::string& error, const InputMatcher &context){
         if (errorCount == 0) first_error = error;
 
         error_message << error << '\n';

@@ -2,7 +2,7 @@
 #include "polynomial.h"
 #include "../util.h"
 
-Sturm::Sturm(const Polynomial &src): std::vector<Polynomial>(), p(src) {
+Sturm::Sturm(const Polynomial &src): p(src) {
     push_back(src);
     if (src.isConstant()) return;
     push_back(src.derivative());
@@ -55,7 +55,7 @@ void Sturm::isolate(const Range &range, std::vector<Range> &intervals) const{
     isolate({mid, range.lower}, intervals);
 }
 
-double bisection(const Polynomial &p, const Range &r) {
+static double bisection(const Polynomial &p, const Range &r) {
     double fa = p.evaluate(r.upper);
     double a = r.upper;
     double b = r.lower;

@@ -5,12 +5,12 @@
 #include "../util.h"
 #include "volatilestackedwidget.h"
 
-GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, bool editable)
-    : GenericPane::GenericPane(parent, getNewPageOfThisType(initialDisplay, parent, editable), editable){
+GenericPane::GenericPane(QWidget *parent, NumberType initialDisplay, const bool editable)
+    : GenericPane(parent, getNewPageOfThisType(initialDisplay, parent, editable), editable){
 
 }
 
-GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool editable):
+GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, const bool editable):
     QWidget(parent),
     typeIndex()
 {
@@ -44,7 +44,7 @@ GenericPane::GenericPane(QWidget *parent, AbstractNumberPane *initialPage, bool 
         typeIndex[i] = -1;
     }
 
-    content->addWidget((QWidget *)initialPage);
+    content->addWidget(initialPage);
     typeIndex[initialPage->getType()] = 0;
     this->editable = editable;
     currentType = initialPage->getType();
@@ -76,7 +76,7 @@ void GenericPane::switchTo(NumberType type){
 
         if (typeIndex[currentType] == -1){
             typeIndex[currentType] = content->count();
-            content->addWidget((QWidget *)getNewPageOfThisType(currentType, this, editable));
+            content->addWidget(getNewPageOfThisType(currentType, this, editable));
         }
 
         content->setCurrentIndex(typeIndex[currentType]);
@@ -87,10 +87,10 @@ void GenericPane::switchTo(NumberType type){
     }
 }
 
-void GenericPane::applyBorder(SignDefinition type){
+void GenericPane::applyBorder(const SignDefinition& type){
     if (currentType == EMPTY || currentType == UNKNOWN) return;
 
-    QString border = "";
+    QString border { "" };
     if (type.isAbs){
         border = modulusStyle;
     } else if (type.isFunction){
@@ -128,7 +128,8 @@ void GenericPane::setClipBoard(const GenericNumber &number){
     clipBoard = number;
 }
 
-void GenericPane::onPaste(){
+void GenericPane::onPaste() const
+{
     try{
         static_cast<AbstractNumberPane *>(content->currentWidget())->paste(clipBoard);
         AbstractPage::getCurrent()->evaluate();

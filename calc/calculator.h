@@ -14,11 +14,11 @@ namespace Calculator{
     extern InputMatcher input;
     extern Token *lastToken;
 
-    std::optional<double> evaluate(std::string expression, bool record_result = false);
+    std::optional<double> evaluate(const std::string& expression, bool record_result = false);
 
     bool matchNext(InputMatcher &input, Token *lastInput);
 
-    void logError(std::string error, const InputMatcher &context);
+    static void logError(const std::string& error, const InputMatcher &context);
 
     std::string getShortErrorMessage();
 

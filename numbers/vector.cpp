@@ -8,7 +8,7 @@ Vector::Vector(const std::vector<double> &vec): std::vector<double>(vec) {}
 
 Vector::Vector(std::vector<double> &&vec): std::vector<double>(std::move(vec)) {}
 
-Vector::Vector(int size): std::vector<double>() {
+Vector::Vector(int size) {
     if (size < 0) throw std::invalid_argument("Vector size cannot be negative");
     this->resize(size, 0);
 }
@@ -18,20 +18,17 @@ void Vector::setSize(int size){
     this->resize(size, 0);
 }
 
-double &Vector::operator[](int index){
+double &Vector::operator[](const int index){
     if (index < 0 || index >= dim()) throwRangeException(index, dim());
     return std::vector<double>::operator[](index);
 }
 
-double Vector::operator[](int index) const{
+double Vector::operator[](const int index) const{
     if (index < 0 || index >= dim()) throwRangeException(index, dim());
     return std::vector<double>::operator[](index);
 }
 
-Vector &Vector::operator=(const Vector &other){
-    std::vector<double>::operator=(other);
-    return *this;
-}
+Vector &Vector::operator=(const Vector &other)= default;
 
 Vector Vector::operator+(const Vector &other) const{
     if (this->dim() != other.dim())
@@ -128,7 +125,7 @@ Vector &Vector::operator-=(const Vector &other){
 
 Vector Vector::append(const Vector &other) const{
     Vector newVec(*this);
-    newVec.append_range((std::vector<double>)other);
+    newVec.append_range(static_cast<std::vector<double>>(other));
     return newVec;
 }
 
