@@ -10,13 +10,18 @@ Logger &Logger::start(){
 }
 
 Logger &Logger::finish(){
+    if (indentationRules.empty()) return *this;
     indentation--;
     indentationRules.pop_back();
     return *this;
 }
 
 Logger &Logger::write(const std::string &str, bool isLast){
-    for (int i = 0; i < indentationRules.size() - 1; i++){
+    if (indentationRules.empty()) {
+        std::cout << str << std::endl;
+        return *this;
+    }
+    for (std::size_t i = 0; i + 1 < indentationRules.size(); i++){
         std::cout << (indentationRules[i] ? "│  " : "   ");
     }
 

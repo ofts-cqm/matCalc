@@ -12,6 +12,6 @@ CalculationSelectionLabel::CalculationSelectionLabel(
 
 void CalculationSelectionLabel::mousePressEvent(QMouseEvent* event){
     MainWindow::setPage(this->page);
-    page->switchTo(this->calculation);
+    page->switchTo(*this->calculation);
     QLabel::mousePressEvent(event);
 }

@@ -11,6 +11,6 @@ DimensionMismatchException::DimensionMismatchException(int expected, int actural
                    +  std::to_string(actural));
 }
 
-const char *DimensionMismatchException::what() const throw (){
+const char *DimensionMismatchException::what() const noexcept {
     return this->message.c_str();
 }

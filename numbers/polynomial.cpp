@@ -82,7 +82,8 @@ Polynomial Polynomial::operator%(const Polynomial &other) const{
     return a;
 }
 
-Polynomial Polynomial::operator<<(double degree) const{
+Polynomial Polynomial::operator<<(int degree) const{
+    if (degree < 0) throw std::invalid_argument("Polynomial degree shift cannot be negative");
     Polynomial res = *this;
     while(degree--){
         res.insert(res.begin(), 0);
@@ -106,7 +107,7 @@ Polynomial &Polynomial::trim(){
 }
 
 bool Polynomial::isConstant() const{
-    return degree() == 0;
+    return degree() <= 0;
 }
 
 int Polynomial::degree() const{

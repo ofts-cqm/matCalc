@@ -9,6 +9,6 @@ IncompatiblePasteException::IncompatiblePasteException(NumberType original, Numb
 IncompatiblePasteException::IncompatiblePasteException(const AbstractNumberPane &original, const GenericNumber &clipboard):
     IncompatiblePasteException(original.getType(), clipboard.getType()) {}
 
-const char *IncompatiblePasteException::what() const throw() {
+const char *IncompatiblePasteException::what() const noexcept {
     return this->message.c_str();
 }

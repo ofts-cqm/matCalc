@@ -12,18 +12,15 @@ class VectorPage : public AbstractPage
 
 public:
     explicit VectorPage(QWidget *parent = nullptr);
-    ~VectorPage();
-
     const static Calculation calculationDefinition[];
 
-    virtual void switchTo(const Calculation *nextCalculation);
+    virtual void switchTo(const Calculation &nextCalculation);
 
     VectorPage *fillIndexPage(QWidget *parent);
 
 private:
-    QSpinBox *dimension;
     SignPane *alternativSign;
-    VectorPane *primaryPane;
+    VectorPane *primaryPane = nullptr;
     ResizeBar *resizeBar;
 };
 

@@ -18,6 +18,8 @@ public:
 
     Matrix(Matrix &&);
 
+    virtual ~Matrix() = default;
+
     static Matrix unit(int size);
 
     int getHeight() const;

@@ -6,7 +6,7 @@
 #include <QPlainTextEdit>
 
 VectorPane::VectorPane(QWidget *parent, Vector vec, bool editable)
-    : ui(new Ui::VectorPane), AbstractNumberPane(parent)
+    : AbstractNumberPane(parent), ui(new Ui::VectorPane)
 {
     ui->setupUi(this);
 

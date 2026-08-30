@@ -119,3 +119,32 @@ install(TARGETS MatCalc
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(MatCalc)
 endif()
+
+include(CTest)
+if(BUILD_TESTING)
+    add_executable(MatCalcCalculatorTests
+        tests/calculator_tests.cpp
+        calc/calculator.cpp
+        calc/inputmatcher.cpp
+        calc/token.cpp
+        calc/logger.cpp
+        calc/numbertoken.cpp
+        calc/operatortoken.cpp
+        calc/roottoken.cpp
+        calc/parenthesistoken.cpp
+        calc/binaryoperatortoken.cpp
+    )
+    target_include_directories(MatCalcCalculatorTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    add_test(NAME calculator_reliability COMMAND MatCalcCalculatorTests)
+
+    add_executable(MatCalcNumericTests
+        tests/numeric_tests.cpp
+        numbers/vector.cpp
+        numbers/polynomial.cpp
+        numbers/sturm.cpp
+        dimensionmismatchexception.cpp
+    )
+    target_include_directories(MatCalcNumericTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_link_libraries(MatCalcNumericTests PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets)
+    add_test(NAME numeric_reliability COMMAND MatCalcNumericTests)
+endif()

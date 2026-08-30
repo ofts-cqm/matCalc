@@ -12,7 +12,7 @@
 #include "../history/historyitem.h"
 #include <functional>
 
-using Evaluator = std::function<GenericNumber(const Calculation *, const GenericNumber *, const GenericNumber *)>;
+using Evaluator = std::function<GenericNumber(const Calculation &, const GenericNumber *, const GenericNumber *)>;
 
 class AbstractPage: public QWidget
 {
@@ -23,7 +23,7 @@ public:
 
     GenericPane *registerOperand(GenericPane *operand, int position);
 
-    virtual void switchTo(const Calculation *nextCalculation);
+    virtual void switchTo(const Calculation &nextCalculation);
 
     void restore(const HistoryItem &history);
 
@@ -33,11 +33,11 @@ public:
 
 protected:
     Evaluator evaluator;
-    SignPane *sign, *equal;
-    const Calculation *currentCalculation;
-    GenericPane *operandA, *operandB, *resultPane;
-    QLayout *content;
-    ControlPane *control;
+    SignPane *sign = nullptr, *equal = nullptr;
+    Calculation currentCalculation;
+    GenericPane *operandA = nullptr, *operandB = nullptr, *resultPane = nullptr;
+    QLayout *content = nullptr;
+    ControlPane *control = nullptr;
     static AbstractPage *currentPage;
     History::Page page;
 };

@@ -6,12 +6,15 @@
 #include "../util.h"
 #include "sturm.h"
 #include <cmath>
+#include <stdexcept>
 
 
 Matrix::Matrix(): Matrix(0, 0){}
 
 Matrix::Matrix(int height, int width)
-    : entries(height, Vector(width)), width(width), height(height){}
+    : width(0), height(0) {
+    resize(height, width);
+}
 
 Matrix::Matrix(const Matrix &other)
     : entries(other.entries), height(other.height), width(other.width) {}
@@ -44,6 +47,7 @@ std::vector<Vector>::const_iterator Matrix::end() const{
 void Matrix::resize(int height, int width){
     if (width == -1) width = this->width;
     if (height == -1) height = this->height;
+    if (height < 0 || width < 0) throw std::invalid_argument("Matrix dimensions cannot be negative");
 
     this->width = width;
     this->height = height;
@@ -64,27 +68,30 @@ Matrix &Matrix::operator=(const Matrix &other){
 }
 
 double &Matrix::operator[](int i, int j){
-    if (i >= height) throwRangeException(i, height);
+    if (i < 0 || i >= height) throwRangeException(i, height);
+    if (j < 0 || j >= width) throwRangeException(j, width);
     return entries[i][j];
 }
 
 const double Matrix::operator[](int i, int j) const{
-    if (i >= height) throwRangeException(i, height);
+    if (i < 0 || i >= height) throwRangeException(i, height);
+    if (j < 0 || j >= width) throwRangeException(j, width);
     return entries[i][j];
 }
 
 const Vector &Matrix::operator[](int i) const{
-    if (i >= height) throwRangeException(i, height);
+    if (i < 0 || i >= height) throwRangeException(i, height);
     return entries[i];
 }
 
 Vector &Matrix::operator[](int i){
-    if (i >= height) throwRangeException(i, height);
+    if (i < 0 || i >= height) throwRangeException(i, height);
     return entries[i];
 }
 
 
 const Vector Matrix::column(int i) const{
+    if (i < 0 || i >= width) throwRangeException(i, width);
     Vector vec(this->height);
 
     for (int j = 0; j < height; j++){
@@ -95,8 +102,8 @@ const Vector Matrix::column(int i) const{
 }
 
 Matrix Matrix::operator+(const Matrix &other) const{
-    if (this->height != other.height) throw new DimensionMismatchException(this->height, other.height, "height");
-    if (this->width != other.width) throw new DimensionMismatchException(this->width, other.width, "width");
+    if (this->height != other.height) throw DimensionMismatchException(this->height, other.height, "height");
+    if (this->width != other.width) throw DimensionMismatchException(this->width, other.width, "width");
 
     Matrix matrix(this->height, this->width);
 
@@ -108,8 +115,8 @@ Matrix Matrix::operator+(const Matrix &other) const{
 }
 
 Matrix Matrix::operator-(const Matrix &other) const{
-    if (this->height != other.height) throw new DimensionMismatchException(this->height, other.height, "height");
-    if (this->width != other.width) throw new DimensionMismatchException(this->width, other.width, "width");
+    if (this->height != other.height) throw DimensionMismatchException(this->height, other.height, "height");
+    if (this->width != other.width) throw DimensionMismatchException(this->width, other.width, "width");
 
     Matrix matrix(this->height, this->width);
 
@@ -131,7 +138,7 @@ Matrix Matrix::operator*(const double scale) const{
 }
 
 Vector Matrix::operator*(const Vector &vector) const{
-    if (this->width != vector.dim()) throw new DimensionMismatchException(this->width, vector.dim());
+    if (this->width != vector.dim()) throw DimensionMismatchException(this->width, vector.dim());
 
     Vector res(this->height);
 
@@ -143,7 +150,7 @@ Vector Matrix::operator*(const Vector &vector) const{
 }
 
 Matrix Matrix::operator*(const Matrix &other) const{
-    if (this->width != other.height) throw new DimensionMismatchException(this->width, other.height, "Intermediate Dimension");
+    if (this->width != other.height) throw DimensionMismatchException(this->width, other.height, "Intermediate Dimension");
 
     Matrix trans = other.transpose(), res(this->height, other.width);
 
@@ -195,7 +202,7 @@ void Matrix::rowSwap(const int a, const int b){
 }
 
 double Matrix::det() const{
-    if (this->height != this->width) throw new DimensionMismatchException(this->height, this->width);
+    if (this->height != this->width) throw DimensionMismatchException(this->height, this->width);
 
     if (this->height == 0) return 0;
     if (this->height == 1) return entries[0][0];

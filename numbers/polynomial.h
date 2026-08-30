@@ -22,7 +22,7 @@ public:
     Polynomial operator*(const Polynomial &other) const;
     Polynomial operator*(double scale) const;
     Polynomial operator%(const Polynomial &other) const;
-    Polynomial operator<<(double degree) const;
+    Polynomial operator<<(int degree) const;
     Polynomial derivative() const;
 
     bool isConstant() const;

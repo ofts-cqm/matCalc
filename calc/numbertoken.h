@@ -18,7 +18,7 @@ public:
 
     virtual Calculator::TokenType type() const;
 
-    double val;
+    double val = 0;
 };
 
 #endif // NUMBERTOKEN_H

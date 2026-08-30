@@ -3,18 +3,25 @@
 #include "binaryoperatortoken.h"
 #include "parenthesistoken.h"
 #include "numbertoken.h"
+#include <memory>
+#include <sstream>
 #include <vector>
 
 namespace Calculator{
 
-    std::vector<Token *> registeredTokens;
+    namespace {
+        std::vector<std::unique_ptr<Token>> registeredTokens;
+        std::ostringstream error_message;
+        std::string first_error;
+        int errorCount = 0;
+    }
 
     std::optional<double> evaluate(std::string expression, bool record_result){
         errorCount = 0;
         input = InputMatcher(expression);
         error_message = std::ostringstream();
-        RootToken *root = new RootToken();
-        lastToken = root;
+        auto root = std::make_unique<RootToken>();
+        lastToken = root.get();
 
         while (matchNext(input, lastToken)){}
 
@@ -39,6 +46,7 @@ namespace Calculator{
             abort = true;
         }
 
+        if (errorCount != 0) abort = true;
         if (abort) return {};
 
         if (debugMode){
@@ -49,12 +57,11 @@ namespace Calculator{
         if (result < 1e-10 && result > -1e-10) result = 0;
         if (record_result) previousAnswer = result;
 
-        delete root;
         return result;
     }
 
     bool matchNext(InputMatcher &input, Token *lastInput){
-        for (const Token *token : registeredTokens){
+        for (const auto &token : registeredTokens){
             if(token->parse(input, lastInput))
                 return true;
         }
@@ -88,13 +95,14 @@ namespace Calculator{
     bool debugMode = false;
     double previousAnswer = 0;
     InputMatcher input = InputMatcher("");
-    Token *lastToken;
+    Token *lastToken = nullptr;
 
     void init(){
+        if (!registeredTokens.empty()) return;
         OperatorToken::init(registeredTokens);
         BinaryOperatorToken::init(registeredTokens);
-        registeredTokens.push_back(new NumberToken(0, nullptr));
+        registeredTokens.push_back(std::make_unique<NumberToken>(0, nullptr));
         RootToken root;
-        registeredTokens.push_back(new ParenthesisToken(root, nullptr));
+        registeredTokens.push_back(std::make_unique<ParenthesisToken>(root, nullptr));
     }
 }

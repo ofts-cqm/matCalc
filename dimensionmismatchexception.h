@@ -9,7 +9,7 @@ class DimensionMismatchException : public std::exception{
 public:
     DimensionMismatchException(int expected, int actural, std::string name = "dimension");
 
-    virtual const char* what() const throw();
+    const char* what() const noexcept override;
 
 private:
     int expected;

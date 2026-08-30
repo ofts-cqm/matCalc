@@ -19,7 +19,7 @@ public:
 
     const Sign sign;
 
-    static void init(std::vector<Token *> &tokens);
+    static void init(std::vector<std::unique_ptr<Token>> &tokens);
 
     static BinaryOperatorToken *multiply;
 

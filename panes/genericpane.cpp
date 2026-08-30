@@ -132,11 +132,10 @@ void GenericPane::onPaste(){
     try{
         static_cast<AbstractNumberPane *>(content->currentWidget())->paste(clipBoard);
         AbstractPage::getCurrent()->evaluate();
-    }catch (IncompatiblePasteException e){
+    }catch (const IncompatiblePasteException &e){
         MainWindow::setMessage(e.what());
     }
 }
 
 const QString GenericPane::functionStyle = ".QStackedWidget {border-image: url(:/assets/FuncBracket.png) 0 96 0 96 stretch; border-width: 5px;}";
 const QString GenericPane::modulusStyle = ".QStackedWidget {border-image: url(:/assets/ModuloBorder.png) 0 6 0 6 stretch; border-width: 8px;}";
-

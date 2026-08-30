@@ -1,9 +1,7 @@
 #include "inputmatcher.h"
 
 InputMatcher::InputMatcher(const std::string &expression)
-    : expression_base(expression), expression(), length(expression.length()) {
-    this->expression = expression_base;
-}
+    : expression_base(expression), length(static_cast<int>(expression.length())) {}
 
 bool InputMatcher::isEnd() const {return index == length; };
 
@@ -11,11 +9,11 @@ bool InputMatcher::isClear() const {return positionStack.empty(); }
 
 void InputMatcher::trim(){
     if (index == length) return;
-    char current = expression[index];
+    char current = expression_base[index];
     while(current == ' ' || current == '\n' || current == '\t' || current == '\r'){
         index ++;
         if (index == length) return;
-        current = expression[index];
+        current = expression_base[index];
     }
 }
 
@@ -78,4 +76,3 @@ void InputMatcher::ignore(){
 int InputMatcher::getIndex() const{
     return index;
 }
-

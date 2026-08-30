@@ -24,7 +24,7 @@ ReducedMatrix ReducedMatrix::reduce(const Matrix &matrix){
 }
 
 ReducedMatrix ReducedMatrix::reduce(const Matrix &matrix, const Matrix &augmentedMatrix){
-    if (matrix.getHeight() != augmentedMatrix.getHeight()) throw new DimensionMismatchException(matrix.getHeight(), augmentedMatrix.getHeight(), "height");
+    if (matrix.getHeight() != augmentedMatrix.getHeight()) throw DimensionMismatchException(matrix.getHeight(), augmentedMatrix.getHeight(), "height");
     Matrix combined = Matrix(matrix.getHeight(), matrix.getWidth() + augmentedMatrix.getWidth());
     for (int i = 0; i < matrix.getHeight(); i++){
         combined[i] = matrix[i].append(augmentedMatrix[i]);
@@ -33,7 +33,7 @@ ReducedMatrix ReducedMatrix::reduce(const Matrix &matrix, const Matrix &augmente
 }
 
 ReducedMatrix ReducedMatrix::reduce(const Matrix &matrix, const Vector &vector){
-    if (matrix.getHeight() != vector.dim()) throw new DimensionMismatchException(matrix.getHeight(), vector.dim(), "height");
+    if (matrix.getHeight() != vector.dim()) throw DimensionMismatchException(matrix.getHeight(), vector.dim(), "height");
     Matrix combined = Matrix(matrix.getHeight(), matrix.getWidth() + 1);
     for (int i = 0; i < matrix.getHeight(); i++){
         combined[i] = matrix[i].append(vector[i]);
@@ -43,7 +43,7 @@ ReducedMatrix ReducedMatrix::reduce(const Matrix &matrix, const Vector &vector){
 
 void ReducedMatrix::resize(int height, int width){
     Matrix::resize(height, width);
-    if (this->boundary > this->getWidth()) throw new DimensionMismatchException(this->boundary, this->getWidth(), "width");
+    if (this->boundary > this->getWidth()) throw DimensionMismatchException(this->boundary, this->getWidth(), "width");
 }
 
 ReducedMatrix &ReducedMatrix::operator=(const ReducedMatrix &other) {
@@ -64,7 +64,7 @@ Matrix ReducedMatrix::getSolutionMatrix(bool withVector) const {
     std::vector<int> varColumn, varRow;
     int pivotRow = 0;
     for (int i = 0; i < width; i++){
-        if (isZero(column(i)[pivotRow])) {
+        if (pivotRow >= height || isZero(column(i)[pivotRow])) {
             varColumn.push_back(i);
             varRow.push_back(pivotRow + varRow.size());
         } else pivotRow++;
@@ -94,7 +94,7 @@ std::vector<bool> ReducedMatrix::pivots(){
     int row = 0;
     std::vector<bool> pivots;
     for (int i = 0; i < getWidth(); i++){
-        if (isZero((*this)[row, i])){
+        if (row >= getHeight() || isZero((*this)[row, i])){
             pivots.push_back(false);
         }else{
             pivots.push_back(true);

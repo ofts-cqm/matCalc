@@ -13,16 +13,13 @@ public:
 
     const static Calculation calculationdefinition[];
 
-    virtual void switchTo(const Calculation *nextCalculation);
+    virtual void switchTo(const Calculation &nextCalculation);
 
     MatrixPage *fillIndexPage(QWidget *parent);
 
 private:
-    static int primeHeight();
-    static int primeWidth();
-    static int seoncdWidth();
-    static MatrixPane *primaryPane, *secondaryPane;
-    static SpanSetPane *resPane;
+    MatrixPane *primaryPane = nullptr, *secondaryPane = nullptr;
+    SpanSetPane *resPane = nullptr;
     ResizeBar *normalHeight, *normalWidth, *mulHeight, *mulWidth, *mulMiddle, *normalSize;
 };
 

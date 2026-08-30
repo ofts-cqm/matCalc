@@ -4,10 +4,12 @@
 
 Sturm::Sturm(const Polynomial &src): std::vector<Polynomial>(), p(src) {
     push_back(src);
+    if (src.isConstant()) return;
     push_back(src.derivative());
 
     while(true){
         Polynomial remainder = (* this)[size() - 2] % this->back();
+        if (remainder.degree() < 0) break;
         push_back(-remainder);
         if (remainder.isConstant()) break;
     }
@@ -55,10 +57,8 @@ void Sturm::isolate(const Range &range, std::vector<Range> &intervals) const{
 
 double bisection(const Polynomial &p, const Range &r) {
     double fa = p.evaluate(r.upper);
-    double fb = p.evaluate(r.lower);
-
-    int a = r.upper;
-    int b = r.lower;
+    double a = r.upper;
+    double b = r.lower;
 
     for (int i = 0; i < 100; ++i) {
         double m = (a + b) / 2.0;
@@ -69,7 +69,6 @@ double bisection(const Polynomial &p, const Range &r) {
 
         if (fa * fm < 0) {
             b = m;
-            fb = fm;
         } else {
             a = m;
             fa = fm;
@@ -92,6 +91,7 @@ double newton(const Polynomial &p, double x0) {
 }
 
 std::set<double> Sturm::roots() const {
+    if (p.degree() <= 0) return {};
     // Cauchy bound
     double an = p[p.degree()];
     double R = 1;
