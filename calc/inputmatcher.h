@@ -33,7 +33,6 @@ public:
 
 private:
     std::string expression_base;
-    std::string_view expression;
     std::stack<int> positionStack;
     int index = 0, length;
 };

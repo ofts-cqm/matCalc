@@ -25,7 +25,7 @@ AbstractPage::AbstractPage(Evaluator evaluator, const Calculation *defaultCalcul
         main->addLayout(content = new QHBoxLayout());
         main->addItem(getVerticalSpacer());
     }
-    this->currentCalculation = defaultCalculation;
+    this->currentCalculation = *defaultCalculation;
 }
 
 GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){
@@ -43,16 +43,16 @@ GenericPane *AbstractPage::registerOperand(GenericPane *operand, int position){
     return operand;
 }
 
-void AbstractPage::switchTo(const Calculation *nextCalculation){
+void AbstractPage::switchTo(const Calculation &nextCalculation){
     currentCalculation = nextCalculation;
-    this->sign->display(currentCalculation->sign);
+    this->sign->display(currentCalculation.sign);
     if (this->operandA != nullptr) {
-        this->operandA->switchTo(currentCalculation->operandA);
-        this->operandA->applyBorder(signs[nextCalculation->sign]);
+        this->operandA->switchTo(currentCalculation.operandA);
+        this->operandA->applyBorder(signs[nextCalculation.sign]);
     }
     if (this->operandB != nullptr) {
-        this->operandB->switchTo(currentCalculation->operandB);
-        this->operandB->applyBorder(signs[nextCalculation->sign]);
+        this->operandB->switchTo(currentCalculation.operandB);
+        this->operandB->applyBorder(signs[nextCalculation.sign]);
     }
     currentPage = this;
     control->refreshSizer();
@@ -72,7 +72,7 @@ void AbstractPage::evaluate(bool record){
     try{
         GenericNumber number = evaluator(currentCalculation, op1, op2);
         resultPane->display(number);
-        if (record) History::addHistory(page, currentCalculation->sign, *op1, *op2, number);
+        if (record) History::addHistory(page, currentCalculation.sign, *op1, *op2, number);
     }catch (std::exception &e){
         qCritical() << "Error When Evaluating: " << e.what();
         MainWindow::setMessage(e.what());

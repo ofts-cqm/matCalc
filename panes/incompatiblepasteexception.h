@@ -11,7 +11,7 @@ public:
 
     IncompatiblePasteException(const AbstractNumberPane &original, const GenericNumber &clipboard);
 
-    virtual const char* what() const throw();
+    const char* what() const noexcept override;
 
 private:
     NumberType original, clipboard;

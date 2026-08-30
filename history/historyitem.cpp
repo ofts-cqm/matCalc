@@ -34,6 +34,7 @@ QString getLiteral(const GenericNumber &num){
     case VECTOR:
     {
         const Vector &vec = num.getVector();
+        if (vec.dim() == 0) return "\n<Empty Vector>\n";
         if (vec.dim() <= 3){
             QString str = "";
             for (int i = 0; i < vec.dim() - 1; i++){
@@ -70,6 +71,7 @@ QString getTooltip(const GenericNumber &num){
     case VECTOR:
     {
         const Vector &vec = num.getVector();
+        if (vec.dim() == 0) return "<Empty Vector>";
         QString str = "<" + format(vec[0]);
         for (int i = 1; i < vec.dim(); i++) str += ", " + format(vec[i]);
         return str + ">";
@@ -91,7 +93,7 @@ QString getTooltip(const GenericNumber &num){
 }
 
 HistoryItem::HistoryItem(const CalculationHistory *item, QWidget *parent)
-    : QFrame(parent), ui(new Ui::HistoryItem), itemBase(*item), calcBase(item->getCalculation())
+    : QFrame(parent), itemBase(*item), calcBase(item->getCalculation()), ui(new Ui::HistoryItem)
 {
     ui->setupUi(this);
     ui->operandA->setText(getLiteral(item->operandA));
@@ -116,7 +118,6 @@ HistoryItem::HistoryItem(const CalculationHistory *item, QWidget *parent)
 HistoryItem::~HistoryItem()
 {
     delete ui;
-    delete calcBase;
 }
 
 void HistoryItem::mousePressEvent(QMouseEvent *event){

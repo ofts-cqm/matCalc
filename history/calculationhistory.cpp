@@ -7,9 +7,11 @@
 using namespace History;
 
 CalculationHistory::CalculationHistory(const QJsonObject &cache)
-    : page(static_cast<Page>(cache["page"].toInt())), operandA(cache["operandA"].toObject()),
-    operandB(cache["operandB"].toObject()), result(cache["operandC"].toObject())
+    : operandA(cache["operandA"].toObject()), operandB(cache["operandB"].toObject()),
+    result(cache["operandC"].toObject()), page(static_cast<Page>(cache["page"].toInt()))
 {
+    if (page < Page::VECTOR || page > Page::CALCULATOR)
+        throw std::invalid_argument("Invalid history page");
     QString sign = cache["sign"].toString();
     for (const SignDefinition &definition : signs){
         if (definition.literal == sign){
@@ -21,10 +23,10 @@ CalculationHistory::CalculationHistory(const QJsonObject &cache)
 }
 
 CalculationHistory::CalculationHistory(Page page, Sign sign, const GenericNumber &op1, const GenericNumber &op2, const GenericNumber &res)
-    : page(page), sign(sign), operandA(op1), operandB(op2), result(res) {}
+    : operandA(op1), operandB(op2), result(res), sign(sign), page(page) {}
 
-Calculation *CalculationHistory::getCalculation() const{
-    return new Calculation{
+Calculation CalculationHistory::getCalculation() const{
+    return Calculation{
         .operandA = operandA.getType(),
         .operandB = operandB.getType(),
         .result = result.getType(),
@@ -64,6 +66,7 @@ void History::addHistory(Page page, Sign sign, const GenericNumber &op1, const G
 }
 
 std::vector<CalculationHistory> History::histories = {};
+QJsonArray History::jsons = {};
 
 static bool errorOccurred = false;
 

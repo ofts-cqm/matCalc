@@ -2,37 +2,37 @@
 #include "../dimensionmismatchexception.h"
 #include "../util.h"
 #include <cmath>
+#include <stdexcept>
 
 Vector::Vector(const std::vector<double> &vec): std::vector<double>(vec) {}
 
 Vector::Vector(std::vector<double> &&vec): std::vector<double>(std::move(vec)) {}
 
-Vector::Vector(int size): std::vector<double>() {
+Vector::Vector(int size) {
+    if (size < 0) throw std::invalid_argument("Vector size cannot be negative");
     this->resize(size, 0);
 }
 
 void Vector::setSize(int size){
+    if (size < 0) throw std::invalid_argument("Vector size cannot be negative");
     this->resize(size, 0);
 }
 
-double &Vector::operator[](int index){
-    if (index >= dim()) throwRangeException(index, dim());
+double &Vector::operator[](const int index){
+    if (index < 0 || index >= dim()) throwRangeException(index, dim());
     return std::vector<double>::operator[](index);
 }
 
-double Vector::operator[](int index) const{
-    if (index >= dim()) throwRangeException(index, dim());
+double Vector::operator[](const int index) const{
+    if (index < 0 || index >= dim()) throwRangeException(index, dim());
     return std::vector<double>::operator[](index);
 }
 
-Vector &Vector::operator=(const Vector &other){
-    std::vector<double>::operator=(other);
-    return *this;
-}
+Vector &Vector::operator=(const Vector &other)= default;
 
 Vector Vector::operator+(const Vector &other) const{
     if (this->dim() != other.dim())
-        throw new DimensionMismatchException(this->dim(), other.dim());
+        throw DimensionMismatchException(this->dim(), other.dim());
 
     Vector newVec(other.dim());
 
@@ -45,7 +45,7 @@ Vector Vector::operator+(const Vector &other) const{
 
 Vector Vector::operator-(const Vector &other) const{
     if (this->dim() != other.dim())
-        throw new DimensionMismatchException(this->dim(), other.dim());
+        throw DimensionMismatchException(this->dim(), other.dim());
 
     Vector newVec(other.dim());
 
@@ -59,7 +59,7 @@ Vector Vector::operator-(const Vector &other) const{
 
 double Vector::operator*(const Vector &other) const{
     if (this->dim() != other.dim())
-        throw new DimensionMismatchException(this->dim(), other.dim());
+        throw DimensionMismatchException(this->dim(), other.dim());
 
     double res = 0;
 
@@ -103,7 +103,7 @@ Vector &Vector::operator/=(double num){
 
 Vector &Vector::operator+=(const Vector &other){
     if (this->dim() != other.dim())
-        throw new DimensionMismatchException(this->dim(), other.dim());
+        throw DimensionMismatchException(this->dim(), other.dim());
 
     for (int i = 0; i < this->dim(); i++){
         (* this)[i] += other[i];
@@ -114,7 +114,7 @@ Vector &Vector::operator+=(const Vector &other){
 
 Vector &Vector::operator-=(const Vector &other){
     if (this->dim() != other.dim())
-        throw new DimensionMismatchException(this->dim(), other.dim());
+        throw DimensionMismatchException(this->dim(), other.dim());
 
     for (int i = 0; i < this->dim(); i++){
         (* this)[i] -= other[i];
@@ -125,21 +125,21 @@ Vector &Vector::operator-=(const Vector &other){
 
 Vector Vector::append(const Vector &other) const{
     Vector newVec(*this);
-    newVec.append_range((std::vector<double>)other);
+    newVec.append_range(static_cast<std::vector<double>>(other));
     return newVec;
 }
 
 Vector Vector::append(double num) const{
     Vector newVec(*this);
-    newVec.append(num);
+    newVec.push_back(num);
     return newVec;
 }
 
 Vector Vector::cross(const Vector &other) const{
     if (this->dim() != 3)
-        throw new DimensionMismatchException(this->dim(), 3);
+        throw DimensionMismatchException(this->dim(), 3);
     if (other.dim() != 3)
-        throw new DimensionMismatchException(other.dim(), 3);
+        throw DimensionMismatchException(other.dim(), 3);
 
     double a = (* this)[1] * other[2] - (* this)[2] * other[1];
     double b = (* this)[2] * other[0] - (* this)[0] * other[2];

@@ -3,7 +3,6 @@
 
 #include "inputmatcher.h"
 #include <optional>
-#include <sstream>
 
 class Token;
 
@@ -13,16 +12,13 @@ namespace Calculator{
     extern bool debugMode;
     extern double previousAnswer;
     extern InputMatcher input;
-    static std::ostringstream error_message;
-    static std::string first_error;
-    static int errorCount;
     extern Token *lastToken;
 
-    std::optional<double> evaluate(std::string expression, bool record_result = false);
+    std::optional<double> evaluate(const std::string& expression, bool record_result = false);
 
     bool matchNext(InputMatcher &input, Token *lastInput);
 
-    void logError(std::string error, const InputMatcher &context);
+    void logError(const std::string& error, const InputMatcher &context);
 
     std::string getShortErrorMessage();
 

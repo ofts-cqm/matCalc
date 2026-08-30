@@ -6,8 +6,8 @@
 #include <QtWidgets/qboxlayout.h>
 #include <QtWidgets/qlabel.h>
 
-static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
-    switch (calc->sign){
+static GenericNumber evaFunc(const Calculation &calc, const GenericNumber *a, const GenericNumber *b){
+    switch (calc.sign){
     case PLUS:
         return a->getVector() + b->getVector();
     case MINUS:
@@ -25,14 +25,14 @@ static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, co
     case LENGTH:
         return a->getVector().norm();
     default:
-        throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
+        throw std::invalid_argument("unknown calculation" + std::to_string(calc.sign));
     }
 }
 
 VectorPage::VectorPage(QWidget *parent)
     : AbstractPage(evaFunc, &calculationDefinition[0], History::Page::VECTOR, parent)
 {
-    this->alternativSign = new SignPane(currentCalculation->sign, this);
+    this->alternativSign = new SignPane(currentCalculation.sign, this);
     this->alternativSign->setVisible(false);
 
     // control
@@ -49,13 +49,13 @@ VectorPage::VectorPage(QWidget *parent)
     content->addWidget(registerOperand(new GenericPane(this, (new VectorPane(nullptr, Vector(3), false))->setSizer(resizeBar), false), 3));
     content->addItem(getHorizontalSpacer());
 
-    AbstractPage::switchTo(&calculationDefinition[0]);
+    AbstractPage::switchTo(calculationDefinition[0]);
 }
 
-void VectorPage::switchTo(const Calculation *nextCalculation){
-    if (currentCalculation == nextCalculation) return;
+void VectorPage::switchTo(const Calculation &nextCalculation){
+    if (currentCalculation.sign == nextCalculation.sign) return;
 
-    switch (currentCalculation->sign){
+    switch (currentCalculation.sign){
     case CROSS:
         resizeBar->setVisible(true);
         break;
@@ -68,7 +68,7 @@ void VectorPage::switchTo(const Calculation *nextCalculation){
         break;
     }
 
-    switch (nextCalculation->sign){
+    switch (nextCalculation.sign){
     case CROSS:
         primaryPane->resizeVector(3);
         resizeBar->reload();
@@ -77,7 +77,7 @@ void VectorPage::switchTo(const Calculation *nextCalculation){
     case PERP:
     case PROJ:
         this->alternativSign->setVisible(true);
-        this->alternativSign->display(nextCalculation->sign);
+        this->alternativSign->display(nextCalculation.sign);
         this->sign->setVisible(false);
         break;
     default:
@@ -108,9 +108,3 @@ VectorPage *VectorPage::fillIndexPage(QWidget *parent){
     indexPage->addItem(getVerticalSpacer());
     return this;
 }
-
-VectorPage::~VectorPage(){
-    delete dimension;
-}
-
-

@@ -6,7 +6,6 @@
 #include "history/historywriter.h"
 #include "history/historywindow.h"
 
-#include <QtConcurrent/QtConcurrent>
 #include <QtGui/qevent.h>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -32,21 +31,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     instance = this;
 
-    auto future = QtConcurrent::run(History::loadHistory);
-    auto *watcher = new QFutureWatcher<bool>();
-    connect(watcher, &QFutureWatcher<bool>::finished, this, [=] {
-        bool success = watcher->result();
-        if (!success){
-            History::promptFileAccess();
-        }
-        HistoryWindow::instance->refreshHistory();
-    });
-    watcher->setFuture(future);
-
-    historyWindow = new HistoryWindow();
-    calculator = new EvaluationPage();
+    historyWindow = std::make_unique<HistoryWindow>();
+    calculator = std::make_unique<EvaluationPage>();
+    const bool historyLoaded = History::loadHistory();
+    historyWindow->refreshHistory();
+    if (!historyLoaded) History::promptFileAccess();
     connect(ui->historyButton, &QPushButton::clicked, this, &MainWindow::openHistory);
-    connect(ui->calculator, &QPushButton::clicked, calculator, &EvaluationPage::show);
+    connect(ui->calculator, &QPushButton::clicked, calculator.get(), &EvaluationPage::show);
 }
 
 void MainWindow::setPage(AbstractPage *page){

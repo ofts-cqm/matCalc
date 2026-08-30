@@ -27,7 +27,7 @@ public:
 
     const Evaluator evaluator;
 
-    static void init(std::vector<Token *> &tokens);
+    static void init(std::vector<std::unique_ptr<Token>> &tokens);
 
 protected:
     OperatorToken(int precedence, const std::string &operation, const Evaluator evaluator);

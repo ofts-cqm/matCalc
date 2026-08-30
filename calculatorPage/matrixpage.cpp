@@ -6,15 +6,15 @@
 #include "../panes/vectorpane.h"
 #include "../numbers/reducedmatrix.h"
 
-static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, const GenericNumber *b){
-    switch (calc->sign){
+static GenericNumber evaFunc(const Calculation &calc, const GenericNumber *a, const GenericNumber *b){
+    switch (calc.sign){
     case PLUS:
         return a->getMatrix() + b->getMatrix();
     case MINUS:
         return a->getMatrix() - b->getMatrix();
     case MUL:
-        if (calc->operandA == NUMBER) return b->getMatrix() * a->getDouble();
-        else if(calc->operandB == VECTOR) return a->getMatrix() * b->getVector();
+        if (calc.operandA == NUMBER) return b->getMatrix() * a->getDouble();
+        else if(calc.operandB == VECTOR) return a->getMatrix() * b->getVector();
         else return a->getMatrix() * b->getMatrix();
     case TRANS:
         return a->getMatrix().transpose();
@@ -38,7 +38,7 @@ static GenericNumber evaFunc(const Calculation *calc, const GenericNumber *a, co
     case BASE:
         return b->getSpanSet().reduce();
     default:
-        throw std::invalid_argument("unknown calculation" + std::to_string(calc->sign));
+        throw std::invalid_argument("unknown calculation" + std::to_string(calc.sign));
     }
 }
 
@@ -59,38 +59,22 @@ const Calculation MatrixPage::calculationdefinition[] = {
     { EMPTY, SPAN_SET, SPAN_SET, BASE, "Find Base" },
 };
 
-int MatrixPage::primeHeight(){
-    return primaryPane == nullptr ? 3 : primaryPane->getHeight();
-}
-
-int MatrixPage::primeWidth(){
-    return primaryPane == nullptr ? 3 : primaryPane->getWidth();
-}
-
-int MatrixPage::seoncdWidth(){
-    return secondaryPane == nullptr ? 3 : secondaryPane->getWidth();
-}
-
-MatrixPane *MatrixPage::primaryPane = nullptr;
-MatrixPane *MatrixPage::secondaryPane = nullptr;
-SpanSetPane *MatrixPage::resPane = nullptr;
-
 MatrixPage::MatrixPage(QWidget *parent)
     : AbstractPage(evaFunc, &calculationdefinition[0], History::Page::MATRIX, parent){
 
     // addition and substraction
-    normalHeight = new ResizeBar("Height", primeHeight, control);
-    normalWidth = new ResizeBar("Width", primeWidth, control);
+    normalHeight = new ResizeBar("Height", [this]{ return primaryPane == nullptr ? 3 : primaryPane->getHeight(); }, control);
+    normalWidth = new ResizeBar("Width", [this]{ return primaryPane == nullptr ? 3 : primaryPane->getWidth(); }, control);
     control->addPage()->addResizer(normalHeight)->addResizer(normalWidth);
 
     // matrix multiplication;
-    mulHeight = new ResizeBar("n", primeHeight, control);
-    mulMiddle = new ResizeBar("m", primeWidth, control);
-    mulWidth = new ResizeBar("k", seoncdWidth, control);
+    mulHeight = new ResizeBar("n", [this]{ return primaryPane == nullptr ? 3 : primaryPane->getHeight(); }, control);
+    mulMiddle = new ResizeBar("m", [this]{ return primaryPane == nullptr ? 3 : primaryPane->getWidth(); }, control);
+    mulWidth = new ResizeBar("k", [this]{ return secondaryPane == nullptr ? 3 : secondaryPane->getWidth(); }, control);
     control->addPage()->addResizer(mulHeight)->addResizer(mulMiddle)->addResizer(mulWidth);
 
     // square
-    normalSize = new ResizeBar("Dimension", primeHeight, control);
+    normalSize = new ResizeBar("Dimension", [this]{ return primaryPane == nullptr ? 3 : primaryPane->getHeight(); }, control);
     control->addPage()->addResizer(normalSize);
     control->switchTo(0);
 
@@ -117,9 +101,9 @@ MatrixPage::MatrixPage(QWidget *parent)
     //AbstractPage::switchTo(&calculationdefinition[0]);
 }
 
-void MatrixPage::switchTo(const Calculation *nextCalculation){
+void MatrixPage::switchTo(const Calculation &nextCalculation){
     resPane->hasSpan(true);
-    switch(nextCalculation->sign){
+    switch(nextCalculation.sign){
     case BASE:
         resPane->hasSpan(false);
     case PLUS:
@@ -133,7 +117,7 @@ void MatrixPage::switchTo(const Calculation *nextCalculation){
         control->switchTo(0);
         break;
     case MUL:
-        if(nextCalculation->operandA == MATRIX && nextCalculation->operandB == MATRIX){
+        if(nextCalculation.operandA == MATRIX && nextCalculation.operandB == MATRIX){
             control->switchTo(1);
         } else {
             control->switchTo(0);

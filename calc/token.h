@@ -33,7 +33,7 @@ public:
 
     virtual Calculator::TokenType type() const = 0;
 
-    OperatorToken *parent;
+    OperatorToken *parent = nullptr;
 
     static Logger logger;
 };

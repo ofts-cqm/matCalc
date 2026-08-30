@@ -3,8 +3,8 @@
 #include <sstream>
 
 Polynomial::Polynomial(): std::vector<double>(1) {}
-Polynomial::Polynomial(const Polynomial &src) : std::vector<double>(src){}
-Polynomial::Polynomial(Polynomial &&src) : std::vector<double>(src){}
+Polynomial::Polynomial(const Polynomial &src) = default;
+Polynomial::Polynomial(Polynomial &&src) noexcept : std::vector<double>(std::move(src)){}
 Polynomial::Polynomial(std::initializer_list<double> list) : std::vector<double>(list){}
 Polynomial::Polynomial(int length, const Polynomial &src): std::vector<double>(src){
     resize(length);
@@ -39,8 +39,8 @@ Polynomial Polynomial::operator-(const Polynomial &other) const{
 
 Polynomial Polynomial::operator-() const{
     Polynomial res = *this;
-    for (int i = 0; i < res.size(); i++){
-        res[i] *= -1;
+    for (double & re : res){
+        re *= -1;
     }
     return res;
 }
@@ -82,7 +82,8 @@ Polynomial Polynomial::operator%(const Polynomial &other) const{
     return a;
 }
 
-Polynomial Polynomial::operator<<(double degree) const{
+Polynomial Polynomial::operator<<(int degree) const{
+    if (degree < 0) throw std::invalid_argument("Polynomial degree shift cannot be negative");
     Polynomial res = *this;
     while(degree--){
         res.insert(res.begin(), 0);
@@ -99,14 +100,14 @@ Polynomial Polynomial::derivative() const{
 }
 
 Polynomial &Polynomial::trim(){
-    while(this->size() > 0 && isZero(this->back())){
+    while(!this->empty() && isZero(this->back())){
         this->pop_back();
     }
     return *this;
 }
 
 bool Polynomial::isConstant() const{
-    return degree() == 0;
+    return degree() <= 0;
 }
 
 int Polynomial::degree() const{

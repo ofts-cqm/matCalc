@@ -13,44 +13,44 @@ GenericNumber::GenericNumber()
 GenericNumber::GenericNumber(const GenericNumber &other)
     : type(other.getType()), num(other.num){}
 
-GenericNumber::GenericNumber(GenericNumber &&other)
+GenericNumber::GenericNumber(GenericNumber &&other) noexcept
     : type(other.getType()), num(std::move(other.num)){}
 
 GenericNumber::GenericNumber(const double &num)
-    : num(num), type(NUMBER) {}
+    : type(NUMBER), num(num) {}
 
 GenericNumber::GenericNumber(const Vector &num)
-    : num(num), type(VECTOR) {}
+    : type(VECTOR), num(num) {}
 
 GenericNumber::GenericNumber(const Matrix &num)
-    : num(num), type(MATRIX) {}
+    : type(MATRIX), num(num) {}
 
 GenericNumber::GenericNumber(const std::string &num)
-    : num(num), type(LABEL) {}
+    : type(LABEL), num(num) {}
 
 GenericNumber::GenericNumber(const SpanSet &num)
-    : num(num), type(SPAN_SET) {}
+    : type(SPAN_SET), num(num) {}
 
 GenericNumber::GenericNumber(const EigenSpace &num)
-    : num(num), type(EIGEN) {}
+    : type(EIGEN), num(num) {}
 
 GenericNumber::GenericNumber(double &&num)
-    : num(std::move(num)), type(NUMBER) {}
+    : type(NUMBER), num(std::move(num)) {}
 
 GenericNumber::GenericNumber(Vector &&num)
-    : num(std::move(num)), type(VECTOR) {}
+    : type(VECTOR), num(std::move(num)) {}
 
 GenericNumber::GenericNumber(Matrix &&num)
-    : num(std::move(num)), type(MATRIX) {}
+    : type(MATRIX), num(std::move(num)) {}
 
 GenericNumber::GenericNumber(std::string &&num)
-    : num(std::move(num)), type(LABEL) {}
+    : type(LABEL), num(std::move(num)) {}
 
 GenericNumber::GenericNumber(SpanSet &&num)
-    : num(std::move(num)), type(SPAN_SET) {}
+    : type(SPAN_SET), num(std::move(num)) {}
 
 GenericNumber::GenericNumber(EigenSpace &&num)
-    : num(std::move(num)), type(EIGEN) {}
+    : type(EIGEN), num(std::move(num)) {}
 
 std::vector<double> getArray(QJsonArray &&array){
     std::vector<double> arr(array.size());
@@ -72,6 +72,7 @@ QJsonArray get2DArray(const Matrix &mat){
 
 GenericNumber::GenericNumber(const QJsonObject &cache){
     QString type = cache["type"].toString();
+    if (type.isEmpty()) throw std::invalid_argument("Missing number type");
     switch (type[0].toLatin1()){
     case 'N':
         this->type = NUMBER;
@@ -84,18 +85,34 @@ GenericNumber::GenericNumber(const QJsonObject &cache){
     case 'M':
         this->type = MATRIX;
         {
-            Matrix mat(cache["height"].toInt(), cache["width"].toInt());
+            const int height = cache["height"].toInt(-1);
+            const int width = cache["width"].toInt(-1);
+            if (height < 0 || width < 0) throw std::invalid_argument("Invalid matrix dimensions");
+            Matrix mat(height, width);
             QJsonArray arr = cache["mat"].toArray();
-            for (int i = 0; i < mat.getHeight(); i++) mat[i] = getArray(arr[i].toArray());
+            if (arr.size() != height) throw std::invalid_argument("Invalid matrix row count");
+            for (int i = 0; i < height; i++) {
+                QJsonArray row = arr[i].toArray();
+                if (row.size() != width) throw std::invalid_argument("Invalid matrix column count");
+                mat[i] = getArray(std::move(row));
+            }
             this->num = mat;
         }
         break;
     case 'S':
         this->type = SPAN_SET;
         {
-            Matrix mat(cache["height"].toInt(), cache["width"].toInt());
+            const int height = cache["height"].toInt(-1);
+            const int width = cache["width"].toInt(-1);
+            if (height < 0 || width < 0) throw std::invalid_argument("Invalid span-set dimensions");
+            Matrix mat(height, width);
             QJsonArray arr = cache["mat"].toArray();
-            for (int i = 0; i < mat.getHeight(); i++) mat[i] = getArray(arr[i].toArray());
+            if (arr.size() != height) throw std::invalid_argument("Invalid span-set row count");
+            for (int i = 0; i < height; i++) {
+                QJsonArray row = arr[i].toArray();
+                if (row.size() != width) throw std::invalid_argument("Invalid span-set column count");
+                mat[i] = getArray(std::move(row));
+            }
             this->num = SpanSet(std::move(mat));
         }
         break;

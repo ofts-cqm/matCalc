@@ -29,6 +29,8 @@ const Polynomial &PolynomialMatrix::operator[](int i, int j) const{
 }
 
 Polynomial PolynomialMatrix::recursiveDet(int size){
+    if (size == 0) return {1};
+    if (size == 1) return (*this)[0, 0];
     if (size == 2){
         return (*this)[0, 0] * (*this)[1, 1] - (*this)[1, 0] * (*this)[0, 1];
     }

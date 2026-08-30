@@ -28,7 +28,7 @@ public:
 
     GenericNumber(const GenericNumber &);
 
-    GenericNumber(GenericNumber &&other);
+    GenericNumber(GenericNumber &&other) noexcept ;
 
     GenericNumber(const double &);
     GenericNumber(const Vector &);

@@ -17,7 +17,7 @@ public:
     ~HistoryItem();
 
     History::CalculationHistory itemBase;
-    Calculation *calcBase;
+    Calculation calcBase;
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;

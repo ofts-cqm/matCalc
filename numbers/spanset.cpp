@@ -19,7 +19,7 @@ const double SpanSet::operator[](int i, int j) const { return Matrix::operator[]
 const Vector SpanSet::operator[](int i) const { return Matrix::column(i); }
 
 SpanSet SpanSet::operator+(const Vector &vec) const{
-    if (this->height != vec.dim()) throw new DimensionMismatchException(this->height, vec.dim(), "Vector Dimension");
+    if (this->height != vec.dim()) throw DimensionMismatchException(this->height, vec.dim(), "Vector Dimension");
 
     SpanSet set = *this;
     set.width++;
@@ -31,18 +31,18 @@ SpanSet SpanSet::operator+(const Vector &vec) const{
 }
 
 SpanSet SpanSet::operator+(const SpanSet &other) const{
-    if (this->height != other.height) throw new DimensionMismatchException(this->height, other.height, "Vector Dimension");
+    if (this->height != other.height) throw DimensionMismatchException(this->height, other.height, "Vector Dimension");
 
     SpanSet set = *this;
     set.width += other.width;
     for (int i = 0; i < this->height; i++){
-        set.Matrix::operator[](i).append(other.Matrix::operator[](i));
+        set.Matrix::operator[](i) = set.Matrix::operator[](i).append(other.Matrix::operator[](i));
     }
     return set;
 }
 
 SpanSet &SpanSet::operator+=(const Vector &vec){
-    if (this->height != vec.dim()) throw new DimensionMismatchException(this->height, vec.dim(), "Vector Dimension");
+    if (this->height != vec.dim()) throw DimensionMismatchException(this->height, vec.dim(), "Vector Dimension");
 
     this->width++;
     for (int i = 0; i < this->height; i++){
@@ -53,17 +53,17 @@ SpanSet &SpanSet::operator+=(const Vector &vec){
 }
 
 SpanSet &SpanSet::operator+=(const SpanSet &other){
-    if (this->height != other.height) throw new DimensionMismatchException(this->height, other.height, "Vector Dimension");
+    if (this->height != other.height) throw DimensionMismatchException(this->height, other.height, "Vector Dimension");
 
     this->width += other.width;
     for (int i = 0; i < this->height; i++){
-        Matrix::operator[](i).append(other.Matrix::operator[](i));
+        Matrix::operator[](i) = Matrix::operator[](i).append(other.Matrix::operator[](i));
     }
     return *this;
 }
 
 SpanSet SpanSet::operator&(const std::vector<bool> cols) const{
-    if (this->width != cols.size()) throw new DimensionMismatchException(this->width, cols.size(), "Vector Length");
+    if (this->width != cols.size()) throw DimensionMismatchException(this->width, cols.size(), "Vector Length");
 
     SpanSet set(this->height, 0);
     for (int i = 0; i < cols.size(); i++){
@@ -73,7 +73,7 @@ SpanSet SpanSet::operator&(const std::vector<bool> cols) const{
 }
 
 SpanSet &SpanSet::operator&=(const std::vector<bool> cols){
-    if (this->width != cols.size()) throw new DimensionMismatchException(this->width, cols.size(), "Vector Length");
+    if (this->width != cols.size()) throw DimensionMismatchException(this->width, cols.size(), "Vector Length");
 
     SpanSet set = *this;
     this->entries.clear();

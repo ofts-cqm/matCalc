@@ -24,7 +24,7 @@ public:
 
     void switchTo(NumberType type);
 
-    void applyBorder(SignDefinition type);
+    void applyBorder(const SignDefinition &type);
 
     void reconstructPage();
 
@@ -37,7 +37,7 @@ public:
 private:
     struct Hasher{
         std::size_t operator()(const NumberType &type) const {
-            return static_cast<std::size_t>(type);
+            return type;
         }
     };
 
@@ -52,7 +52,7 @@ private:
 
 private slots:
     void onCopy();
-    void onPaste();
+    void onPaste() const;
 };
 
 #endif // GENERICPANE_H

@@ -8,11 +8,12 @@ BinaryOperatorToken::BinaryOperatorToken(std::unique_ptr<Token> &&left, const Bi
     this->left->parent = this;
 }
 
-BinaryOperatorToken::BinaryOperatorToken(int precedence, const std::string &operation, Sign sign)
-    : OperatorToken(precedence, operation, [](double d){return d;}), sign(sign){}
+BinaryOperatorToken::BinaryOperatorToken(const int precedence, const std::string &operation, const Sign sign)
+    : OperatorToken(precedence, operation, [](const double d){return d;}), sign(sign){}
 
 double BinaryOperatorToken::evaluate() const{
-    double a = left->evaluate(), b = right->evaluate();
+    const double a { left->evaluate() };
+    const double b { right->evaluate() };
     switch (sign){
     case Sign::ADD:
         return a + b;
@@ -25,6 +26,7 @@ double BinaryOperatorToken::evaluate() const{
     case Sign::EXP:
         return pow(a, b);
     }
+    return 0;
 }
 
 bool BinaryOperatorToken::parse(InputMatcher &input, Token *lastInput) const{
@@ -57,14 +59,16 @@ void BinaryOperatorToken::debug() const {
 
 BinaryOperatorToken *BinaryOperatorToken::multiply = nullptr;
 
-double add(double a, double b) {return a + b;}
-
-void BinaryOperatorToken::init(std::vector<Token *> &tokens){
-    tokens.append_range(std::vector<OperatorToken *>({
-        new BinaryOperatorToken(4, "+", Sign::ADD),
-        new BinaryOperatorToken(4, "-", Sign::SUB),
-        multiply = new BinaryOperatorToken(3, "*", Sign::MUL),
-        new BinaryOperatorToken(3, "/", Sign::DIV),
-        new BinaryOperatorToken(1, "^", Sign::EXP)
-    }));
+void BinaryOperatorToken::init(std::vector<std::unique_ptr<Token>> &tokens){
+    auto add = [&tokens](int precedence, const std::string &operation, Sign sign) {
+        auto token = std::unique_ptr<BinaryOperatorToken>(new BinaryOperatorToken(precedence, operation, sign));
+        BinaryOperatorToken *observer = token.get();
+        tokens.push_back(std::move(token));
+        return observer;
+    };
+    add(4, "+", Sign::ADD);
+    add(4, "-", Sign::SUB);
+    multiply = add(3, "*", Sign::MUL);
+    add(3, "/", Sign::DIV);
+    add(1, "^", Sign::EXP);
 }

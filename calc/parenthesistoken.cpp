@@ -22,6 +22,7 @@ bool ParenthesisToken::parse(InputMatcher &input, Token *lastInput) const{
         if(!matchNext(input, lastToken)){
             logError("Error: Parenthesis Not Closed!", input);
             input.pop();
+            lastToken = lastInput;
             return false;
         }
     }
@@ -29,6 +30,7 @@ bool ParenthesisToken::parse(InputMatcher &input, Token *lastInput) const{
     if (root.right == nullptr){
         logError("Error: Parenthesis Is Empty", input);
         input.pop();
+        lastToken = lastInput;
         return false;
     }
 

@@ -5,6 +5,7 @@
 #include "calculatorPage/evaluationpage.h"
 #include "history/historywindow.h"
 #include <QMainWindow>
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,8 +25,8 @@ public:
     static MainWindow *getInstance();
     ~MainWindow();
 
-    HistoryWindow *historyWindow;
-    EvaluationPage *calculator;
+    std::unique_ptr<HistoryWindow> historyWindow;
+    std::unique_ptr<EvaluationPage> calculator;
 
 private:
     Ui::MainWindow *ui;

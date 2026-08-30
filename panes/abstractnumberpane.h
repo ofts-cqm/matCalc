@@ -30,7 +30,7 @@ public:
 
 protected:
     GenericNumber genericValue;
-    bool isCurrentPage;
+    bool isCurrentPage = false;
 };
 
 #endif // ABSTRACTNUMBERPANE_H
